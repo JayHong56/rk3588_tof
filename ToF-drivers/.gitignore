@@ -1,0 +1,27 @@
+# Build output
+build/
+build*/
+build_*/
+
+# Compiled objects
+*.o
+*.ko
+*.mod
+*.mod.c
+*.mod.o
+*.a
+*.so
+*.so.*
+
+# Kernel module build artifacts
+Module.symvers
+modules.order
+.*.cmd
+*.cmd
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

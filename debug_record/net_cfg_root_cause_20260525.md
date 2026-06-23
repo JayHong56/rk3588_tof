@@ -1,0 +1,186 @@
+# 网络端 CFG 复原失败追溯
+
+## 结论先行
+当前问题的根因不是“SDK 根本不会读 CFG”，而是 **`adsd3500` 分支把模块读取链短路了**：`CameraItof::loadModuleData()` 在 `m_adsd3500Enabled` 时直接返回，导致 `m_tempFiles.cfgFile` 从未被填充。后续 `saveModuleCFG` 只是把这个空路径再复制一次，所以 A 端导出 CFG 失败；B 端拿不到有效 CFG，只能退回 RAW fallback，显示成重复/瓦片/异常图案。
+
+## 从报错开始的追溯过程
+日志顺序是：
+
+1. `Crc of ccb is valid.`
+2. `Exported current module CCB...`
+3. `CFG files is unavailable. Perhaps CFG content was not read from module.`
+4. `Warning: saveModuleCFG failed...`
+5. `failed to export/send current module CFG...`
+6. `Dropped first RAW frame after camera start`
+7. `First RAW frame: ...`
+
+这里说明：
+- CCB 读取链是通的；
+- CFG 读取链在 SDK 内部直接断了；
+- 网络 RAW 仍然继续发，所以 B 端还能收到数据，但无法按正确模块配置复原。
+
+## 关键代码链路
+
+### 1) 采集端发送 CFG
+`tof-net-collect` 在发送 CCB 之后，会调用：
+
+- [examples/tof-net-collect/src/main.cpp](../rk3588_tof/ToF/examples/tof-net-collect/src/main.cpp)
+
+核心片段：
+
+```cpp
+CameraRawSource::ModuleCfg cfg = cam.export_module_cfg();
+...
+sock.send_message(MessageType::CfgFile, cfgPayload.data(), cfgPayload.size());
+```
+
+`main()` 里 `cam` 的来源也很直接：
+
+```cpp
+CameraRawSource cam(args);
+cam.initialize();
+```
+
+### 2) `saveModuleCFG` 进入 SDK
+SDK 里 `setControl()` 直接把控制名分发出去：
+
+- [sdk/src/cameras/itof-camera/camera_itof.cpp](../rk3588_tof/ToF/sdk/src/cameras/itof-camera/camera_itof.cpp)
+
+核心片段：
+
+```cpp
+} else if (control == "saveModuleCFG") {
+    return saveCFGToFile(value);
+}
+```
+
+### 3) 失败点：`m_tempFiles.cfgFile` 为空
+`saveCFGToFile()` 只复制临时 CFG 文件，不会自己重新读模块：
+
+```cpp
+if (m_tempFiles.cfgFile.empty()) {
+    LOG(ERROR) << "CFG files is unavailable. Perhaps CFG content was not read from module.";
+    return aditof::Status::UNAVAILABLE;
+}
+```
+
+### 4) 为什么 `m_tempFiles.cfgFile` 为空
+`loadModuleData()` 本来会调用 `ModuleMemory::readModuleData()` 去解析模块内存里的 CCB/CFG chunk：
+
+- [sdk/src/cameras/itof-camera/camera_itof.cpp](../rk3588_tof/ToF/sdk/src/cameras/itof-camera/camera_itof.cpp)
+- [sdk/src/cameras/itof-camera/module_memory.cpp](../rk3588_tof/ToF/sdk/src/cameras/itof-camera/module_memory.cpp)
+
+但在 `adsd3500` 分支里，`loadModuleData()` 一开始就短路返回：
+
+```cpp
+if (m_adsd3500Enabled) {
+    return status;
+}
+```
+
+所以 `ModuleMemory::readModuleData()` 根本没机会把 `cfgFilename` 写进 `tempFiles.cfgFile`。
+
+### 5) `ModuleMemory` 本身是支持读 CFG 的
+`ModuleMemory::readModuleData()` 里确实有 CFG chunk 解析：
+
+```cpp
+case CHUNK_TYPE_CFG:
+case CHUNK_TYPE_IMAGER_FIRMWARE_FACTORY_HEADER:
+    LOG(INFO) << "Found module memory CFG chunk, parsing...";
+    cfgFilename = writeTempCFG(pChunkData, payloadSize);
+```
+
+`writeTempCFG()` 也会检查文件签名是否是 `CFG`，然后写临时文件。
+
+所以问题不是“SDK 不会读 CFG”，而是 **`adsd3500` 路径没执行到那一步**。
+
+## 为什么 net 端不能复原
+网络 viewer 这边需要三样东西才能正确 TOFI 复原：
+- `ini`
+- `ccb`
+- `cfg`
+
+它在 `ADINetworkToFStream::ensureTofi()` 里明确要求并加载这些输入：
+
+- [examples/tof-net-viewer/src/ADINetworkToFStream.cpp](../rk3588_tof/ToF/examples/tof-net-viewer/src/ADINetworkToFStream.cpp)
+
+关键逻辑：
+
+```cpp
+m_tofiConfig = InitTofiConfig(ccbPtr, cfgPtr, &iniData, mode, &status);
+```
+
+如果 `cfgFile` 为空，TOFI 初始化就不完整，随后 `computeTofiFrame()` 会失败，转入 fallback：
+
+```cpp
+frame = buildFallbackFrame(header, rawBytes, e.what());
+```
+
+而 `buildFallbackFrame()` 只是把 RAW bytes 直接塞进 depth/ir：
+
+```cpp
+std::memcpy(depthData, rawBytes.data(), expectedBytes);
+std::memcpy(irData, rawBytes.data(), expectedBytes);
+```
+
+这就是你看到的重复/瓦片/异常图案的直接来源。
+
+## 本地 GUI 链路和网络链路的不同
+
+### 本地 GUI
+本地 GUI 可以直接依赖本机 camera / SDK 路径：
+- 直接拿本地相机实例
+- 本地 SDK 初始化
+- 本地 depth compute / TOFI
+- 不一定依赖网络传来的 CFG
+
+相关代码主要在：
+- [examples/tof-net-viewer/src/ADIMainWindow.cpp](../rk3588_tof/ToF/examples/tof-net-viewer/src/ADIMainWindow.cpp)
+- [examples/tof-net-viewer/src/ADIView.cpp](../rk3588_tof/ToF/examples/tof-net-viewer/src/ADIView.cpp)
+
+例如 `ADIMainWindow::ShowRecordTree()` 里，本地 camera 存在时会直接保存：
+
+```cpp
+status = camera->setControl("saveModuleCCB", ccbFilePath);
+status = camera->setControl("saveModuleCFG", cfgFilePath);
+```
+
+### 网络 viewer
+网络 viewer 不开本地相机，而是：
+- A 端发 RAW + CCB + CFG
+- B 端保存收到的 CCB / CFG
+- B 端用 `ensureTofi()` 初始化 TOFI
+- 失败时才 fallback 到 RAW 直拷贝
+
+所以网络模式对 `CFG` 更敏感；一旦 A 端导不出 CFG，B 端的复原链就断了。
+
+## 最终根因
+一句话：**A 端 `adsd3500` 分支没有走 `loadModuleData()`，导致 SDK 没把模块 CFG 读进 `m_tempFiles.cfgFile`，于是 `saveModuleCFG` 导出失败，B 端缺 CFG 无法正确初始化 TOFI，只能 fallback 到 RAW。**
+
+## 之后的解决方案
+
+### 方案 A：给 `adsd3500` 补一条 CFG 读取链
+思路：让 `adsd3500` 路径也能读取模块 EEPROM 里的 CFG chunk，至少在 `saveModuleCFG` 前补一次读取。
+
+可行做法：
+- 新增 `readAdsd3500CFG()`，参考现有 `readAdsd3500CCB()`；
+- 或者在 `saveModuleCFG` 分支里，如果 `m_tempFiles.cfgFile` 为空，先触发一次模块读取。
+
+### 方案 B：如果模块本身没有 CFG，就别指望 SDK 现读
+如果 EEPROM 里确实没有 CFG chunk，那么只能：
+- 由外部配置提供有效 `cfg`；
+- 或者把 B 端的 `tof-viewer_config.json` / `DEPTH_INI` 配好；
+- 让 viewer 用固定 cfg/ini/ccb 初始化。
+
+### 方案 C：让 net viewer 的 fallback 更聪明
+如果短期没法拿到 CFG，至少可以避免“看起来像坏图”的误导：
+- 明确提示 `TOFI failed; displaying RAW fallback`
+- 避免把 RAW 直接当 depth/ir 混用
+- 按模块模式做更正确的 RAW 重排/展示
+
+## 推荐你现在怎么做
+优先顺序：
+1. 先确认模块 EEPROM 里到底有没有 CFG chunk；
+2. 如果有，就补 `adsd3500` 的 CFG 读取链；
+3. 如果没有，就改成 viewer 侧提供固定 CFG/ini；
+4. 同时保留更明确的 fallback 提示，避免误判为“显示链坏了”。

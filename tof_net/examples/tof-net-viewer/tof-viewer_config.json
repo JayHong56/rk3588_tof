@@ -1,0 +1,12 @@
+{
+    "net_listen_ip": "0.0.0.0",
+    "net_listen_port": "5000",
+    "net_tofi_ccb": "./config/camera_calibration.ccb",
+    "net_tofi_cfg": "./config/camera_calibration.cfg",
+    "net_is_adsd3500": "true",
+    "modes": "lr-qnative,sr-qnative,lr-native,sr-native,lr-mixed,sr-mixed,pcm-native",
+    "DEPTH_INI": "./config/RawToDepthAdsd3500_lr-qnative.ini;./config/RawToDepthAdsd3500_lr-native.ini;./config/RawToDepthAdsd3500_sr-qnative.ini;./config/RawToDepthAdsd3500_sr-native.ini;./config/RawToDepthAdsd3500_sr-mixed.ini;./config/RawToDepthAdsd3500_lr-mixed.ini;./config/RawToDepthAdsd_pcm-native.ini",
+    "net_default_mode": "0",
+    "net_received_ccb": "./config/received_machine_a_module.ccb",
+    "net_received_cfg": "./config/received_machine_a_module.cfg"
+}

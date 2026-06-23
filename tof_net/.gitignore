@@ -1,0 +1,24 @@
+# Build output
+build/
+build*/
+build_*/
+
+# Generated headers
+sdk/include/aditof/version.h
+
+# Compiled objects
+*.o
+*.a
+*.so
+*.so.*
+
+# Dependencies
+*deps/
+*.temp/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

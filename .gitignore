@@ -1,0 +1,15 @@
+# Backup / temporary directories
+*.bak/
+
+# Old leftover directories from before submodule conversion
+kernel/
+
+# Third-party source tarballs
+glfw-3.3.2-src/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
