@@ -179,6 +179,7 @@ class ADIController {
     int m_cameraInUse;
     std::thread m_workerThread;
     std::atomic<bool> m_stopFlag;
+    std::atomic<bool> m_captureRunning;
     SafeQueue<std::shared_ptr<aditof::Frame>> m_queue;
     std::mutex m_mutex;
     std::mutex m_requestMutex;

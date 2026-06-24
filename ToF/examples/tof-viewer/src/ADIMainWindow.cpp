@@ -10,6 +10,7 @@
 #include "ADIImGUIExtensions.h"
 #include "ADIOpenFile.h"
 #include "aditof/version.h"
+#include <chrono>
 #include <cmath>
 #include <fcntl.h>
 #include <fstream>
@@ -375,6 +376,11 @@ static double cpuUsage;
 void ADIMainWindow::render() {
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f); //Main Window Color
     static bool show_app_log = true;
+    // VSync is not reliably honored by llvmpipe. Without an explicit limit the
+    // loop continuously issues synchronous X11 window queries from GLFW and
+    // can starve the X server until the GUI appears frozen.
+    constexpr auto frameInterval = std::chrono::microseconds(33333); // 30 FPS
+    auto nextFrame = std::chrono::steady_clock::now();
     // Main imGUI loop
     while (!glfwWindowShouldClose(window)) {
         // Poll and handle events (inputs, window resize, etc.)
@@ -386,13 +392,15 @@ void ADIMainWindow::render() {
         // data to your main application. Generally you may always pass all
         // inputs to dear imgui, and hide them from your application based on
         // those two flags.
-        glfwGetWindowSize(window, &mainWindowWidth, &mainWindowHeight);
         glfwPollEvents();
 
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        ImGuiIO &io = ImGui::GetIO();
+        mainWindowWidth = static_cast<int>(io.DisplaySize.x);
+        mainWindowHeight = static_cast<int>(io.DisplaySize.y);
         /***************************************************/
         //Create windows here:
         showMainMenu();
@@ -411,8 +419,10 @@ void ADIMainWindow::render() {
         /***************************************************/
         // Rendering
         ImGui::Render();
-        int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
+        const int display_w = static_cast<int>(
+            io.DisplaySize.x * io.DisplayFramebufferScale.x);
+        const int display_h = static_cast<int>(
+            io.DisplaySize.y * io.DisplayFramebufferScale.y);
         glViewport(0, 0, display_w, display_h);
         /*glClearColor(clear_color.x, clear_color.y, clear_color.z,
 					 clear_color.w);*/
@@ -420,6 +430,15 @@ void ADIMainWindow::render() {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window);
+
+        nextFrame += frameInterval;
+        const auto now = std::chrono::steady_clock::now();
+        if (nextFrame > now) {
+            std::this_thread::sleep_until(nextFrame);
+        } else {
+            // Do not accumulate lag after a slow camera or rendering frame.
+            nextFrame = now;
+        }
     }
 }
 
@@ -1008,6 +1027,12 @@ void ADIMainWindow::stopPlayCCD() {
 }
 
 void ADIMainWindow::openGLCleanUp() {
+    irTextureReady = false;
+    depthTextureReady = false;
+    irTextureWidth = 0;
+    irTextureHeight = 0;
+    depthTextureWidth = 0;
+    depthTextureHeight = 0;
     glDeleteTextures(1, &ir_video_texture);
     glDeleteTextures(1, &depth_video_texture);
     glDeleteTextures(1, &pointCloud_video_texture);
@@ -1431,7 +1456,8 @@ void ADIMainWindow::displayDepthWindow(ImGuiWindowFlags overlayFlags) {
         GetHoveredImagePix(hoveredImagePixel, ImGui::GetCursorScreenPos(),
                            ImGui::GetIO().MousePos, displayDepthDimensions);
         RenderInfoPane(hoveredImagePixel, view->depth_video_data,
-                       view->frameWidth, ImGui::IsWindowHovered(),
+                       view->frameWidth, view->frameHeight,
+                       ImGui::IsWindowHovered(),
                        ADI_Image_Format_t::ADI_IMAGE_FORMAT_DEPTH16, "mm");
     }
 
@@ -1516,6 +1542,9 @@ void ADIMainWindow::createColorBar(ImVec2 position, ImVec2 size) {
 void ADIMainWindow::InitCaptureIRDepthVideo() {}
 
 void ADIMainWindow::initOpenGLIRTexture() {
+    irTextureReady = false;
+    irTextureWidth = 0;
+    irTextureHeight = 0;
     /********************************************/
     //IR Texture
     GLuint ir_texture;
@@ -1532,6 +1561,9 @@ void ADIMainWindow::initOpenGLIRTexture() {
 }
 
 void ADIMainWindow::initOpenGLDepthTexture() {
+    depthTextureReady = false;
+    depthTextureWidth = 0;
+    depthTextureHeight = 0;
     /********************************************/
     //Depth Texture
     GLuint depth_texture;
@@ -1652,15 +1684,19 @@ void ADIMainWindow::initOpenGLPointCloudTexture() {
 
 void ADIMainWindow::synchronizeDepthIRVideo() {
 
-    view->m_capturedFrame = view->m_ctrl->getFrame();
-    if (!view->m_capturedFrame) {
+    auto nextFrame = view->m_ctrl->getFrame();
+    if (!nextFrame) {
         view->m_ctrl->requestFrame();
         return;
     }
 
     aditof::FrameDetails frameDetails;
-    view->m_capturedFrame->getDetails(frameDetails);
+    nextFrame->getDetails(frameDetails);
     std::unique_lock<std::mutex> lock(view->m_frameCapturedMutex);
+    // Replace the current frame only after a new one is available. Assigning a
+    // null frame here would release the storage backing the raw image pointers
+    // while the render path still uses the previous image.
+    view->m_capturedFrame = std::move(nextFrame);
     if (displayIR) {
         view->m_irFrameAvailable = true;
     } else {
@@ -1700,15 +1736,16 @@ void ADIMainWindow::synchronizeDepthIRVideo() {
 }
 
 void ADIMainWindow::synchronizePointCloudVideo() {
-    view->m_capturedFrame = view->m_ctrl->getFrame();
-    if (!view->m_capturedFrame) {
+    auto nextFrame = view->m_ctrl->getFrame();
+    if (!nextFrame) {
         view->m_ctrl->requestFrame();
         return;
     }
 
     aditof::FrameDetails frameDetails;
-    view->m_capturedFrame->getDetails(frameDetails);
+    nextFrame->getDetails(frameDetails);
     std::unique_lock<std::mutex> lock(view->m_frameCapturedMutex);
+    view->m_capturedFrame = std::move(nextFrame);
 
     view->m_depthFrameAvailable = true;
     view->m_pointCloudFrameAvailable = true;
@@ -1781,12 +1818,23 @@ void ADIMainWindow::GetHoveredImagePix(ImVec2 &hoveredImagePixel,
 
 void ADIMainWindow::RenderInfoPane(ImVec2 hoveredImagePixel,
                                    uint16_t *currentImage, int imageWidth,
-                                   bool isHovered, ADI_Image_Format_t format,
-                                   std::string units) {
+                                   int imageHeight, bool isHovered,
+                                   ADI_Image_Format_t format, std::string units) {
     if (static_cast<int>(hoveredImagePixel.x) ==
             static_cast<int>(InvalidHoveredPixel.x) &&
         static_cast<int>(hoveredImagePixel.y) ==
             static_cast<int>(InvalidHoveredPixel.y)) {
+        return;
+    }
+
+    if (currentImage == nullptr || imageWidth <= 0 || imageHeight <= 0) {
+        return;
+    }
+
+    const int pixelX = static_cast<int>(hoveredImagePixel.x);
+    const int pixelY = static_cast<int>(hoveredImagePixel.y);
+    if (pixelX < 0 || pixelX >= imageWidth || pixelY < 0 ||
+        pixelY >= imageHeight) {
         return;
     }
 
@@ -1805,10 +1853,7 @@ void ADIMainWindow::RenderInfoPane(ImVec2 hoveredImagePixel,
         ImGui::Begin("dd", nullptr, overlayFlags2);
 
         if (hoveredImagePixel.x >= 0 && hoveredImagePixel.y >= 0) {
-            pixelValue =
-                currentImage[((int)hoveredImagePixel.y * (imageWidth)) +
-                             int(hoveredImagePixel
-                                     .x)]; //153280 is pixel value linear
+            pixelValue = currentImage[pixelY * imageWidth + pixelX];
 
             if (isHovered || ImGui::IsWindowHovered()) {
                 ImGui::Text("Current pixel: %d, %d", int(hoveredImagePixel.x),
@@ -1825,10 +1870,7 @@ void ADIMainWindow::RenderInfoPane(ImVec2 hoveredImagePixel,
         ImGui::Begin("dd", nullptr, overlayFlags2);
 
         if (hoveredImagePixel.x >= 0 && hoveredImagePixel.y >= 0) {
-            pixelValue =
-                currentImage[((int)hoveredImagePixel.y * (imageWidth)) +
-                             int(hoveredImagePixel
-                                     .x)]; //153280 is pixel value linear
+            pixelValue = currentImage[pixelY * imageWidth + pixelX];
 
             if (isHovered || ImGui::IsWindowHovered()) {
                 ImGui::Text("Current pixel: %d, %d", int(hoveredImagePixel.x),
@@ -1887,11 +1929,24 @@ void ADIMainWindow::ImageRotated(ImTextureID tex_id, ImVec2 center, ImVec2 size,
 void ADIMainWindow::CaptureDepthVideo() {
     if (view->depth_video_data_8bit != nullptr) {
         glBindTexture(GL_TEXTURE_2D, depth_video_texture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, view->frameWidth,
-                     view->frameHeight, 0, GL_BGR, GL_UNSIGNED_BYTE,
-                     view->depth_video_data_8bit);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        delete view->depth_video_data_8bit;
+        if (depthTextureWidth != view->frameWidth ||
+            depthTextureHeight != view->frameHeight) {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, view->frameWidth,
+                         view->frameHeight, 0, GL_BGR, GL_UNSIGNED_BYTE,
+                         view->depth_video_data_8bit);
+            depthTextureWidth = view->frameWidth;
+            depthTextureHeight = view->frameHeight;
+        } else {
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, view->frameWidth,
+                            view->frameHeight, GL_BGR, GL_UNSIGNED_BYTE,
+                            view->depth_video_data_8bit);
+        }
+        delete[] view->depth_video_data_8bit;
+        view->depth_video_data_8bit = nullptr;
+        depthTextureReady = true;
+    }
+
+    if (depthTextureReady) {
 
         ImVec2 _displayDepthDimensions = displayDepthDimensions;
 
@@ -1911,11 +1966,24 @@ void ADIMainWindow::CaptureDepthVideo() {
 void ADIMainWindow::CaptureIRVideo() {
     if (view->ir_video_data_8bit != nullptr) {
         glBindTexture(GL_TEXTURE_2D, ir_video_texture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, view->frameWidth,
-                     view->frameHeight, 0, GL_BGR, GL_UNSIGNED_BYTE,
-                     view->ir_video_data_8bit);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        delete view->ir_video_data_8bit;
+        if (irTextureWidth != view->frameWidth ||
+            irTextureHeight != view->frameHeight) {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, view->frameWidth,
+                         view->frameHeight, 0, GL_BGR, GL_UNSIGNED_BYTE,
+                         view->ir_video_data_8bit);
+            irTextureWidth = view->frameWidth;
+            irTextureHeight = view->frameHeight;
+        } else {
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, view->frameWidth,
+                            view->frameHeight, GL_BGR, GL_UNSIGNED_BYTE,
+                            view->ir_video_data_8bit);
+        }
+        delete[] view->ir_video_data_8bit;
+        view->ir_video_data_8bit = nullptr;
+        irTextureReady = true;
+    }
+
+    if (irTextureReady) {
 
         ImVec2 _displayIRDimensions = displayIRDimensions;
 

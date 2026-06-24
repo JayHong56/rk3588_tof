@@ -42,6 +42,12 @@ add_executable(ADIToFGUI
                ${OS_SPECIFIC_SOURCES}			   
 			   )
 
+if(UNIX)
+    # Keep usable source line information for field crash/hang captures without
+    # changing the selected optimization level.
+    target_compile_options(ADIToFGUI PRIVATE -g -fno-omit-frame-pointer)
+endif()
+
 # Link Libraries
 if(UNIX)
 	set(OpenGL_GL_PREFERENCE "LEGACY")

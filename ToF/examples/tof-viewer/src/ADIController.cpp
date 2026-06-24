@@ -16,8 +16,8 @@ using namespace adicontroller;
 
 ADIController::ADIController(
     std::vector<std::shared_ptr<aditof::Camera>> camerasList)
-    : m_cameraInUse(-1), m_frameRequested(false),
-      m_recorder(new ADIToFRecorder()) {
+    : m_recorder(new ADIToFRecorder()), m_cameraInUse(-1), m_stopFlag(true),
+      m_captureRunning(false), m_frameRequested(false) {
 
     m_cameras = camerasList;
     if (m_cameras.size()) {
@@ -43,6 +43,11 @@ void ADIController::StartCapture() {
         return;
     }
 
+    bool expected = false;
+    if (!m_captureRunning.compare_exchange_strong(expected, true)) {
+        return;
+    }
+
     m_stopFlag = false;
     m_workerThread =
         std::thread(std::bind(&ADIController::captureFrames, this));
@@ -52,6 +57,12 @@ void ADIController::StopCapture() {
     if (m_cameraInUse == -1) {
         return;
     }
+
+    bool expected = true;
+    if (!m_captureRunning.compare_exchange_strong(expected, false)) {
+        return;
+    }
+
     std::unique_lock<std::mutex> lock(m_requestMutex);
     m_stopFlag = true;
     m_cameras[m_cameraInUse]->stop();

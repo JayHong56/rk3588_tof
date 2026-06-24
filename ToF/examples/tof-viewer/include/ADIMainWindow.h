@@ -458,7 +458,7 @@ class ADIMainWindow {
 		* @brief Displays pixel information while mouse hovers over
 		*/
     void RenderInfoPane(ImVec2 hoveredImagePixel, uint16_t *currentImage,
-                        int imageWidth, bool isHovered,
+                        int imageWidth, int imageHeight, bool isHovered,
                         ADI_Image_Format_t format, std::string units);
 
     /**
@@ -587,6 +587,12 @@ class ADIMainWindow {
     unsigned int ir_video_texture = 0;
     unsigned int depth_video_texture = 0;
     unsigned int pointCloud_video_texture = 0;
+    bool irTextureReady = false;
+    bool depthTextureReady = false;
+    uint32_t irTextureWidth = 0;
+    uint32_t irTextureHeight = 0;
+    uint32_t depthTextureWidth = 0;
+    uint32_t depthTextureHeight = 0;
     bool setTempWinPositionOnce = true;
     bool setIRWinPositionOnce = true;
     bool setDepthWinPositionOnce = true;

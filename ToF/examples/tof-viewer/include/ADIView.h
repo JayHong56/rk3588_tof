@@ -118,11 +118,11 @@ class ADIView {
     std::thread m_irImageWorker;
     std::thread m_pointCloudImageWorker;
     std::condition_variable m_frameCapturedCv;
-    uint16_t *ir_video_data;
-    uint16_t *depth_video_data;
-    uint16_t *pointCloud_video_data;
-    uint8_t *ir_video_data_8bit;
-    uint8_t *depth_video_data_8bit;
+    uint16_t *ir_video_data = nullptr;
+    uint16_t *depth_video_data = nullptr;
+    uint16_t *pointCloud_video_data = nullptr;
+    uint8_t *ir_video_data_8bit = nullptr;
+    uint8_t *depth_video_data_8bit = nullptr;
     float *normalized_vertices = nullptr;
     size_t pointcloudTableSize = 0;
 

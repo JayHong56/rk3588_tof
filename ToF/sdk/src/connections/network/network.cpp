@@ -352,7 +352,11 @@ int Network::recv_server_data() {
  */
 void Network::call_lws_service() {
     while (1) {
-        lws_service(context.at(m_connectionId), 0);
+        // A zero timeout makes libwebsockets return immediately when there is
+        // no work, turning this thread into a busy loop (observed near 100%
+        // CPU). A short wait keeps command/frame latency low without starving
+        // the GUI and X server on CPU-constrained targets.
+        lws_service(context.at(m_connectionId), 10);
 #ifdef NW_DEBUG
         cout << ".";
 #endif
