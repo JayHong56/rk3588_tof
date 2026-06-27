@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/linaro/rk3588_tof/tof_net/dependencies/third-party/c_json/cJSON.c
+string.h
+-
+stdio.h
+-
+math.h
+-
+stdlib.h
+-
+limits.h
+-
+ctype.h
+-
+locale.h
+-
+cJSON.h
+/home/linaro/rk3588_tof/tof_net/dependencies/third-party/c_json/cJSON.h
+
+/home/linaro/rk3588_tof/tof_net/dependencies/third-party/c_json/cJSON.h
+stddef.h
+-
+

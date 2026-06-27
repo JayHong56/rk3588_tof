@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../sdk/common/adi/ccb/include/TOF_Calibration_Types.h
+stdint.h
+-
+
+../sdk/common/adi/tofi/tofi_camera_intrinsics.h
+
+../sdk/common/adi/tofi/tofi_config.h
+TOF_Calibration_Types.h
+-
+stdint.h
+-
+stdlib.h
+-
+tofi_camera_intrinsics.h
+../sdk/common/adi/tofi/tofi_camera_intrinsics.h
+tofi_error.h
+../sdk/common/adi/tofi/tofi_error.h
+
+../sdk/common/adi/tofi/tofi_error.h
+
+/home/linaro/rk3588_tof/tof_net/sdk/common/adi/depth-compute-opensource/src/tofiConfig.cpp
+tofi_config.h
+/home/linaro/rk3588_tof/tof_net/sdk/common/adi/depth-compute-opensource/src/tofi_config.h
+tofi_error.h
+/home/linaro/rk3588_tof/tof_net/sdk/common/adi/depth-compute-opensource/src/tofi_error.h
+sstream
+-
+

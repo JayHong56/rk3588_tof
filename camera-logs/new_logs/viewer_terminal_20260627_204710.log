@@ -1,0 +1,32 @@
+[tof-net-viewer] Network listener is idle
+[tof-net-viewer] Network listener is idle
+[tof-net-viewer] Network listener stopped
+[tof-net-viewer] Listening for RAW ToF frames on 0.0.0.0:5000
+[tof-net-viewer] RAW ToF client connected from 10.42.0.1:36150
+[tof-net-viewer] Remote hello: tof_net_collect, SDK 4.2.0
+[tof-net-viewer] Received current module CCB from Machine A: 243426 bytes, source=/tmp/tof_net_collect_module_3854.ccb, saved=./config/received_machine_a_module.ccb; TOFI will use received CCB
+[tof-net-viewer] Remote status code=0: sent current module CCB to Machine B: 243426 bytes from /tmp/tof_net_collect_module_3854.ccb frame=0
+[viewer] DealiasData received: sr-native modeId=0 rows=1024 cols=1024 freqs=2 sensor=1024x1024 fx=773.863 fy=773.961
+[tof-net-viewer] Received dealias data for sr-native (modeId=0, rows=1024, cols=1024, 88 bytes)
+[tof-net-viewer] Remote status code=0: sent dealias data for sr-native (88 bytes) frame=0
+[viewer] DealiasData received: lr-native modeId=1 rows=1024 cols=1024 freqs=3 sensor=1024x1024 fx=773.863 fy=773.961
+[tof-net-viewer] Received dealias data for lr-native (modeId=1, rows=1024, cols=1024, 88 bytes)
+[tof-net-viewer] Remote status code=0: sent dealias data for lr-native (88 bytes) frame=0
+[viewer] DealiasData received: sr-qnative modeId=2 rows=512 cols=512 freqs=2 sensor=1024x1024 fx=773.863 fy=773.961
+[tof-net-viewer] Received dealias data for sr-qnative (modeId=2, rows=512, cols=512, 88 bytes)
+[tof-net-viewer] Remote status code=0: sent dealias data for sr-qnative (88 bytes) frame=0
+[viewer] DealiasData received: lr-qnative modeId=3 rows=512 cols=512 freqs=3 sensor=1024x1024 fx=773.863 fy=773.961
+[tof-net-viewer] Received dealias data for lr-qnative (modeId=3, rows=512, cols=512, 88 bytes)
+[tof-net-viewer] Remote status code=0: sent dealias data for lr-qnative (88 bytes) frame=0
+[viewer] DealiasData received: pcm-native modeId=4 rows=0 cols=0 freqs=0 sensor=0x0 fx=0 fy=0
+[tof-net-viewer] Received dealias data for pcm-native (modeId=4, rows=0, cols=0, 88 bytes)
+[tof-net-viewer] Remote status code=0: sent dealias data for pcm-native (88 bytes) frame=0
+[viewer] DealiasData received: sr-mixed modeId=6 rows=512 cols=512 freqs=2 sensor=1024x1024 fx=773.863 fy=773.961
+[tof-net-viewer] Received dealias data for sr-mixed (modeId=6, rows=512, cols=512, 88 bytes)
+[tof-net-viewer] Remote status code=0: sent dealias data for sr-mixed (88 bytes) frame=0
+[viewer] DealiasData received: lr-mixed modeId=5 rows=512 cols=512 freqs=3 sensor=1024x1024 fx=773.863 fy=773.961
+[tof-net-viewer] Received dealias data for lr-mixed (modeId=5, rows=512, cols=512, 88 bytes)
+[tof-net-viewer] Remote status code=0: sent dealias data for lr-mixed (88 bytes) frame=0
+[tof-net-viewer] Remote status code=2: Machine A connected; CCB + dealias data sent; waiting for start command frame=0
+[tof-net-viewer] Sent StartCapture to Machine A mode=0 frame_type=lr-qnative
+[tof-net-viewer] Waiting 0s for first RAW ToF frame after StartCapture

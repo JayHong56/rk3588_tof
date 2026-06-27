@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -shared -Wl,-soname,libtofi_config.so -o libtofi_config.so CMakeFiles/tofi_config.dir/src/tofiConfig.cpp.o 

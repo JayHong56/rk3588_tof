@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../sdk/common/adi/ccb/include/TOF_Calibration_Types.h
+stdint.h
+-
+
+../sdk/common/adi/ccb/include/ccb.h
+stdlib.h
+-
+TOF_Calibration_Types.h
+../sdk/common/adi/ccb/include/TOF_Calibration_Types.h
+
+/home/linaro/rk3588_tof/tof_net/sdk/common/adi/ccb/src/ccb.c
+ccb.h
+-
+

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtof_net_common.a CMakeFiles/tof_net_common.dir/src/protocol.cpp.o CMakeFiles/tof_net_common.dir/src/socket.cpp.o CMakeFiles/tof_net_common.dir/src/zstd_codec.cpp.o
+/usr/bin/ranlib libtof_net_common.a

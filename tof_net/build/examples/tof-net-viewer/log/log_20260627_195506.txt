@@ -1,0 +1,321 @@
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I20260627 19:55:06.948207 282253 ADIToF.cpp:80] SDK version: 4.2.0 | branch:  | commit: 
+libGL error: failed to create dri screen
+libGL error: failed to load driver: rockchip
+libGL error: failed to create dri screen
+libGL error: failed to load driver: rockchip
+I20260627 19:55:08.310284 282253 ADINetworkToFStream.cpp:1423] Network listener is idle
+I20260627 19:55:08.310474 282253 ADIController.cpp:31] No local cameras attached to this controller.
+I20260627 19:58:58.003880 283965 ADIMainWindow.cpp:1188] Preparing network RAW ToF listener.
+I20260627 19:58:58.004417 283965 ADINetworkToFStream.cpp:1423] Network listener is idle
+I20260627 19:58:58.004503 283965 ADIController.cpp:31] No local cameras attached to this controller.
+I20260627 19:58:58.004582 283965 ADINetworkToFStream.cpp:1423] Network listener stopped
+I20260627 19:58:58.006424 283969 ADINetworkToFStream.cpp:1423] Listening for RAW ToF frames on 0.0.0.0:5000
+I20260627 19:59:03.736687 282253 ADINetworkToFStream.cpp:1423] Cannot start capture: no tof_net_collect client is connected
+I20260627 19:59:26.087307 283969 ADINetworkToFStream.cpp:1423] RAW ToF client connected from 10.42.0.1:57348
+I20260627 19:59:26.087865 283969 ADINetworkToFStream.cpp:470] RAW ToF client connected from 10.42.0.1:57348
+I20260627 19:59:26.088097 283969 ADINetworkToFStream.cpp:1423] Remote hello: tof_net_collect, SDK 4.2.0
+I20260627 19:59:26.088152 283969 ADINetworkToFStream.cpp:491] Remote hello: tof_net_collect, SDK 4.2.0
+I20260627 19:59:57.041334 283969 ADINetworkToFStream.cpp:1423] Received current module CCB from Machine A: 243426 bytes, source=/tmp/tof_net_collect_module_7093.ccb, saved=./config/received_machine_a_module.ccb; TOFI will use received CCB
+I20260627 19:59:57.041522 283969 ADINetworkToFStream.cpp:635] Received current module CCB from Machine A: 243426 bytes, source=/tmp/tof_net_collect_module_7093.ccb, saved=./config/received_machine_a_module.ccb; TOFI will use received CCB
+I20260627 19:59:57.041669 283969 ADINetworkToFStream.cpp:1423] Remote status code=0: sent current module CCB to Machine B: 243426 bytes from /tmp/tof_net_collect_module_7093.ccb frame=0
+I20260627 19:59:57.041728 283969 ADINetworkToFStream.cpp:508] Remote status code=0: sent current module CCB to Machine B: 243426 bytes from /tmp/tof_net_collect_module_7093.ccb frame=0
+I20260627 19:59:57.191076 283969 ADINetworkToFStream.cpp:1423] Received dealias data for sr-native (modeId=0, rows=1024, cols=1024, 88 bytes)
+I20260627 19:59:57.191484 283969 ADINetworkToFStream.cpp:771] Received dealias data for sr-native (modeId=0, rows=1024, cols=1024, 88 bytes)
+I20260627 19:59:57.191653 283969 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for sr-native (88 bytes) frame=0
+I20260627 19:59:57.191747 283969 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for sr-native (88 bytes) frame=0
+I20260627 19:59:57.191933 283969 ADINetworkToFStream.cpp:1423] Received dealias data for lr-native (modeId=1, rows=1024, cols=1024, 88 bytes)
+I20260627 19:59:57.191990 283969 ADINetworkToFStream.cpp:771] Received dealias data for lr-native (modeId=1, rows=1024, cols=1024, 88 bytes)
+I20260627 19:59:57.192054 283969 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for lr-native (88 bytes) frame=0
+I20260627 19:59:57.192091 283969 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for lr-native (88 bytes) frame=0
+I20260627 19:59:57.192175 283969 ADINetworkToFStream.cpp:1423] Received dealias data for sr-qnative (modeId=2, rows=512, cols=512, 88 bytes)
+I20260627 19:59:57.192214 283969 ADINetworkToFStream.cpp:771] Received dealias data for sr-qnative (modeId=2, rows=512, cols=512, 88 bytes)
+I20260627 19:59:57.192270 283969 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for sr-qnative (88 bytes) frame=0
+I20260627 19:59:57.192319 283969 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for sr-qnative (88 bytes) frame=0
+I20260627 19:59:57.192417 283969 ADINetworkToFStream.cpp:1423] Received dealias data for lr-qnative (modeId=3, rows=512, cols=512, 88 bytes)
+I20260627 19:59:57.192543 283969 ADINetworkToFStream.cpp:771] Received dealias data for lr-qnative (modeId=3, rows=512, cols=512, 88 bytes)
+I20260627 19:59:57.192605 283969 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for lr-qnative (88 bytes) frame=0
+I20260627 19:59:57.192642 283969 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for lr-qnative (88 bytes) frame=0
+I20260627 19:59:57.192723 283969 ADINetworkToFStream.cpp:1423] Received dealias data for pcm-native (modeId=4, rows=0, cols=0, 88 bytes)
+I20260627 19:59:57.192781 283969 ADINetworkToFStream.cpp:771] Received dealias data for pcm-native (modeId=4, rows=0, cols=0, 88 bytes)
+I20260627 19:59:57.192873 283969 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for pcm-native (88 bytes) frame=0
+I20260627 19:59:57.192917 283969 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for pcm-native (88 bytes) frame=0
+I20260627 19:59:57.193024 283969 ADINetworkToFStream.cpp:1423] Received dealias data for sr-mixed (modeId=6, rows=512, cols=512, 88 bytes)
+I20260627 19:59:57.193066 283969 ADINetworkToFStream.cpp:771] Received dealias data for sr-mixed (modeId=6, rows=512, cols=512, 88 bytes)
+I20260627 19:59:57.193135 283969 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for sr-mixed (88 bytes) frame=0
+I20260627 19:59:57.193173 283969 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for sr-mixed (88 bytes) frame=0
+I20260627 19:59:57.193261 283969 ADINetworkToFStream.cpp:1423] Received dealias data for lr-mixed (modeId=5, rows=512, cols=512, 88 bytes)
+I20260627 19:59:57.193308 283969 ADINetworkToFStream.cpp:771] Received dealias data for lr-mixed (modeId=5, rows=512, cols=512, 88 bytes)
+I20260627 19:59:57.193387 283969 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for lr-mixed (88 bytes) frame=0
+I20260627 19:59:57.193426 283969 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for lr-mixed (88 bytes) frame=0
+I20260627 19:59:57.193490 283969 ADINetworkToFStream.cpp:1423] Remote status code=2: Machine A connected; CCB + dealias data sent; waiting for start command frame=0
+I20260627 19:59:57.193526 283969 ADINetworkToFStream.cpp:508] Remote status code=2: Machine A connected; CCB + dealias data sent; waiting for start command frame=0
+I20260627 20:00:06.802575 282253 ADINetworkToFStream.cpp:1423] Sent StopCapture to Machine A
+I20260627 20:00:06.805141 283969 ADINetworkToFStream.cpp:1423] Remote status code=4: capture stopped frame=0
+I20260627 20:00:06.805418 283969 ADINetworkToFStream.cpp:508] Remote status code=4: capture stopped frame=0
+I20260627 20:00:06.806842 282253 ADINetworkToFStream.cpp:1423] Sent StartCapture to Machine A mode=0 frame_type=pcm-native
+I20260627 20:00:06.806900 282253 ADINetworkToFStream.cpp:408] Sent StartCapture to Machine A mode=0 frame_type=pcm-native
+I20260627 20:00:07.214076 283969 ADINetworkToFStream.cpp:1423] Remote status code=3: capture started; raw only; depth compute off frame=0
+I20260627 20:00:07.214365 283969 ADINetworkToFStream.cpp:508] Remote status code=3: capture started; raw only; depth compute off frame=0
+I20260627 20:00:07.305681 283969 ADINetworkToFStream.cpp:1423] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:07.305975 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:07.307344 282253 ADINetworkToFStream.cpp:1423] Waiting 0s for first RAW ToF frame after StartCapture
+I20260627 20:00:07.403903 283969 ADINetworkToFStream.cpp:1423] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:07.404210 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:07.504050 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:07.604152 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:07.704198 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:07.804246 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:07.904320 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:08.004205 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:08.103994 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:08.204046 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:08.304092 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:08.404134 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:08.504284 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:08.604058 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:08.704145 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:08.803982 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:08.904069 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:09.004031 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:09.104156 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:09.204134 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:09.304132 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:09.403931 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:09.504709 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:09.604254 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:09.704095 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:09.804154 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:09.904165 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:10.004114 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:10.104116 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:10.204052 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:10.304554 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:10.404363 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:10.504048 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:10.604300 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:10.704144 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:10.803988 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:10.904438 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:11.004177 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:11.104110 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:11.204248 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:11.304108 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:11.404328 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:11.504360 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:11.604090 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:11.704041 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:11.804488 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:11.904116 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:12.004520 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:12.104326 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:12.204228 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:12.303884 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:12.404389 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:12.504191 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:12.604167 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:12.715343 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:12.804479 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:12.904799 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:13.004527 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:13.104697 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:13.204066 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:13.304113 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:13.404119 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:13.504340 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:13.604091 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:13.704429 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:13.804147 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:13.904140 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:14.004343 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:14.104341 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:14.204485 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:14.304405 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:14.404160 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:14.504096 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:14.604072 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:14.704417 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:14.804308 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:14.904135 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:15.004417 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:15.104138 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:15.204192 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:15.304355 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:15.404167 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:15.504141 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:15.604230 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:15.704205 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:15.804277 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:15.903931 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:16.004364 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:16.104179 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:16.204409 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:16.304313 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:16.404361 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:16.504217 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:16.604372 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:16.704356 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:16.804036 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:16.904246 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:17.004202 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:17.104456 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:17.204371 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:17.304495 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:17.404186 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:17.504422 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:17.604341 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:17.704423 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:17.804299 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:17.904466 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:18.004586 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:18.104560 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:18.137583 282253 ADINetworkToFStream.cpp:1423] Sent StopCapture to Machine A
+I20260627 20:00:18.208465 283969 ADINetworkToFStream.cpp:1423] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:18.208614 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:18.248724 283969 ADINetworkToFStream.cpp:1423] Remote status code=4: capture thread stopped frame=0
+I20260627 20:00:18.248946 283969 ADINetworkToFStream.cpp:508] Remote status code=4: capture thread stopped frame=0
+I20260627 20:00:18.249212 283969 ADINetworkToFStream.cpp:1423] Remote status code=4: capture stopped frame=0
+I20260627 20:00:18.249339 283969 ADINetworkToFStream.cpp:508] Remote status code=4: capture stopped frame=0
+I20260627 20:00:20.100919 282253 ADINetworkToFStream.cpp:1423] Sent StartCapture to Machine A mode=0 frame_type=pcm-native
+I20260627 20:00:20.101063 282253 ADINetworkToFStream.cpp:408] Sent StartCapture to Machine A mode=0 frame_type=pcm-native
+I20260627 20:00:20.476421 283969 ADINetworkToFStream.cpp:1423] Remote status code=3: capture started; raw only; depth compute off frame=0
+I20260627 20:00:20.476712 283969 ADINetworkToFStream.cpp:508] Remote status code=3: capture started; raw only; depth compute off frame=0
+I20260627 20:00:20.504047 283969 ADINetworkToFStream.cpp:1423] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:20.504272 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:20.604427 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:20.704550 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:20.804457 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:20.904129 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:21.004297 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:21.104393 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:21.204356 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:21.304400 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:21.404330 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:21.504247 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:21.604262 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:21.704361 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:21.804414 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:21.904472 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:22.004266 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:22.104121 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:22.204095 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:22.304405 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:22.404310 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:22.504204 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:22.604419 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:22.704154 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:22.804275 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:22.904160 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:23.004107 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:23.104475 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:23.204140 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:23.307056 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:23.404271 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:23.504554 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:23.604462 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:23.704641 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:23.804641 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:23.904407 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:24.004602 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:24.104380 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:24.204607 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:24.304589 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:24.404409 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:24.504659 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:24.604604 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:24.704420 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:24.804507 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:24.904476 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:25.004658 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:25.104351 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:25.204368 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:25.304430 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:25.404675 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:25.504587 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:25.604391 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:25.704496 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:25.804526 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:25.904471 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:26.004381 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:26.104667 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:26.204869 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:26.304373 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:26.404528 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:26.504601 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:26.604489 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:26.704464 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:26.804435 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:26.904383 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:27.004419 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:27.104571 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:27.204676 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:27.304693 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:27.404459 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:27.504616 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:27.604492 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:27.704699 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:27.804638 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:27.904655 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:28.004438 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:28.104775 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:28.204324 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:28.304699 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:28.404348 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:28.504453 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:28.604699 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:28.704702 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:28.804450 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:28.904632 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:29.004630 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:29.104501 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:29.204530 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:29.304749 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:29.404603 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:29.504387 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:29.604511 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:29.704406 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:29.804618 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:29.904763 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:30.004592 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:30.104467 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:30.204835 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:30.304409 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:30.404476 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:30.504211 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:30.604804 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:30.704538 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:30.804507 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:30.904398 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:31.004329 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:31.104653 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:31.204689 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:31.304675 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:31.404706 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:31.504717 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:31.604643 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:31.704558 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:31.804338 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:31.904699 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:32.004607 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:32.104466 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:32.205070 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:32.304883 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:32.404603 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:32.504634 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:32.604471 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:32.704741 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:32.804752 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:32.904458 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:33.004549 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:33.104640 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:33.204522 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:33.304613 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:33.404531 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:33.504612 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:33.588760 282253 ADINetworkToFStream.cpp:1423] Sent StopCapture to Machine A
+I20260627 20:00:33.604820 283969 ADINetworkToFStream.cpp:1423] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:33.605154 283969 ADINetworkToFStream.cpp:508] Remote status code=5: frame getData(raw) failed frame=0
+I20260627 20:00:33.615518 283969 ADINetworkToFStream.cpp:1423] Remote status code=4: capture thread stopped frame=0
+I20260627 20:00:33.615763 283969 ADINetworkToFStream.cpp:508] Remote status code=4: capture thread stopped frame=0
+I20260627 20:00:33.616225 283969 ADINetworkToFStream.cpp:1423] Remote status code=4: capture stopped frame=0
+I20260627 20:00:33.616281 283969 ADINetworkToFStream.cpp:508] Remote status code=4: capture stopped frame=0

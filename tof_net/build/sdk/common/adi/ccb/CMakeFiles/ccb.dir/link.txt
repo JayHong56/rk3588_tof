@@ -1,0 +1,2 @@
+/usr/bin/ar qc libccb.a CMakeFiles/ccb.dir/src/ccb.c.o
+/usr/bin/ranlib libccb.a

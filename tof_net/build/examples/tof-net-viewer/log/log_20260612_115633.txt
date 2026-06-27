@@ -1,0 +1,29 @@
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I20260612 11:56:33.554842 10366 ADIToF.cpp:80] SDK version: 4.2.0 | branch: rel-4.2.1 | commit: cb7cd73
+libGL error: failed to create dri screen
+libGL error: failed to load driver: rockchip
+libGL error: failed to create dri screen
+libGL error: failed to load driver: rockchip
+I20260612 11:56:34.878383 10366 ADINetworkToFStream.cpp:1382] Network listener is idle
+I20260612 11:56:34.878623 10366 ADIController.cpp:31] No local cameras attached to this controller.
+I20260612 11:56:54.856781 10492 ADIMainWindow.cpp:1188] Preparing network RAW ToF listener.
+I20260612 11:56:54.856992 10492 ADINetworkToFStream.cpp:1382] Network listener is idle
+I20260612 11:56:54.857035 10492 ADIController.cpp:31] No local cameras attached to this controller.
+I20260612 11:56:54.857089 10492 ADINetworkToFStream.cpp:1382] Network listener stopped
+I20260612 11:56:54.858013 10496 ADINetworkToFStream.cpp:1382] Listening for RAW ToF frames on 0.0.0.0:5000
+I20260612 11:56:58.772174 10366 ADINetworkToFStream.cpp:1382] Cannot start capture: no tof_net_collect client is connected
+I20260612 11:56:59.272507 10366 ADINetworkToFStream.cpp:1382] Waiting for first RAW ToF frame from network client
+I20260612 11:57:24.893963 10496 ADINetworkToFStream.cpp:1382] RAW ToF client connected from 127.0.0.1:36153
+I20260612 11:57:24.894177 10496 ADINetworkToFStream.cpp:450] RAW ToF client connected from 127.0.0.1:36153
+I20260612 11:57:24.894310 10496 ADINetworkToFStream.cpp:1382] Remote hello: tof_net_collect, SDK 4.2.0
+I20260612 11:57:24.894357 10496 ADINetworkToFStream.cpp:471] Remote hello: tof_net_collect, SDK 4.2.0
+I20260612 11:57:39.765465 10366 ADINetworkToFStream.cpp:1382] Sent StopCapture to Machine A
+I20260612 11:58:00.299079 10496 ADINetworkToFStream.cpp:1382] Network listener error: recv: Connection reset by peer
+E20260612 11:58:00.299245 10496 ADINetworkToFStream.cpp:515] Network listener error: recv: Connection reset by peer
+I20260612 11:58:00.550045 10496 ADINetworkToFStream.cpp:1382] Listening for RAW ToF frames on 0.0.0.0:5000
+I20260612 11:58:06.560858 10496 ADINetworkToFStream.cpp:1382] RAW ToF client connected from 127.0.0.1:39961
+I20260612 11:58:06.561211 10496 ADINetworkToFStream.cpp:450] RAW ToF client connected from 127.0.0.1:39961
+I20260612 11:58:06.561331 10496 ADINetworkToFStream.cpp:1382] Remote hello: tof_net_collect, SDK 4.2.0
+I20260612 11:58:06.561345 10496 ADINetworkToFStream.cpp:471] Remote hello: tof_net_collect, SDK 4.2.0
+I20260612 11:58:18.427927 10366 ADINetworkToFStream.cpp:1382] Sent StopCapture to Machine A
+I20260612 11:58:18.499155 10366 ADINetworkToFStream.cpp:1382] Network listener stopped

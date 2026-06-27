@@ -1,0 +1,8 @@
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I20260627 19:51:55.971295 281129 ADIToF.cpp:80] SDK version: 4.2.0 | branch:  | commit: 
+libGL error: failed to create dri screen
+libGL error: failed to load driver: rockchip
+libGL error: failed to create dri screen
+libGL error: failed to load driver: rockchip
+I20260627 19:51:57.288491 281129 ADINetworkToFStream.cpp:1423] Network listener is idle
+I20260627 19:51:57.288743 281129 ADIController.cpp:31] No local cameras attached to this controller.

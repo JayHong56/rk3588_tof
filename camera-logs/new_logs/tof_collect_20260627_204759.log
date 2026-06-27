@@ -1,0 +1,212 @@
+-bash: ./tof_net_collect: No such file or directory
+-bash: ./tof_net_collect: No such file or directory
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I20260627 20:48:26.662765  3775 system_impl.cpp:90] SDK built with websockets version:3.1.0
+I20260627 20:48:26.663352  3775 sensor_enumerator_imx.cpp:116] Looking for sensors on the target
+fatal: No ADI ToF camera found
+tof_net_collect FILE [data_collect-options] [network-options]
+
+This program is built from the examples/data_collect acquisition model.
+It always captures raw frames with enableDepthCompute=off, compresses them
+losslessly, and sends them to tof_net_viewer. It does not compute depth.
+
+Arguments:
+  FILE                         ADI camera initialization JSON, same as data_collect.
+                               Example: config/config_crosby_adsd3500_new_modes.json
+
+data_collect-compatible options:
+  --ip <ip>                     Camera IP, same spelling as data_collect.
+  --m <mode>                    Camera mode number. Default: 0.
+  --ft <frame_type>             Accepted for compatibility. Forced to raw in this app.
+  --fw <firmware>               Firmware path, same as data_collect.
+  --ic <configuration>          Sensor configuration. Default: standard-raw.
+  --fps <setfps>                Accepted for compatibility.
+  --ccb <FILE>                  Save module CCB to FILE, same as data_collect.
+  --ext_fsync <0|1>             Sync mode, same as data_collect.
+  --wt <warmup>                 Warmup seconds, same as data_collect.
+  --n <ncapture>                Optional max frame count. 0 means stream until StopCapture.
+
+tof_net_collect network/compression options:
+  --server-ip <B_IP>            Machine B / tof_net_viewer IP.
+  --bind-ip <A_IP>              Bind outbound TCP socket to Machine A IP.
+  --port <PORT>                 TCP port. Default: 5000.
+  --zstd-level <N>              Zstd compression level. Default: 1.
+  --no-reconnect                Exit when the B connection drops.
+  -h, --help                    Show this help.
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I20260627 20:48:46.236920  3854 system_impl.cpp:90] SDK built with websockets version:3.1.0
+I20260627 20:48:46.237299  3854 sensor_enumerator_imx.cpp:116] Looking for sensors on the target
+I20260627 20:48:46.237707  3854 sensor_enumerator_imx.cpp:137] Looking at: /dev/media0 for an eligible TOF camera
+I20260627 20:48:46.247828  3854 sensor_enumerator_imx.cpp:153] Considering: /dev/media0 an eligible TOF camera
+W20260627 20:48:46.249161  3854 adsd3500_interrupt_notifier.cpp:57] Failed to open the debug sysfs. Interrupts support will not be available!
+I20260627 20:48:46.250312  3854 camera_itof.cpp:146] Initializing camera
+I20260627 20:48:46.250572  3854 adsd3500_sensor.cpp:283] Opening device
+I20260627 20:48:46.250669  3854 adsd3500_sensor.cpp:301] Looking for the following cards:
+I20260627 20:48:46.250746  3854 adsd3500_sensor.cpp:303] mxc-isi-cap
+I20260627 20:48:46.250814  3854 adsd3500_sensor.cpp:315] device: /dev/video0	subdevice: /dev/v4l-subdev1
+I20260627 20:48:46.266112  3854 adsd3500_sensor.cpp:411] ADSD3500 is ready to communicate with.
+I20260627 20:48:46.277668  3854 mode_info.cpp:148] Using new modes table for adsd3500.
+I20260627 20:48:46.287338  3854 mode_info.cpp:144] Using new mixed modes table for adsd3500.
+I20260627 20:48:46.287510  3854 mode_info.cpp:144] Using new mixed modes table for adsd3500.
+I20260627 20:48:46.492061  3854 camera_itof.cpp:355] Current adsd3500 firmware version is: 4.2.4.0
+I20260627 20:48:46.492189  3854 camera_itof.cpp:357] Current adsd3500 firmware git hash is: 5ecd368683f2b49f6af7c872deaf04d5696206c4
+I20260627 20:48:46.496165  3854 camera_itof.cpp:1766] Found Depth ini file: ./config/RawToDepthAdsd3500_lr-qnative.ini
+I20260627 20:48:46.496345  3854 camera_itof.cpp:1766] Found Depth ini file: ./config/RawToDepthAdsd3500_lr-native.ini
+I20260627 20:48:46.496390  3854 camera_itof.cpp:1766] Found Depth ini file: ./config/RawToDepthAdsd3500_sr-qnative.ini
+I20260627 20:48:46.496428  3854 camera_itof.cpp:1766] Found Depth ini file: ./config/RawToDepthAdsd3500_sr-native.ini
+I20260627 20:48:46.496466  3854 camera_itof.cpp:1766] Found Depth ini file: ./config/RawToDepthAdsd3500_sr-mixed.ini
+I20260627 20:48:46.496503  3854 camera_itof.cpp:1766] Found Depth ini file: ./config/RawToDepthAdsd3500_lr-mixed.ini
+I20260627 20:48:46.496538  3854 camera_itof.cpp:1766] Found Depth ini file: ./config/RawToDepthAdsd_pcm-native.ini
+I20260627 20:48:46.496579  3854 camera_itof.cpp:1777] Current Depth ini file is: ./config/RawToDepthAdsd3500_lr-mixed.ini
+I20260627 20:48:46.501844  3854 camera_itof.cpp:450] Camera FPS set from Json file at: 10
+I20260627 20:48:46.503154  3854 camera_itof.cpp:462] Camera initialized
+W20260627 20:48:46.503296  3854 camera_itof.cpp:899] Unsupported control
+Warning: sensorConfiguration=standard-raw was not accepted by this SDK/backend; continuing
+I20260627 20:48:46.513010  3854 camera_itof.cpp:539] Chosen mode: sr-native
+I20260627 20:48:46.513249  3854 camera_itof.cpp:593] Using ini file: ./config/RawToDepthAdsd3500_sr-native.ini
+I20260627 20:48:46.513288  3854 adsd3500_sensor.cpp:631] setFrameType: enter, requested type=sr-native, width=1024, height=4096, current type=, hostConnectionType=-833677904, numVideoDevs=
+I20260627 20:48:46.513545  3854 adsd3500_sensor.cpp:647] setFrameType: pre-stop check, device=0, fd=3, sfd=4, started=0, videoBuffers=0, nVideoBuffers=0
+I20260627 20:48:46.513643  3854 adsd3500_sensor.cpp:668] setFrameType: reuse open device without close/reopen, device=0, fd=3, sfd=4, started=0, videoBuffers=0, nVideoBuffers=0
+I20260627 20:48:46.513729  3854 adsd3500_sensor.cpp:748] setFrameType: open skipped, reusing existing fds
+I20260627 20:48:46.513777  3854 adsd3500_sensor.cpp:757] setFrameType: setMode begin, type=sr-native
+I20260627 20:48:46.513814  3854 adsd3500_sensor.cpp:608] Setting camera mode to sr-native
+I20260627 20:48:46.513895  3854 adsd3500_sensor.cpp:764] setFrameType: setMode done, type=sr-native
+I20260627 20:48:46.513935  3854 adsd3500_sensor.cpp:775] setFrameType: device setup begin, device=0, fd=3, sfd=4, videoBuffers=0, nVideoBuffers=0, videoBuffersType=1, frame type changed=1
+I20260627 20:48:46.513978  3854 adsd3500_sensor.cpp:815] setFrameType: VIDIOC_REQBUFS release begin, device=0, type=1, count=0
+I20260627 20:48:46.514124  3854 adsd3500_sensor.cpp:831] setFrameType: VIDIOC_REQBUFS release done, device=0, returned count=0
+I20260627 20:48:46.514330  3854 adsd3500_sensor.cpp:907] setFrameType: VIDIOC_S_FMT begin, device=0, fd=3, type=1, pixelformat=842090306, width=1024, height=4096
+I20260627 20:48:46.514501  3854 adsd3500_sensor.cpp:929] setFrameType: VIDIOC_S_FMT done, device=0, returned width=1024, returned height=4096, bytesperline=30848, sizeimage=8388608
+I20260627 20:48:46.514611  3854 adsd3500_sensor.cpp:948] setFrameType: VIDIOC_REQBUFS allocate begin, device=0, requested count=4, type=1, memory=1
+I20260627 20:48:46.571903  3854 adsd3500_sensor.cpp:966] setFrameType: VIDIOC_REQBUFS allocate done, device=0, returned count=4
+I20260627 20:48:46.576327  3854 adsd3500_sensor.cpp:982] setFrameType: calloc video buffers done, device=0, videoBuffers=0xaaaace4f7fd0, count=4
+I20260627 20:48:46.576538  3854 adsd3500_sensor.cpp:1000] setFrameType: VIDIOC_QUERYBUF begin, device=0, bufferIndex=0, type=1, memory=1, planes=0xaaaace4fa578
+I20260627 20:48:46.576666  3854 adsd3500_sensor.cpp:1021] setFrameType: VIDIOC_QUERYBUF done, device=0, bufferIndex=0, bytesused=0, length=8388608, flags=8192
+I20260627 20:48:46.576747  3854 adsd3500_sensor.cpp:1041] setFrameType: mmap begin, device=0, bufferIndex=0, length=8388608, offset=0, fd=3
+I20260627 20:48:46.576924  3854 adsd3500_sensor.cpp:1067] setFrameType: mmap done, device=0, bufferIndex=0, start=0xffff7ed1e000, length=8388608
+I20260627 20:48:46.577062  3854 adsd3500_sensor.cpp:1000] setFrameType: VIDIOC_QUERYBUF begin, device=0, bufferIndex=1, type=1, memory=1, planes=0xaaaace4fa578
+I20260627 20:48:46.577152  3854 adsd3500_sensor.cpp:1021] setFrameType: VIDIOC_QUERYBUF done, device=0, bufferIndex=1, bytesused=0, length=8388608, flags=8192
+I20260627 20:48:46.577219  3854 adsd3500_sensor.cpp:1041] setFrameType: mmap begin, device=0, bufferIndex=1, length=8388608, offset=8388608, fd=3
+I20260627 20:48:46.577344  3854 adsd3500_sensor.cpp:1067] setFrameType: mmap done, device=0, bufferIndex=1, start=0xffff7e51e000, length=8388608
+I20260627 20:48:46.577414  3854 adsd3500_sensor.cpp:1000] setFrameType: VIDIOC_QUERYBUF begin, device=0, bufferIndex=2, type=1, memory=1, planes=0xaaaace4fa578
+I20260627 20:48:46.577507  3854 adsd3500_sensor.cpp:1021] setFrameType: VIDIOC_QUERYBUF done, device=0, bufferIndex=2, bytesused=0, length=8388608, flags=8192
+I20260627 20:48:46.577575  3854 adsd3500_sensor.cpp:1041] setFrameType: mmap begin, device=0, bufferIndex=2, length=8388608, offset=16777216, fd=3
+I20260627 20:48:46.577704  3854 adsd3500_sensor.cpp:1067] setFrameType: mmap done, device=0, bufferIndex=2, start=0xffff7dd1e000, length=8388608
+I20260627 20:48:46.577777  3854 adsd3500_sensor.cpp:1000] setFrameType: VIDIOC_QUERYBUF begin, device=0, bufferIndex=3, type=1, memory=1, planes=0xaaaace4fa578
+I20260627 20:48:46.577857  3854 adsd3500_sensor.cpp:1021] setFrameType: VIDIOC_QUERYBUF done, device=0, bufferIndex=3, bytesused=0, length=8388608, flags=8192
+I20260627 20:48:46.577929  3854 adsd3500_sensor.cpp:1041] setFrameType: mmap begin, device=0, bufferIndex=3, length=8388608, offset=25165824, fd=3
+I20260627 20:48:46.578069  3854 adsd3500_sensor.cpp:1067] setFrameType: mmap done, device=0, bufferIndex=3, start=0xffff7d51e000, length=8388608
+I20260627 20:48:46.578153  3854 adsd3500_sensor.cpp:1084] setFrameType: device buffer setup done, device=0, nVideoBuffers=4
+I20260627 20:48:46.579922  3854 adsd3500_sensor.cpp:1094] setFrameType: done, active type=sr-native
+Camera initialized. SDK 4.2.0
+SD card image version: microsd-4.2.0-b260ad46.img
+Kernel version: lf-5.10.72-2.2.0
+U-Boot version: imx_v2020.04_5.4.70_2.3.0
+[collect] Available frame types (7):
+[collect]   sr-native modeId=0 w=1024 h=1024 subframes=2 passive_ir=0
+[collect]   lr-native modeId=1 w=1024 h=1024 subframes=3 passive_ir=0
+[collect]   sr-qnative modeId=2 w=512 h=512 subframes=1 passive_ir=0
+[collect]   lr-qnative modeId=3 w=512 h=512 subframes=1 passive_ir=0
+[collect]   pcm-native modeId=4 w=1024 h=1024 subframes=1 passive_ir=1
+[collect]   sr-mixed modeId=6 w=512 h=512 subframes=1 passive_ir=0
+[collect]   lr-mixed modeId=5 w=512 h=512 subframes=1 passive_ir=0
+[collect] Sensor name: adsd3500
+[collect] Selected mode: --m 0 -> sr-native
+[collect] Sensor config: standard-raw
+[collect] Server IP: 10.42.0.103:5000, bind: auto
+[collect] Zstd level: 1, reconnect: yes
+[collect] Camera ready, waiting for Machine B viewer...
+Mode: 0 -> sr-native
+Frame type: raw, depth compute: off
+Connecting to Machine B 10.42.0.103:5000 ...
+session error: connect: Connection refused
+Connecting to Machine B 10.42.0.103:5000 ...
+session error: connect: Connection refused
+Connecting to Machine B 10.42.0.103:5000 ...
+session error: connect: Connection refused
+Connecting to Machine B 10.42.0.103:5000 ...
+session error: connect: Connection refused
+Connecting to Machine B 10.42.0.103:5000 ...
+session error: connect: Connection refused
+Connecting to Machine B 10.42.0.103:5000 ...
+session error: connect: Connection refused
+Connecting to Machine B 10.42.0.103:5000 ...
+session error: connect: Connection refused
+Connecting to Machine B 10.42.0.103:5000 ...
+session error: connect: Connection refused
+Connecting to Machine B 10.42.0.103:5000 ...
+session error: connect: Connection refused
+I20260627 20:48:55.921837  3854 camera_itof.cpp:1549] Succesfully read chunk number 0 out of 119 chunks for adsd3500!
+I20260627 20:49:01.474761  3854 camera_itof.cpp:1549] Succesfully read chunk number 20 out of 119 chunks for adsd3500!
+I20260627 20:49:07.350075  3854 camera_itof.cpp:1549] Succesfully read chunk number 40 out of 119 chunks for adsd3500!
+I20260627 20:49:12.888967  3854 camera_itof.cpp:1549] Succesfully read chunk number 60 out of 119 chunks for adsd3500!
+I20260627 20:49:18.677449  3854 camera_itof.cpp:1549] Succesfully read chunk number 80 out of 119 chunks for adsd3500!
+I20260627 20:49:25.363369  3854 camera_itof.cpp:1549] Succesfully read chunk number 100 out of 119 chunks for adsd3500!
+I20260627 20:49:31.022464  3854 camera_itof.cpp:1576] Succesfully read ccb from adsd3500. Checking crc...
+I20260627 20:49:31.057618  3854 camera_itof.cpp:1585] Crc of ccb is valid.
+I20260627 20:49:36.110246  3854 camera_itof.cpp:539] Chosen mode: lr-qnative
+I20260627 20:49:36.110962  3854 camera_itof.cpp:593] Using ini file: ./config/RawToDepthAdsd3500_lr-qnative.ini
+I20260627 20:49:36.111393  3854 adsd3500_sensor.cpp:631] setFrameType: enter, requested type=lr-qnative, width=2560, height=512, current type=sr-native, hostConnectionType=-833677904, numVideoDevs=
+I20260627 20:49:36.111711  3854 adsd3500_sensor.cpp:647] setFrameType: pre-stop check, device=0, fd=3, sfd=4, started=0, videoBuffers=0xaaaace4f7fd0, nVideoBuffers=4
+I20260627 20:49:36.111827  3854 adsd3500_sensor.cpp:681] setFrameType: release/open reset begin, device=0, fd=3, sfd=4, videoBuffers=0xaaaace4f7fd0, nVideoBuffers=4
+I20260627 20:49:36.111891  3854 adsd3500_sensor.cpp:690] setFrameType: initial munmap begin, device=0, bufferIndex=0, start=0xffff7ed1e000, length=8388608
+I20260627 20:49:36.112258  3854 adsd3500_sensor.cpp:702] setFrameType: initial munmap done, device=0, bufferIndex=0
+I20260627 20:49:36.112516  3854 adsd3500_sensor.cpp:690] setFrameType: initial munmap begin, device=0, bufferIndex=1, start=0xffff7e51e000, length=8388608
+I20260627 20:49:36.112735  3854 adsd3500_sensor.cpp:702] setFrameType: initial munmap done, device=0, bufferIndex=1
+I20260627 20:49:36.112824  3854 adsd3500_sensor.cpp:690] setFrameType: initial munmap begin, device=0, bufferIndex=2, start=0xffff7dd1e000, length=8388608
+I20260627 20:49:36.112985  3854 adsd3500_sensor.cpp:702] setFrameType: initial munmap done, device=0, bufferIndex=2
+I20260627 20:49:36.113032  3854 adsd3500_sensor.cpp:690] setFrameType: initial munmap begin, device=0, bufferIndex=3, start=0xffff7d51e000, length=8388608
+I20260627 20:49:36.113163  3854 adsd3500_sensor.cpp:702] setFrameType: initial munmap done, device=0, bufferIndex=3
+I20260627 20:49:36.113195  3854 adsd3500_sensor.cpp:711] setFrameType: close fd begin, device=0, fd=3
+I20260627 20:49:36.123167  3854 adsd3500_sensor.cpp:720] setFrameType: close fd done, device=0
+I20260627 20:49:36.123274  3854 adsd3500_sensor.cpp:725] setFrameType: close sfd begin, device=0, sfd=4
+I20260627 20:49:36.123319  3854 adsd3500_sensor.cpp:734] setFrameType: close sfd done, device=0
+I20260627 20:49:36.123348  3854 adsd3500_sensor.cpp:740] setFrameType: open begin
+I20260627 20:49:36.123376  3854 adsd3500_sensor.cpp:283] Opening device
+I20260627 20:49:36.123420  3854 adsd3500_sensor.cpp:301] Looking for the following cards:
+I20260627 20:49:36.123447  3854 adsd3500_sensor.cpp:303] mxc-isi-cap
+I20260627 20:49:36.123479  3854 adsd3500_sensor.cpp:315] device: /dev/video0	subdevice: /dev/v4l-subdev1
+I20260627 20:49:36.123700  3854 adsd3500_sensor.cpp:746] setFrameType: open done
+I20260627 20:49:36.123797  3854 adsd3500_sensor.cpp:757] setFrameType: setMode begin, type=lr-qnative
+I20260627 20:49:36.123867  3854 adsd3500_sensor.cpp:608] Setting camera mode to lr-qnative
+I20260627 20:49:36.123992  3854 adsd3500_sensor.cpp:764] setFrameType: setMode done, type=lr-qnative
+I20260627 20:49:36.124058  3854 adsd3500_sensor.cpp:775] setFrameType: device setup begin, device=0, fd=3, sfd=4, videoBuffers=0, nVideoBuffers=0, videoBuffersType=1, frame type changed=1
+I20260627 20:49:36.124135  3854 adsd3500_sensor.cpp:815] setFrameType: VIDIOC_REQBUFS release begin, device=0, type=1, count=0
+I20260627 20:49:36.124305  3854 adsd3500_sensor.cpp:831] setFrameType: VIDIOC_REQBUFS release done, device=0, returned count=0
+I20260627 20:49:36.124464  3854 adsd3500_sensor.cpp:907] setFrameType: VIDIOC_S_FMT begin, device=0, fd=3, type=1, pixelformat=825770306, width=2560, height=512
+I20260627 20:49:36.124694  3854 adsd3500_sensor.cpp:929] setFrameType: VIDIOC_S_FMT done, device=0, returned width=2560, returned height=512, bytesperline=2560, sizeimage=1310720
+I20260627 20:49:36.124831  3854 adsd3500_sensor.cpp:948] setFrameType: VIDIOC_REQBUFS allocate begin, device=0, requested count=4, type=1, memory=1
+I20260627 20:49:36.131109  3854 adsd3500_sensor.cpp:966] setFrameType: VIDIOC_REQBUFS allocate done, device=0, returned count=4
+I20260627 20:49:36.131311  3854 adsd3500_sensor.cpp:982] setFrameType: calloc video buffers done, device=0, videoBuffers=0xaaaace4f6530, count=4
+I20260627 20:49:36.131382  3854 adsd3500_sensor.cpp:1000] setFrameType: VIDIOC_QUERYBUF begin, device=0, bufferIndex=0, type=1, memory=1, planes=0xaaaace4f6318
+I20260627 20:49:36.131472  3854 adsd3500_sensor.cpp:1021] setFrameType: VIDIOC_QUERYBUF done, device=0, bufferIndex=0, bytesused=0, length=1310720, flags=8192
+I20260627 20:49:36.131538  3854 adsd3500_sensor.cpp:1041] setFrameType: mmap begin, device=0, bufferIndex=0, length=1310720, offset=0, fd=3
+I20260627 20:49:36.131677  3854 adsd3500_sensor.cpp:1067] setFrameType: mmap done, device=0, bufferIndex=0, start=0xffff7f3de000, length=1310720
+I20260627 20:49:36.131772  3854 adsd3500_sensor.cpp:1000] setFrameType: VIDIOC_QUERYBUF begin, device=0, bufferIndex=1, type=1, memory=1, planes=0xaaaace4f6318
+I20260627 20:49:36.131916  3854 adsd3500_sensor.cpp:1021] setFrameType: VIDIOC_QUERYBUF done, device=0, bufferIndex=1, bytesused=0, length=1310720, flags=8192
+I20260627 20:49:36.132005  3854 adsd3500_sensor.cpp:1041] setFrameType: mmap begin, device=0, bufferIndex=1, length=1310720, offset=1310720, fd=3
+I20260627 20:49:36.132133  3854 adsd3500_sensor.cpp:1067] setFrameType: mmap done, device=0, bufferIndex=1, start=0xffff7f29e000, length=1310720
+I20260627 20:49:36.132236  3854 adsd3500_sensor.cpp:1000] setFrameType: VIDIOC_QUERYBUF begin, device=0, bufferIndex=2, type=1, memory=1, planes=0xaaaace4f6318
+I20260627 20:49:36.132333  3854 adsd3500_sensor.cpp:1021] setFrameType: VIDIOC_QUERYBUF done, device=0, bufferIndex=2, bytesused=0, length=1310720, flags=8192
+I20260627 20:49:36.132412  3854 adsd3500_sensor.cpp:1041] setFrameType: mmap begin, device=0, bufferIndex=2, length=1310720, offset=2621440, fd=3
+I20260627 20:49:36.132530  3854 adsd3500_sensor.cpp:1067] setFrameType: mmap done, device=0, bufferIndex=2, start=0xffff7f15e000, length=1310720
+I20260627 20:49:36.132629  3854 adsd3500_sensor.cpp:1000] setFrameType: VIDIOC_QUERYBUF begin, device=0, bufferIndex=3, type=1, memory=1, planes=0xaaaace4f6318
+I20260627 20:49:36.132788  3854 adsd3500_sensor.cpp:1021] setFrameType: VIDIOC_QUERYBUF done, device=0, bufferIndex=3, bytesused=0, length=1310720, flags=8192
+I20260627 20:49:36.132881  3854 adsd3500_sensor.cpp:1041] setFrameType: mmap begin, device=0, bufferIndex=3, length=1310720, offset=3932160, fd=3
+I20260627 20:49:36.133097  3854 adsd3500_sensor.cpp:1067] setFrameType: mmap done, device=0, bufferIndex=3, start=0xffff7f01e000, length=1310720
+I20260627 20:49:36.133208  3854 adsd3500_sensor.cpp:1084] setFrameType: device buffer setup done, device=0, nVideoBuffers=4
+I20260627 20:49:36.133332  3854 adsd3500_sensor.cpp:1094] setFrameType: done, active type=lr-qnative
+I20260627 20:49:36.133483  3854 adsd3500_sensor.cpp:446] Adsd3500Sensor::start enter, numVideoDevs=, capturesPerFrame=
+I20260627 20:49:36.133580  3854 adsd3500_sensor.cpp:454] start: device state, device=0, fd=3, sfd=4, started=0, videoBuffers=0xaaaace4f6530, nVideoBuffers=4, videoBuffersType=1, planes=0xaaaace4f6318
+I20260627 20:49:36.133625  3854 adsd3500_sensor.cpp:468] Starting device 0
+I20260627 20:49:36.133697  3854 adsd3500_sensor.cpp:483] start: VIDIOC_QBUF begin, device=0, bufferIndex=0, type=1, memory=1, length=1, planes=0xaaaace4f6318
+I20260627 20:49:36.133821  3854 adsd3500_sensor.cpp:505] start: VIDIOC_QBUF done, device=0, bufferIndex=0, bytesused=1310720, flags=8195, sequence=0
+I20260627 20:49:36.133903  3854 adsd3500_sensor.cpp:483] start: VIDIOC_QBUF begin, device=0, bufferIndex=1, type=1, memory=1, length=1, planes=0xaaaace4f6318
+I20260627 20:49:36.134009  3854 adsd3500_sensor.cpp:505] start: VIDIOC_QBUF done, device=0, bufferIndex=1, bytesused=1310720, flags=8195, sequence=0
+I20260627 20:49:36.134084  3854 adsd3500_sensor.cpp:483] start: VIDIOC_QBUF begin, device=0, bufferIndex=2, type=1, memory=1, length=1, planes=0xaaaace4f6318
+I20260627 20:49:36.134255  3854 adsd3500_sensor.cpp:505] start: VIDIOC_QBUF done, device=0, bufferIndex=2, bytesused=1310720, flags=8195, sequence=0
+I20260627 20:49:36.134397  3854 adsd3500_sensor.cpp:483] start: VIDIOC_QBUF begin, device=0, bufferIndex=3, type=1, memory=1, length=1, planes=0xaaaace4f6318
+I20260627 20:49:36.134562  3854 adsd3500_sensor.cpp:505] start: VIDIOC_QBUF done, device=0, bufferIndex=3, bytesused=1310720, flags=8195, sequence=0
+I20260627 20:49:36.134680  3854 adsd3500_sensor.cpp:517] start: VIDIOC_STREAMON begin, device=0, fd=3, type=1
+I20260627 20:49:36.482242  3854 adsd3500_sensor.cpp:530] start: VIDIOC_STREAMON done, device=0, type=1
+I20260627 20:49:36.482479  3854 adsd3500_sensor.cpp:537] start: device marked started, device=0
+I20260627 20:49:36.482527  3854 adsd3500_sensor.cpp:541] Adsd3500Sensor::start done

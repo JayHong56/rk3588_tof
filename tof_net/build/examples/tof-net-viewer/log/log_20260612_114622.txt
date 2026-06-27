@@ -1,0 +1,656 @@
+I20260612 11:46:22.424860  8903 ADIToF.cpp:80] SDK version: 4.2.0 | branch: rel-4.2.1 | commit: cb7cd73
+libGL error: failed to create dri screen
+libGL error: failed to load driver: rockchip
+libGL error: failed to create dri screen
+libGL error: failed to load driver: rockchip
+I20260612 11:46:23.789069  8903 ADINetworkToFStream.cpp:1382] Network listener is idle
+I20260612 11:46:23.789242  8903 ADIController.cpp:31] No local cameras attached to this controller.
+I20260612 11:47:58.303925  9139 ADIMainWindow.cpp:1188] Preparing network RAW ToF listener.
+I20260612 11:47:58.304153  9139 ADINetworkToFStream.cpp:1382] Network listener is idle
+I20260612 11:47:58.304198  9139 ADIController.cpp:31] No local cameras attached to this controller.
+I20260612 11:47:58.304252  9139 ADINetworkToFStream.cpp:1382] Network listener stopped
+I20260612 11:47:58.305176  9143 ADINetworkToFStream.cpp:1382] Listening for RAW ToF frames on 0.0.0.0:5000
+I20260612 11:48:04.838286  8903 ADINetworkToFStream.cpp:1382] Cannot start capture: no tof_net_collect client is connected
+I20260612 11:48:05.338609  8903 ADINetworkToFStream.cpp:1382] Waiting for first RAW ToF frame from network client
+I20260612 11:48:29.065263  9143 ADINetworkToFStream.cpp:1382] RAW ToF client connected from 127.0.0.1:43253
+I20260612 11:48:29.065469  9143 ADINetworkToFStream.cpp:450] RAW ToF client connected from 127.0.0.1:43253
+I20260612 11:48:29.065579  9143 ADINetworkToFStream.cpp:1382] Remote hello: tof_net_collect, SDK 4.2.0
+I20260612 11:48:29.065618  9143 ADINetworkToFStream.cpp:471] Remote hello: tof_net_collect, SDK 4.2.0
+I20260612 11:48:59.389703  9143 ADINetworkToFStream.cpp:1382] Received current module CCB from Machine A: 243426 bytes, source=/tmp/tof_net_collect_module_9103.ccb, saved=./config/received_machine_a_module.ccb; TOFI will use received CCB
+I20260612 11:48:59.389864  9143 ADINetworkToFStream.cpp:603] Received current module CCB from Machine A: 243426 bytes, source=/tmp/tof_net_collect_module_9103.ccb, saved=./config/received_machine_a_module.ccb; TOFI will use received CCB
+I20260612 11:48:59.389981  9143 ADINetworkToFStream.cpp:1382] Remote status: sent current module CCB to Machine B: 243426 bytes from /tmp/tof_net_collect_module_9103.ccb frame=0
+I20260612 11:48:59.390021  9143 ADINetworkToFStream.cpp:488] Remote status: sent current module CCB to Machine B: 243426 bytes from /tmp/tof_net_collect_module_9103.ccb frame=0
+I20260612 11:48:59.590521  9143 ADINetworkToFStream.cpp:1382] Received dealias data for sr-native (modeId=0, rows=1024, cols=1024, 88 bytes)
+I20260612 11:48:59.590700  9143 ADINetworkToFStream.cpp:739] Received dealias data for sr-native (modeId=0, rows=1024, cols=1024, 88 bytes)
+I20260612 11:48:59.590791  9143 ADINetworkToFStream.cpp:1382] Remote status: sent dealias data for sr-native (88 bytes) frame=0
+I20260612 11:48:59.590833  9143 ADINetworkToFStream.cpp:488] Remote status: sent dealias data for sr-native (88 bytes) frame=0
+I20260612 11:48:59.590930  9143 ADINetworkToFStream.cpp:1382] Received dealias data for lr-native (modeId=1, rows=1024, cols=1024, 88 bytes)
+I20260612 11:48:59.590971  9143 ADINetworkToFStream.cpp:739] Received dealias data for lr-native (modeId=1, rows=1024, cols=1024, 88 bytes)
+I20260612 11:48:59.591029  9143 ADINetworkToFStream.cpp:1382] Remote status: sent dealias data for lr-native (88 bytes) frame=0
+I20260612 11:48:59.591066  9143 ADINetworkToFStream.cpp:488] Remote status: sent dealias data for lr-native (88 bytes) frame=0
+I20260612 11:48:59.591147  9143 ADINetworkToFStream.cpp:1382] Received dealias data for sr-qnative (modeId=2, rows=512, cols=512, 88 bytes)
+I20260612 11:48:59.591183  9143 ADINetworkToFStream.cpp:739] Received dealias data for sr-qnative (modeId=2, rows=512, cols=512, 88 bytes)
+I20260612 11:48:59.591240  9143 ADINetworkToFStream.cpp:1382] Remote status: sent dealias data for sr-qnative (88 bytes) frame=0
+I20260612 11:48:59.591276  9143 ADINetworkToFStream.cpp:488] Remote status: sent dealias data for sr-qnative (88 bytes) frame=0
+I20260612 11:48:59.591367  9143 ADINetworkToFStream.cpp:1382] Received dealias data for lr-qnative (modeId=3, rows=512, cols=512, 88 bytes)
+I20260612 11:48:59.591454  9143 ADINetworkToFStream.cpp:739] Received dealias data for lr-qnative (modeId=3, rows=512, cols=512, 88 bytes)
+I20260612 11:48:59.591513  9143 ADINetworkToFStream.cpp:1382] Remote status: sent dealias data for lr-qnative (88 bytes) frame=0
+I20260612 11:48:59.591549  9143 ADINetworkToFStream.cpp:488] Remote status: sent dealias data for lr-qnative (88 bytes) frame=0
+I20260612 11:48:59.591629  9143 ADINetworkToFStream.cpp:1382] Received dealias data for pcm-native (modeId=4, rows=0, cols=0, 88 bytes)
+I20260612 11:48:59.591665  9143 ADINetworkToFStream.cpp:739] Received dealias data for pcm-native (modeId=4, rows=0, cols=0, 88 bytes)
+I20260612 11:48:59.591722  9143 ADINetworkToFStream.cpp:1382] Remote status: sent dealias data for pcm-native (88 bytes) frame=0
+I20260612 11:48:59.591756  9143 ADINetworkToFStream.cpp:488] Remote status: sent dealias data for pcm-native (88 bytes) frame=0
+I20260612 11:48:59.591838  9143 ADINetworkToFStream.cpp:1382] Received dealias data for sr-mixed (modeId=6, rows=512, cols=512, 88 bytes)
+I20260612 11:48:59.591876  9143 ADINetworkToFStream.cpp:739] Received dealias data for sr-mixed (modeId=6, rows=512, cols=512, 88 bytes)
+I20260612 11:48:59.591930  9143 ADINetworkToFStream.cpp:1382] Remote status: sent dealias data for sr-mixed (88 bytes) frame=0
+I20260612 11:48:59.591966  9143 ADINetworkToFStream.cpp:488] Remote status: sent dealias data for sr-mixed (88 bytes) frame=0
+I20260612 11:48:59.592043  9143 ADINetworkToFStream.cpp:1382] Received dealias data for lr-mixed (modeId=5, rows=512, cols=512, 88 bytes)
+I20260612 11:48:59.592079  9143 ADINetworkToFStream.cpp:739] Received dealias data for lr-mixed (modeId=5, rows=512, cols=512, 88 bytes)
+I20260612 11:48:59.592136  9143 ADINetworkToFStream.cpp:1382] Remote status: sent dealias data for lr-mixed (88 bytes) frame=0
+I20260612 11:48:59.592171  9143 ADINetworkToFStream.cpp:488] Remote status: sent dealias data for lr-mixed (88 bytes) frame=0
+I20260612 11:48:59.592231  9143 ADINetworkToFStream.cpp:1382] Remote status: Machine A connected; CCB + dealias data sent; waiting for start command frame=0
+I20260612 11:48:59.592265  9143 ADINetworkToFStream.cpp:488] Remote status: Machine A connected; CCB + dealias data sent; waiting for start command frame=0
+I20260612 11:49:13.593952  9143 ADINetworkToFStream.cpp:1382] Remote status: capture stopped frame=0
+I20260612 11:49:13.593757  8903 ADINetworkToFStream.cpp:1382] Sent StopCapture to Machine A
+I20260612 11:49:13.594228  9143 ADINetworkToFStream.cpp:488] Remote status: capture stopped frame=0
+
+(zenity:9507): dbind-WARNING **: 11:49:16.405: AT-SPI: Error retrieving accessibility bus address: org.freedesktop.DBus.Error.ServiceUnknown: The name org.a11y.Bus was not provided by any .service files
+I20260612 11:49:23.688673  8903 ADINetworkToFStream.cpp:1382] Sent StopCapture to Machine A
+I20260612 11:49:23.688860  9143 ADINetworkToFStream.cpp:1382] Remote status: capture stopped frame=0
+I20260612 11:49:23.688930  9143 ADINetworkToFStream.cpp:488] Remote status: capture stopped frame=0
+I20260612 11:49:23.692016  8903 ADINetworkToFStream.cpp:1382] Sent StartCapture to Machine A mode=0 frame_type=pcm-native
+I20260612 11:49:23.692137  8903 ADINetworkToFStream.cpp:389] Sent StartCapture to Machine A mode=0 frame_type=pcm-native
+I20260612 11:49:24.176710  9143 ADINetworkToFStream.cpp:1382] Remote status: capture started; raw only; depth compute off frame=0
+I20260612 11:49:24.176839  9143 ADINetworkToFStream.cpp:488] Remote status: capture started; raw only; depth compute off frame=0
+I20260612 11:49:24.268054  9143 ADINetworkToFStream.cpp:1382] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:24.268201  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:24.367195  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:24.467085  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:24.567167  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:24.667009  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:24.767699  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:24.867229  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:24.967244  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:25.067179  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:25.167889  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:25.268728  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:25.367861  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:25.467876  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:25.567519  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:25.667704  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:25.767560  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:25.867233  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:25.967579  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:26.067875  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:26.167964  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:26.268021  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:26.367805  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:26.467549  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:26.567855  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:26.667985  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:26.767445  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:26.867636  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:26.967868  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:27.067848  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:27.167690  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:27.267920  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:27.368034  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:27.467813  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:27.567456  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:27.667573  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:27.767488  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:27.867738  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:27.967317  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:28.067607  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:28.167400  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:28.267705  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:28.367743  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:28.467701  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:28.567744  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:28.667366  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:28.767603  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:28.867448  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:28.967572  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:29.067397  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:29.167651  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:29.267802  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:29.367700  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:29.467974  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:29.567821  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:29.667367  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:29.767084  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:29.867856  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:29.967236  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:30.067749  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:30.167289  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:30.267764  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:30.367666  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:30.467648  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:30.567050  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:30.667228  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:30.767094  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:30.867013  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:30.967094  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:31.067335  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:31.167351  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:31.266981  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:31.367254  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:31.467450  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:31.568145  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:31.667004  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:31.766736  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:31.867403  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:31.967370  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:32.067211  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:32.167285  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:32.267335  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:32.367120  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:32.467352  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:32.567322  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:32.667202  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:32.767155  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:32.867482  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:32.967487  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:33.067329  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:33.167378  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:33.267403  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:33.367360  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:33.467291  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:33.567420  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:33.668243  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:33.767086  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:33.867318  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:33.967478  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:34.067411  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:34.167410  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:34.267313  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:34.367326  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:34.467463  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:34.567319  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:34.667259  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:34.766435  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:34.867175  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:34.967216  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:35.067296  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:35.167460  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:35.267241  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:35.367399  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:35.467406  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:35.567368  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:35.667280  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:35.767336  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:35.867302  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:35.967342  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:36.067406  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:36.167469  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:36.267432  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:36.367374  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:36.467365  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:36.567409  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:36.667454  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:36.767745  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:36.867830  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:36.968015  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:37.067929  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:37.167981  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:37.267910  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:37.367928  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:37.468080  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:37.568001  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:37.667953  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:37.767554  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:37.873980  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:37.968104  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:38.068125  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:38.168136  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:38.267915  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:38.368089  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:38.467940  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:38.568074  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:38.668112  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:38.767480  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:38.868099  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:38.967878  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:39.068357  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:39.168069  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:39.268292  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:39.368063  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:39.468143  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:39.568038  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:39.668098  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:39.767824  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:39.868052  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:39.968300  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:40.068017  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:40.167811  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:40.268045  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:40.367575  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:40.467782  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:40.567433  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:40.667851  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:40.767360  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:40.867730  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:40.967644  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:41.067809  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:41.167853  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:41.267776  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:41.367636  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:41.467707  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:41.567873  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:41.667510  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:41.767303  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:41.867735  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:41.967620  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:42.067823  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:42.167563  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:42.267457  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:42.367125  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:42.467097  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:42.567082  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:42.667058  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:42.766816  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:42.867084  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:42.966811  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:43.066908  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:43.166805  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:43.267087  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:43.367290  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:43.467468  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:43.567561  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:43.668521  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:43.767311  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:43.867437  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:43.967429  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:44.067363  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:44.167346  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:44.267516  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:44.367203  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:44.467494  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:44.567656  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:44.667479  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:44.767318  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:44.867465  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:44.967475  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:45.067490  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:45.167364  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:45.268607  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:45.367084  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:45.467180  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:45.568194  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:45.668045  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:45.767706  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:45.867486  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:45.967566  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:46.067510  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:46.167541  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:46.267544  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:46.367265  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:46.467424  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:46.567536  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:46.667518  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:46.767130  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:46.867729  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:46.967522  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:47.067503  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:47.167541  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:47.268271  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:47.368259  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:47.468112  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:47.568135  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:47.668079  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:47.767156  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:47.868115  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:47.967962  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:48.068161  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:48.168119  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:48.268332  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:48.368336  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:48.467593  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:48.567662  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:48.667773  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:48.767500  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:48.868101  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:48.967655  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:49.067598  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:49.167892  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:49.267928  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:49.367735  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:49.467713  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:49.568048  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:49.667968  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:49.767848  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:49.868185  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:49.968214  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:50.068070  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:50.168325  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:50.268175  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:50.368299  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:50.468197  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:50.568296  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:50.668191  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:50.767982  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:50.868355  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:50.968282  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:51.068655  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:51.168208  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:51.268213  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:51.368341  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:51.468293  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:51.567903  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:51.667821  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:51.767962  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:51.868367  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:51.968120  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:52.068145  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:52.168087  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:52.268364  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:52.368196  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:52.468122  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:52.568216  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:52.668186  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:52.767613  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:52.868347  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:52.968344  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:53.068241  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:53.169029  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:53.268255  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:53.368183  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:53.468078  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:53.568239  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:53.668298  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:53.767956  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:53.868199  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:53.968202  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:54.068286  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:54.168295  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:54.268237  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:54.368389  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:54.468302  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:54.568244  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:54.668300  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:54.768088  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:54.868335  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:54.968299  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:55.068130  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:55.168421  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:55.273643  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:55.369648  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:55.468346  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:55.568310  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:55.668220  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:55.767838  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:55.868127  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:55.968165  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:56.068157  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:56.168159  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:56.268067  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:56.367615  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:56.467836  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:56.568010  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:56.668006  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:56.767593  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:56.868721  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:56.968132  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:57.068007  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:57.167840  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:57.267951  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:57.368248  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:57.468006  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:57.567854  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:57.667868  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:57.767584  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:57.867763  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:57.967561  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:58.067871  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:58.167884  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:58.268134  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:58.368010  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:58.467895  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:58.568003  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:58.668156  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:58.767614  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:58.868163  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:58.968037  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:59.067961  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:59.168118  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:59.267975  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:59.368083  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:59.468182  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:59.567574  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:59.667652  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:59.767506  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:59.867741  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:49:59.967648  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:00.067626  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:00.167562  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:00.267630  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:00.367586  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:00.467723  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:00.567517  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:00.667461  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:00.767340  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:00.868369  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:00.968166  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:01.068327  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:01.168391  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:01.268352  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:01.368312  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:01.468412  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:01.568537  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:01.668385  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:01.767954  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:01.868332  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:01.968300  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:02.068332  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:02.168262  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:02.268321  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:02.368106  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:02.468238  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:02.568295  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:02.668174  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:02.768173  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:02.868140  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:02.968271  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:03.068392  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:03.167914  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:03.268239  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:03.368244  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:03.468094  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:03.568238  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:03.668081  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:03.767433  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:03.867928  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:03.968112  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:04.067960  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:04.168084  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:04.267784  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:04.367460  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:04.467634  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:04.567625  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:04.667773  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:04.767266  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:04.867427  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:04.967697  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:05.067775  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:05.167766  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:05.267903  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:05.367842  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:05.467739  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:05.567755  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:05.667714  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:05.767421  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:05.867762  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:05.967830  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:06.067727  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:06.167754  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:06.267773  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:06.367691  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:06.467947  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:06.567713  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:06.667655  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:06.767422  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:06.867645  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:06.967828  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:07.067781  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:07.167682  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:07.267802  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:07.367919  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:07.467850  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:07.567766  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:07.667665  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:07.767445  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:07.867807  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:07.967794  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:08.067768  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:08.167773  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:08.267810  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:08.367772  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:08.468351  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:08.568452  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:08.668414  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:08.768052  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:08.868352  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:08.969228  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:09.068421  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:09.168458  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:09.268409  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:09.368306  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:09.468901  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:09.568259  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:09.668339  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:09.768260  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:09.868484  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:09.968622  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:10.068449  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:10.168421  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:10.268445  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:10.368448  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:10.468322  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:10.568434  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:10.668644  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:10.767969  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:10.868422  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:10.968233  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:11.067915  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:11.168370  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:11.268162  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:11.368317  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:11.468122  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:11.570036  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:11.668123  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:11.767584  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:11.868173  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:11.967902  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:12.067950  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:12.168061  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:12.267838  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:12.367874  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:12.467823  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:12.567919  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:12.667837  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:12.768566  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:12.868404  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:12.968411  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:13.068434  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:13.168794  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:13.268496  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:13.368294  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:13.468391  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:13.568409  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:13.668032  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:13.767619  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:13.867802  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:13.967681  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:14.067487  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:14.167943  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:14.267712  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:14.367818  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:14.467809  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:14.567878  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:14.668423  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:14.768126  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:14.868413  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:14.968582  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:15.068521  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:15.168289  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:15.268572  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:15.368546  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:15.468364  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:15.568557  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:15.668531  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:15.780081  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:15.873162  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:15.968133  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:16.068526  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:16.168120  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:16.268818  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:16.368306  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:16.468531  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:16.567200  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:16.667146  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:16.766852  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:16.866822  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:16.967139  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:17.067059  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:17.166899  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:17.267048  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:17.368476  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:17.468556  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:17.568027  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:17.668190  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:17.767747  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:17.868371  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:17.968729  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:18.068190  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:18.167979  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:18.267705  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:18.367787  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:18.467736  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:18.567778  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:18.667698  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:18.766443  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:18.866796  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:18.966574  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:19.066702  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:19.166592  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:19.266731  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:19.366694  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:19.453779  8903 ADINetworkToFStream.cpp:1382] Sent StopCapture to Machine A
+I20260612 11:50:19.468433  9143 ADINetworkToFStream.cpp:1382] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:19.468585  9143 ADINetworkToFStream.cpp:488] Remote status: frame getData(raw) failed frame=0
+I20260612 11:50:19.478564  9143 ADINetworkToFStream.cpp:1382] Remote status: capture thread stopped frame=0
+I20260612 11:50:19.478785  9143 ADINetworkToFStream.cpp:488] Remote status: capture thread stopped frame=0
+I20260612 11:50:19.478875  9143 ADINetworkToFStream.cpp:1382] Remote status: capture stopped frame=0
+I20260612 11:50:19.478915  9143 ADINetworkToFStream.cpp:488] Remote status: capture stopped frame=0
+I20260612 11:50:23.152338  8903 ADINetworkToFStream.cpp:1382] Sent StopCapture to Machine A
+I20260612 11:50:23.152499  9143 ADINetworkToFStream.cpp:1382] Remote status: capture stopped frame=0
+I20260612 11:50:23.152572  9143 ADINetworkToFStream.cpp:488] Remote status: capture stopped frame=0
+I20260612 11:50:23.155802  8903 ADINetworkToFStream.cpp:1382] Sent StartCapture to Machine A mode=0 frame_type=lr-qnative
+I20260612 11:50:23.155917  8903 ADINetworkToFStream.cpp:389] Sent StartCapture to Machine A mode=0 frame_type=lr-qnative
+I20260612 11:50:23.612105  9143 ADINetworkToFStream.cpp:1382] Remote status: capture started; raw only; depth compute off frame=0
+I20260612 11:50:23.612219  9143 ADINetworkToFStream.cpp:488] Remote status: capture started; raw only; depth compute off frame=0
+I20260612 11:50:43.620472  9143 ADINetworkToFStream.cpp:1382] First RAW frame header: 2560x512, raw_bytes=2621440, codec=1, mode=3, frame_type=lr-qnative
+I20260612 11:50:43.687325  9143 ADINetworkToFStream.cpp:1382] TOFI ISP init: mode_name=lr-qnative, converted_mode=3, ini=./config/RawToDepthAdsd3500_lr-qnative.ini (421 bytes), ccb=./config/received_machine_a_module.ccb (243426 bytes)
+[viewer]   dealias[3]: rows=512 cols=512 freqs=3 fx=773.863 fy=773.961 depth_ini_bytes=421
+I20260612 11:50:43.687484  9143 ADINetworkToFStream.cpp:1220] TOFI ISP init: mode_name=lr-qnative, converted_mode=3, ini=./config/RawToDepthAdsd3500_lr-qnative.ini (421 bytes), ccb=./config/received_machine_a_module.ccb (243426 bytes)
+[viewer]   dealias[3]: rows=512 cols=512 freqs=3 fx=773.863 fy=773.961 depth_ini_bytes=421
+I20260612 11:50:43.868757  9143 ADINetworkToFStream.cpp:1382] TOFI ISP initialized: mode=3 (lr-qnative), ini=./config/RawToDepthAdsd3500_lr-qnative.ini, ccb=./config/received_machine_a_module.ccb
+I20260612 11:50:43.868882  9143 ADINetworkToFStream.cpp:1296] TOFI ISP initialized: mode=3 (lr-qnative), ini=./config/RawToDepthAdsd3500_lr-qnative.ini, ccb=./config/received_machine_a_module.ccb
+[viewer] TofiCompute input: 1310720 uint16 words, ctx=0x7f38005ed0
+[viewer] tofiContext->n_rows=512 n_cols=512 p_depth=0x7f380870b0 p_ab=0x7f381070c0 p_xyz=0x7f98039010
+[viewer] calling TofiCompute...
+[viewer] TofiCompute returned 0
+[viewer] Frame created, w=512 h=512
+[viewer] getData(depth) status=0 ptr=0x7f3c9f5010 tofi_p_depth=0x7f380870b0
+I20260612 11:50:43.890261  9143 ADINetworkToFStream.cpp:928] First TOFI output: 512x512, depth_range=[0,61632], ir_range=[0,63549]
+[viewer] TofiCompute input: 1310720 uint16 words, ctx=0x7f38005ed0
+[viewer] tofiContext->n_rows=512 n_cols=512 p_depth=0x7f380870b0 p_ab=0x7f381070c0 p_xyz=0x7f98039010
+[viewer] calling TofiCompute...
+[viewer] TofiCompute returned 0
+[viewer] Frame created, w=512 h=512
+[viewer] getData(depth) status=0 ptr=0x7f3c5f4010 tofi_p_depth=0x7f380870b0
+I20260612 11:52:10.022293  8903 ADINetworkToFStream.cpp:1382] Sent StopCapture to Machine A
+I20260612 11:52:25.125273  8903 ADINetworkToFStream.cpp:1382] Sent StartCapture to Machine A mode=0 frame_type=lr-mixed
+I20260612 11:52:25.125440  8903 ADINetworkToFStream.cpp:389] Sent StartCapture to Machine A mode=0 frame_type=lr-mixed
+I20260612 11:52:46.211697  8903 ADINetworkToFStream.cpp:1382] Sent StopCapture to Machine A
+I20260612 11:52:46.317682  8903 ADINetworkToFStream.cpp:1382] Network listener stopped

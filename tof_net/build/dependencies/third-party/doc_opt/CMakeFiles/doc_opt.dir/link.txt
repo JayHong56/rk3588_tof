@@ -1,0 +1,2 @@
+/usr/bin/ar qc libdoc_opt.a CMakeFiles/doc_opt.dir/docopt.cpp.o
+/usr/bin/ranlib libdoc_opt.a

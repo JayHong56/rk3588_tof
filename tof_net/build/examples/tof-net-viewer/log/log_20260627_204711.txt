@@ -1,0 +1,54 @@
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I20260627 20:47:11.439860 303395 ADIToF.cpp:80] SDK version: 4.2.0 | branch:  | commit: 
+libGL error: failed to create dri screen
+libGL error: failed to load driver: rockchip
+libGL error: failed to create dri screen
+libGL error: failed to load driver: rockchip
+I20260627 20:47:12.756088 303395 ADINetworkToFStream.cpp:1423] Network listener is idle
+I20260627 20:47:12.756268 303395 ADIController.cpp:31] No local cameras attached to this controller.
+I20260627 20:49:01.222501 303990 ADIMainWindow.cpp:1186] Preparing network RAW ToF listener.
+I20260627 20:49:01.223043 303990 ADINetworkToFStream.cpp:1423] Network listener is idle
+I20260627 20:49:01.223112 303990 ADIController.cpp:31] No local cameras attached to this controller.
+I20260627 20:49:01.223232 303990 ADINetworkToFStream.cpp:1423] Network listener stopped
+I20260627 20:49:01.224978 303994 ADINetworkToFStream.cpp:1423] Listening for RAW ToF frames on 0.0.0.0:5000
+I20260627 20:49:01.453898 303994 ADINetworkToFStream.cpp:1423] RAW ToF client connected from 10.42.0.1:36150
+I20260627 20:49:01.454205 303994 ADINetworkToFStream.cpp:470] RAW ToF client connected from 10.42.0.1:36150
+I20260627 20:49:01.454334 303994 ADINetworkToFStream.cpp:1423] Remote hello: tof_net_collect, SDK 4.2.0
+I20260627 20:49:01.454391 303994 ADINetworkToFStream.cpp:491] Remote hello: tof_net_collect, SDK 4.2.0
+I20260627 20:49:36.997490 303994 ADINetworkToFStream.cpp:1423] Received current module CCB from Machine A: 243426 bytes, source=/tmp/tof_net_collect_module_3854.ccb, saved=./config/received_machine_a_module.ccb; TOFI will use received CCB
+I20260627 20:49:36.997717 303994 ADINetworkToFStream.cpp:635] Received current module CCB from Machine A: 243426 bytes, source=/tmp/tof_net_collect_module_3854.ccb, saved=./config/received_machine_a_module.ccb; TOFI will use received CCB
+I20260627 20:49:36.998278 303994 ADINetworkToFStream.cpp:1423] Remote status code=0: sent current module CCB to Machine B: 243426 bytes from /tmp/tof_net_collect_module_3854.ccb frame=0
+I20260627 20:49:36.998350 303994 ADINetworkToFStream.cpp:508] Remote status code=0: sent current module CCB to Machine B: 243426 bytes from /tmp/tof_net_collect_module_3854.ccb frame=0
+I20260627 20:49:37.140573 303994 ADINetworkToFStream.cpp:1423] Received dealias data for sr-native (modeId=0, rows=1024, cols=1024, 88 bytes)
+I20260627 20:49:37.140811 303994 ADINetworkToFStream.cpp:771] Received dealias data for sr-native (modeId=0, rows=1024, cols=1024, 88 bytes)
+I20260627 20:49:37.140878 303994 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for sr-native (88 bytes) frame=0
+I20260627 20:49:37.140916 303994 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for sr-native (88 bytes) frame=0
+I20260627 20:49:37.140991 303994 ADINetworkToFStream.cpp:1423] Received dealias data for lr-native (modeId=1, rows=1024, cols=1024, 88 bytes)
+I20260627 20:49:37.141029 303994 ADINetworkToFStream.cpp:771] Received dealias data for lr-native (modeId=1, rows=1024, cols=1024, 88 bytes)
+I20260627 20:49:37.141083 303994 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for lr-native (88 bytes) frame=0
+I20260627 20:49:37.141119 303994 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for lr-native (88 bytes) frame=0
+I20260627 20:49:37.141191 303994 ADINetworkToFStream.cpp:1423] Received dealias data for sr-qnative (modeId=2, rows=512, cols=512, 88 bytes)
+I20260627 20:49:37.141227 303994 ADINetworkToFStream.cpp:771] Received dealias data for sr-qnative (modeId=2, rows=512, cols=512, 88 bytes)
+I20260627 20:49:37.141281 303994 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for sr-qnative (88 bytes) frame=0
+I20260627 20:49:37.141317 303994 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for sr-qnative (88 bytes) frame=0
+I20260627 20:49:37.141404 303994 ADINetworkToFStream.cpp:1423] Received dealias data for lr-qnative (modeId=3, rows=512, cols=512, 88 bytes)
+I20260627 20:49:37.141448 303994 ADINetworkToFStream.cpp:771] Received dealias data for lr-qnative (modeId=3, rows=512, cols=512, 88 bytes)
+I20260627 20:49:37.141547 303994 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for lr-qnative (88 bytes) frame=0
+I20260627 20:49:37.141584 303994 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for lr-qnative (88 bytes) frame=0
+I20260627 20:49:37.141654 303994 ADINetworkToFStream.cpp:1423] Received dealias data for pcm-native (modeId=4, rows=0, cols=0, 88 bytes)
+I20260627 20:49:37.141691 303994 ADINetworkToFStream.cpp:771] Received dealias data for pcm-native (modeId=4, rows=0, cols=0, 88 bytes)
+I20260627 20:49:37.141744 303994 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for pcm-native (88 bytes) frame=0
+I20260627 20:49:37.141780 303994 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for pcm-native (88 bytes) frame=0
+I20260627 20:49:37.141851 303994 ADINetworkToFStream.cpp:1423] Received dealias data for sr-mixed (modeId=6, rows=512, cols=512, 88 bytes)
+I20260627 20:49:37.141888 303994 ADINetworkToFStream.cpp:771] Received dealias data for sr-mixed (modeId=6, rows=512, cols=512, 88 bytes)
+I20260627 20:49:37.141942 303994 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for sr-mixed (88 bytes) frame=0
+I20260627 20:49:37.141978 303994 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for sr-mixed (88 bytes) frame=0
+I20260627 20:49:37.142047 303994 ADINetworkToFStream.cpp:1423] Received dealias data for lr-mixed (modeId=5, rows=512, cols=512, 88 bytes)
+I20260627 20:49:37.142084 303994 ADINetworkToFStream.cpp:771] Received dealias data for lr-mixed (modeId=5, rows=512, cols=512, 88 bytes)
+I20260627 20:49:37.142138 303994 ADINetworkToFStream.cpp:1423] Remote status code=0: sent dealias data for lr-mixed (88 bytes) frame=0
+I20260627 20:49:37.142174 303994 ADINetworkToFStream.cpp:508] Remote status code=0: sent dealias data for lr-mixed (88 bytes) frame=0
+I20260627 20:49:37.142227 303994 ADINetworkToFStream.cpp:1423] Remote status code=2: Machine A connected; CCB + dealias data sent; waiting for start command frame=0
+I20260627 20:49:37.142263 303994 ADINetworkToFStream.cpp:508] Remote status code=2: Machine A connected; CCB + dealias data sent; waiting for start command frame=0
+I20260627 20:49:41.941416 303395 ADINetworkToFStream.cpp:1423] Sent StartCapture to Machine A mode=0 frame_type=lr-qnative
+I20260627 20:49:41.941531 303395 ADINetworkToFStream.cpp:408] Sent StartCapture to Machine A mode=0 frame_type=lr-qnative
+I20260627 20:49:42.441998 303395 ADINetworkToFStream.cpp:1423] Waiting 0s for first RAW ToF frame after StartCapture

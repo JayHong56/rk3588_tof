@@ -558,16 +558,14 @@ void ADIMainWindow::RefreshDevices() {
     }
 
     // Network-only viewer: never enumerate or open local / SDK network ToF
-    // cameras. Refresh performs a short TCP accept probe on Machine B. If
-    // Machine A's tof_net_collect is already running in reconnect mode, it will
-    // connect to this temporary listener and appear as a virtual device.
-    if (probeNetworkCollector(1800)) {
-        m_selectedDevice = 0;
-        _isOpenDevice = true;
-        m_connectedDevices.emplace_back(0, "Machine A tof_net_collect detected");
-    } else {
-        _isOpenDevice = false;
-    }
+    // cameras. Always expose one virtual Machine A device. Open Device starts
+    // the real listener; using Refresh as an accept probe consumes one
+    // tof_net_collect connection and can break the slow CCB transfer.
+    m_selectedDevice = 0;
+    _isOpenDevice = true;
+    m_connectedDevices.emplace_back(0, "Machine A tof_net_collect");
+    m_networkProbeStatus =
+        "Virtual network device ready; click Open Device to listen for Machine A";
 }
 
 bool ADIMainWindow::probeNetworkCollector(uint32_t timeoutMs) {
@@ -1304,14 +1302,15 @@ void ADIMainWindow::InitCamera() {
         }
     }
 
+    m_cameraModes.clear();
+    modeSelection = 0;
     int modeIndex = 0;
     for (int i = 0; i < _cameraModes.size(); ++i) {
 #ifndef ENBABLE_PASSIVE_IR
-        if ("pcm" == _cameraModes.at(i)) {
+        if ("pcm" == _cameraModes.at(i) || "pcm-native" == _cameraModes.at(i)) {
             continue;
         }
 #endif
-        modeSelection = modeIndex;
         m_cameraModes.emplace_back(modeIndex++, _cameraModes.at(i));
     }
 

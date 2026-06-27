@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+0d77e2fb7b32dcb90d738fd6434ec256 sdk/buffer.pb.h
+a481dfa128343b878bc1671f8a526683 sdk/usb_buffer.pb.h
