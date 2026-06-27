@@ -1,0 +1,13 @@
+[sudo] password for analog: 
+-- Logs begin at Wed 2023-03-15 15:04:16 UTC. --
+Mar 15 15:10:53.542789 aditof systemd-logind[388]: Session 5 logged out. Waiting for processes to exit.
+Mar 15 15:10:53.544582 aditof systemd-logind[388]: Removed session 5.
+Mar 15 15:11:01.558651 aditof sshd[766]: [0;38;5;245m[0;1;31m[0;38;5;245mpam_unix(sshd:account): account analog has password changed in future[0m
+Mar 15 15:11:01.558859 aditof sshd[766]: Accepted password for analog from 10.42.0.101 port 43486 ssh2
+Mar 15 15:11:01.564880 aditof sshd[766]: pam_unix(sshd:session): session opened for user analog by (uid=0)
+Mar 15 15:11:01.573762 aditof systemd-logind[388]: New session 7 of user analog.
+Mar 15 15:11:01.575730 aditof systemd[1]: Started Session 7 of user analog.
+Mar 15 15:11:03.411028 aditof sudo[778]: [0;38;5;245m[0;1;31m[0;38;5;245mpam_unix(sudo:account): account analog has password changed in future[0m
+Mar 15 15:11:03.411284 aditof sudo[778]: [0;1;39m[0;1;31m[0;1;39m  analog : TTY=pts/0 ; PWD=/home/analog ; USER=root ; COMMAND=/usr/bin/journalctl -b -f -o short-precise[0m
+Mar 15 15:11:03.412535 aditof sudo[778]: pam_unix(sudo:session): session opened for user root by analog(uid=0)
+^CConnection to 10.42.0.1 closed.

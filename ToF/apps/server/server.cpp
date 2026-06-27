@@ -43,14 +43,26 @@
 #include <aditof/log.h>
 #endif
 #include <iostream>
+#include <atomic>
+#include <chrono>
+#include <cstdlib>
 #include <linux/videodev2.h>
 #include <map>
+#include <thread>
 #include <string>
 #include <sys/time.h>
+#include <unistd.h>
 
 using namespace google::protobuf::io;
 
-static int interrupted = 0;
+static volatile sig_atomic_t interrupted = 0;
+static constexpr int kMaxConsecutiveGetFrameFailures = 3;
+static constexpr int64_t kGetFrameHardTimeoutMs = 8000;
+static constexpr const char *kServerPatchMarker =
+    "rk3588-tof-getframe-watchdog-20260625";
+static std::atomic<bool> getFrameInProgress(false);
+static std::atomic<int64_t> getFrameStartedMs(0);
+static std::atomic<unsigned int> consecutiveGetFrameFailures(0);
 
 /* Available sensors */
 std::vector<std::shared_ptr<aditof::DepthSensorInterface>> depthSensors;
@@ -110,6 +122,69 @@ static void cleanup_sensors() {
 
     sensors_are_created = false;
     clientEngagedWithSensors = false;
+}
+
+static int64_t steady_clock_ms() {
+    return std::chrono::duration_cast<std::chrono::milliseconds>(
+               std::chrono::steady_clock::now().time_since_epoch())
+        .count();
+}
+
+struct ScopedGetFrameWatch {
+    ScopedGetFrameWatch() {
+        getFrameStartedMs.store(steady_clock_ms(), std::memory_order_relaxed);
+        getFrameInProgress.store(true, std::memory_order_release);
+    }
+
+    ~ScopedGetFrameWatch() {
+        getFrameInProgress.store(false, std::memory_order_release);
+    }
+};
+
+static void get_frame_watchdog() {
+    while (!interrupted) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        if (!getFrameInProgress.load(std::memory_order_acquire)) {
+            continue;
+        }
+
+        const int64_t startedMs =
+            getFrameStartedMs.load(std::memory_order_relaxed);
+        const int64_t elapsedMs = steady_clock_ms() - startedMs;
+        if (elapsedMs <= kGetFrameHardTimeoutMs) {
+            continue;
+        }
+
+        std::cerr << "GetFrame has been blocked for " << elapsedMs
+                  << " ms. Exiting aditof-server so systemd can restart it."
+                  << std::endl;
+        _exit(EXIT_FAILURE);
+    }
+}
+
+static void note_get_frame_success(int64_t elapsedMs,
+                                   unsigned int frameLength) {
+    consecutiveGetFrameFailures.store(0, std::memory_order_relaxed);
+    LOG(INFO) << "GetFrame completed in " << elapsedMs
+              << " ms, frame length: " << frameLength;
+}
+
+static void note_get_frame_failure(const char *stage, aditof::Status status,
+                                   bool fatal = false) {
+    const unsigned int failures =
+        consecutiveGetFrameFailures.fetch_add(1, std::memory_order_relaxed) + 1;
+
+    LOG(ERROR) << "GetFrame failed at " << stage
+               << ", status: " << static_cast<int>(status)
+               << ", consecutive failures: " << failures;
+
+    if (fatal || failures >= kMaxConsecutiveGetFrameFailures) {
+        LOG(ERROR) << "GetFrame failure threshold reached. Exiting "
+                      "aditof-server so systemd can restart it.";
+        cleanup_sensors();
+        std::exit(EXIT_FAILURE);
+    }
 }
 
 Network ::Network() : context(nullptr) {}
@@ -270,6 +345,7 @@ int main(int argc, char *argv[]) {
     signal(SIGTERM, sigint_handler);
 
     LOG(INFO) << "Server built with websockets version:" << LWS_LIBRARY_VERSION;
+    LOG(INFO) << "Server patch marker: " << kServerPatchMarker;
 
     struct lws_context_creation_info info;
     memset(&info, 0, sizeof(info));
@@ -284,6 +360,7 @@ int main(int argc, char *argv[]) {
     network->context = lws_create_context(&info);
 
     Initialize();
+    std::thread watchdogThread(get_frame_watchdog);
     int msTimeout;
 // TO DO: After 6-12 months we should remove this #if-else and keep only things related to 3.2.3
 #if LWS_LIBRARY_VERSION_NUMBER > 3002003
@@ -309,6 +386,10 @@ int main(int argc, char *argv[]) {
     }
 
     lws_context_destroy(network->context);
+
+    if (watchdogThread.joinable()) {
+        watchdogThread.join();
+    }
 
     return 0;
 }
@@ -483,27 +564,36 @@ void invoke_sdk_api(payload::ClientRequest buff_recv) {
     }
 
     case GET_FRAME: {
+        ScopedGetFrameWatch frameWatch;
+        const int64_t startMs = steady_clock_ms();
+
+        LOG(INFO) << "GetFrame: waitForBuffer begin";
         aditof::Status status = sensorV4lBufAccess->waitForBuffer();
         if (status != aditof::Status::OK) {
             buff_send.set_status(static_cast<::payload::Status>(status));
+            note_get_frame_failure("waitForBuffer", status);
             break;
         }
 
         struct v4l2_buffer buf;
 
+        LOG(INFO) << "GetFrame: VIDIOC_DQBUF begin";
         status = sensorV4lBufAccess->dequeueInternalBuffer(buf);
         if (status != aditof::Status::OK) {
             buff_send.set_status(static_cast<::payload::Status>(status));
+            note_get_frame_failure("VIDIOC_DQBUF", status);
             break;
         }
 
         uint8_t *buffer;
 
+        LOG(INFO) << "GetFrame: getInternalBuffer begin";
         status = sensorV4lBufAccess->getInternalBuffer(&buffer,
                                                        buff_frame_length, buf);
         if (status != aditof::Status::OK) {
             buff_send.set_status(static_cast<::payload::Status>(status));
             sensorV4lBufAccess->enqueueInternalBuffer(buf);
+            note_get_frame_failure("getInternalBuffer", status);
             break;
         }
         if (buff_frame_to_send != NULL) {
@@ -514,19 +604,28 @@ void invoke_sdk_api(payload::ClientRequest buff_recv) {
             (buff_frame_length + LWS_SEND_BUFFER_PRE_PADDING + 1 +
              LWS_SEND_BUFFER_POST_PADDING) *
             sizeof(uint8_t));
+        if (buff_frame_to_send == NULL) {
+            status = aditof::Status::GENERIC_ERROR;
+            buff_send.set_status(static_cast<::payload::Status>(status));
+            sensorV4lBufAccess->enqueueInternalBuffer(buf);
+            note_get_frame_failure("malloc frame buffer", status, true);
+            break;
+        }
 
         memcpy(buff_frame_to_send + (LWS_SEND_BUFFER_PRE_PADDING + 1), buffer,
                buff_frame_length * sizeof(uint8_t));
 
-        m_frame_ready = true;
-
+        LOG(INFO) << "GetFrame: VIDIOC_QBUF begin";
         status = sensorV4lBufAccess->enqueueInternalBuffer(buf);
         if (status != aditof::Status::OK) {
             buff_send.set_status(static_cast<::payload::Status>(status));
+            note_get_frame_failure("VIDIOC_QBUF", status);
             break;
         }
 
+        m_frame_ready = true;
         buff_send.set_status(payload::Status::OK);
+        note_get_frame_success(steady_clock_ms() - startMs, buff_frame_length);
         break;
     }
 

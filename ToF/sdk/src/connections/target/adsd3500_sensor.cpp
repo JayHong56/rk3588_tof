@@ -1326,7 +1326,7 @@ aditof::Status Adsd3500Sensor::waitForBufferPrivate(struct VideoDev *dev) {
     FD_ZERO(&fds);
     FD_SET(dev->fd, &fds);
 
-    tv.tv_sec = 20;
+    tv.tv_sec = 3;
     tv.tv_usec = 0;
 
     r = select(dev->fd + 1, &fds, NULL, NULL, &tv);
@@ -1336,7 +1336,7 @@ aditof::Status Adsd3500Sensor::waitForBufferPrivate(struct VideoDev *dev) {
                      << "errno: " << errno << " error: " << strerror(errno);
         return aditof::Status::GENERIC_ERROR;
     } else if (r == 0) {
-        LOG(WARNING) << "select timeout";
+        LOG(WARNING) << "select timeout waiting for video buffer";
         return aditof::Status::GENERIC_ERROR;
     }
     return aditof ::Status::OK;
@@ -1360,13 +1360,7 @@ Adsd3500Sensor::dequeueInternalBufferPrivate(struct v4l2_buffer &buf,
     if (xioctl(dev->fd, VIDIOC_DQBUF, &buf) == -1) {
         LOG(WARNING) << "VIDIOC_DQBUF error "
                      << "errno: " << errno << " error: " << strerror(errno);
-        switch (errno) {
-        case EAGAIN:
-        case EIO:
-            break;
-        default:
-            return Status::GENERIC_ERROR;
-        }
+        return Status::GENERIC_ERROR;
     }
 
     if (buf.index >= dev->nVideoBuffers) {
@@ -1380,11 +1374,63 @@ Adsd3500Sensor::dequeueInternalBufferPrivate(struct v4l2_buffer &buf,
 aditof::Status Adsd3500Sensor::getInternalBufferPrivate(
     uint8_t **buffer, uint32_t &buf_data_len, const struct v4l2_buffer &buf,
     struct VideoDev *dev) {
+    LOG(INFO) << "getInternalBufferPrivate: enter"
+              << ", buf.index=" << buf.index
+              << ", buf.bytesused=" << buf.bytesused
+              << ", buf.length=" << buf.length;
+
+    if (buffer == nullptr) {
+        LOG(ERROR) << "getInternalBufferPrivate: output buffer pointer is null";
+        return aditof::Status::INVALID_ARGUMENT;
+    }
+
     if (dev == nullptr)
         dev = &m_implData->videoDevs[0];
 
+    LOG(INFO) << "getInternalBufferPrivate: dev"
+              << ", fd=" << dev->fd
+              << ", started=" << dev->started
+              << ", videoBuffers=" << static_cast<void *>(dev->videoBuffers)
+              << ", nVideoBuffers=" << dev->nVideoBuffers
+              << ", videoBuffersType=" << dev->videoBuffersType;
+
+    if (dev->videoBuffers == nullptr) {
+        LOG(ERROR) << "getInternalBufferPrivate: dev->videoBuffers is null";
+        return aditof::Status::GENERIC_ERROR;
+    }
+
+    if (buf.index >= dev->nVideoBuffers) {
+        LOG(ERROR) << "getInternalBufferPrivate: buffer index out of range"
+                   << ", index=" << buf.index
+                   << ", nVideoBuffers=" << dev->nVideoBuffers;
+        return aditof::Status::GENERIC_ERROR;
+    }
+
+    LOG(INFO) << "getInternalBufferPrivate: selected mapped buffer"
+              << ", start="
+              << static_cast<void *>(dev->videoBuffers[buf.index].start)
+              << ", length=" << dev->videoBuffers[buf.index].length;
+
+    if (dev->videoBuffers[buf.index].start == nullptr) {
+        LOG(ERROR) << "getInternalBufferPrivate: mapped buffer start is null"
+                   << ", index=" << buf.index;
+        return aditof::Status::GENERIC_ERROR;
+    }
+
+    if (buf.bytesused > dev->videoBuffers[buf.index].length) {
+        LOG(ERROR) << "getInternalBufferPrivate: bytesused exceeds mapped length"
+                   << ", bytesused=" << buf.bytesused
+                   << ", mapped length=" << dev->videoBuffers[buf.index].length
+                   << ", index=" << buf.index;
+        return aditof::Status::GENERIC_ERROR;
+    }
+
     *buffer = static_cast<uint8_t *>(dev->videoBuffers[buf.index].start);
     buf_data_len = buf.bytesused;
+
+    LOG(INFO) << "getInternalBufferPrivate: done"
+              << ", buffer=" << static_cast<void *>(*buffer)
+              << ", buf_data_len=" << buf_data_len;
 
     return aditof::Status::OK;
 }

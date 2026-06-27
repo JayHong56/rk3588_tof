@@ -114,13 +114,20 @@ run_under_gdb() {
         return 1
     fi
 
-    local dir marker status
+    local dir marker status terminal_log
     dir=$(new_output_dir crash)
     marker="$dir/start.marker"
+    terminal_log="$dir/terminal.txt"
     touch "$marker"
+
+    # Preserve the complete run-mode terminal transcript while continuing to
+    # show it interactively. gdb.txt below remains the debugger-only output.
+    exec > >(tee "$terminal_log") 2>&1
+
     collect_system_info "$dir"
 
     echo "Debug output: $dir"
+    echo "Terminal output: $terminal_log"
     echo "Use the GUI normally and click Play."
     echo "If it crashes, do not run snapshot and do not press Ctrl-C."
     echo "Wait here until 'Capture complete' is printed."
@@ -130,7 +137,16 @@ run_under_gdb() {
     cd "$VIEWER_DIR" || return 1
 
     set +e
-    sudo -E gdb -q -batch \
+    # Keep DISPLAY/XAUTHORITY for the GUI, but do not pass host proxy settings
+    # to libwebsockets. A proxy such as 127.0.0.1:17890 makes the camera's
+    # private address (10.42.0.1) fail with repeated "Connection Error" while
+    # a plain `sudo ./ADIToFGUI` works because sudo clears those variables.
+    sudo -E env \
+        -u ALL_PROXY -u HTTP_PROXY -u HTTPS_PROXY -u FTP_PROXY \
+        -u WS_PROXY -u WSS_PROXY \
+        -u all_proxy -u http_proxy -u https_proxy -u ftp_proxy \
+        -u ws_proxy -u wss_proxy \
+        gdb -q -batch \
         -ex 'set confirm off' \
         -ex 'set pagination off' \
         -ex 'set print thread-events off' \

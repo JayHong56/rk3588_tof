@@ -1,0 +1,13 @@
+[sudo] password for analog: 
+-- Logs begin at Wed 2023-03-15 23:04:16 CST. --
+Jun 27 15:15:28.099270 aditof tof-power-en.sh[2318]: V_LD_SNS is 6.523 V
+Jun 27 15:15:28.109201 aditof tof-power-en.sh[2318]: VMAIN is 3.962 V
+Jun 27 15:15:28.119142 aditof tof-power-en.sh[2318]: VSYS is 3.938 V
+Jun 27 15:15:28.128960 aditof tof-power-en.sh[2318]: VAUX is 25.265 V
+Jun 27 15:15:28.138934 aditof tof-power-en.sh[2318]: V5V0 is 4.765 V
+Jun 27 15:15:28.155799 aditof systemd[2368]: [0;1;31m[0;1;39m[0;1;31mnetwork-gadget.service: Failed to execute command: Exec format error[0m
+Jun 27 15:15:28.155926 aditof systemd[2368]: [0;1;31m[0;1;39m[0;1;31mnetwork-gadget.service: Failed at step EXEC spawning /usr/share/systemd/aditof-server: Exec format error[0m
+Jun 27 15:15:28.157409 aditof systemd[1]: [0;1;39m[0;1;31m[0;1;39mnetwork-gadget.service: Main process exited, code=exited, status=203/EXEC[0m
+Jun 27 15:15:28.157896 aditof systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mnetwork-gadget.service: Failed with result 'exit-code'.[0m
+Jun 27 15:15:28.159312 aditof systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start Network server service.[0m
+client_loop: send disconnect: Broken pipe

@@ -280,7 +280,10 @@ bool ADIMainWindow::startImGUI(const ADIViewerArgs &args) {
     stbi_image_free(icons[0].pixels);    //free up the memory
 
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(1); // Enable vsync
+    // The render loop has its own 30 FPS limiter. VSync can block indefinitely
+    // in glfwSwapBuffers() when X11/VNC falls back to Mesa swrast, freezing the
+    // entire GUI even though camera and worker threads are still running.
+    glfwSwapInterval(0);
 
     // Initialize OpenGL loader
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)

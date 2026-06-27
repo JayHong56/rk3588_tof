@@ -1,0 +1,185 @@
+[sudo] password for analog: 
+-- Logs begin at Wed 2023-03-15 15:04:16 UTC. --
+Mar 15 15:12:38.184526 aditof sudo[809]: pam_unix(sudo:session): session opened for user root by analog(uid=0)
+Mar 15 15:12:38.200105 aditof sudo[809]: pam_unix(sudo:session): session closed for user root
+Mar 15 15:14:02.982074 aditof sshd[811]: [0;38;5;245m[0;1;31m[0;38;5;245mpam_unix(sshd:account): account analog has password changed in future[0m
+Mar 15 15:14:02.982297 aditof sshd[811]: Accepted password for analog from 10.42.0.101 port 54770 ssh2
+Mar 15 15:14:02.987771 aditof sshd[811]: pam_unix(sshd:session): session opened for user analog by (uid=0)
+Mar 15 15:14:02.997931 aditof systemd-logind[388]: New session 10 of user analog.
+Mar 15 15:14:03.000166 aditof systemd[1]: Started Session 10 of user analog.
+Mar 15 15:14:05.246954 aditof sudo[823]: [0;38;5;245m[0;1;31m[0;38;5;245mpam_unix(sudo:account): account analog has password changed in future[0m
+Mar 15 15:14:05.247198 aditof sudo[823]: [0;1;39m[0;1;31m[0;1;39m  analog : TTY=pts/1 ; PWD=/home/analog ; USER=root ; COMMAND=/usr/bin/journalctl -b -f -o short-precise[0m
+Mar 15 15:14:05.248451 aditof sudo[823]: pam_unix(sudo:session): session opened for user root by analog(uid=0)
+Mar 15 15:14:18.877837 aditof htpdate[424]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mwww.ntp.br host or service unavailable[0m
+Mar 15 15:14:21.072174 aditof aditof-server[721]: Conn Established
+Mar 15 15:14:21.074317 aditof aditof-server[721]: I20230315 15:14:21.074183   721 server.cpp:317] FindSensors function
+Mar 15 15:14:21.074588 aditof aditof-server[721]: I20230315 15:14:21.074404   721 sensor_enumerator_imx.cpp:116] Looking for sensors on the target
+Mar 15 15:14:21.074981 aditof aditof-server[721]: I20230315 15:14:21.074887   721 sensor_enumerator_imx.cpp:137] Looking at: /dev/media0 for an eligible TOF camera
+Mar 15 15:14:21.086833 aditof aditof-server[721]: I20230315 15:14:21.086359   721 sensor_enumerator_imx.cpp:153] Considering: /dev/media0 an eligible TOF camera
+Mar 15 15:14:21.107767 aditof aditof-server[721]: Connection Closed
+Mar 15 15:14:29.756071 aditof aditof-server[721]: Conn Established
+Mar 15 15:14:29.759699 aditof aditof-server[721]: I20230315 15:14:29.759564   721 server.cpp:317] Open function
+Mar 15 15:14:29.759982 aditof aditof-server[721]: I20230315 15:14:29.759825   721 adsd3500_sensor.cpp:207] Opening device
+Mar 15 15:14:29.759982 aditof aditof-server[721]: I20230315 15:14:29.759934   721 adsd3500_sensor.cpp:225] Looking for the following cards:
+Mar 15 15:14:29.760257 aditof aditof-server[721]: I20230315 15:14:29.759980   721 adsd3500_sensor.cpp:227] mxc-isi-cap
+Mar 15 15:14:29.760257 aditof aditof-server[721]: I20230315 15:14:29.760043   721 adsd3500_sensor.cpp:239] device: /dev/video0        subdevice: /dev/v4l-subdev1
+Mar 15 15:14:29.763506 aditof aditof-server[721]: I20230315 15:14:29.763006   721 adsd3500_interrupt_notifier.cpp:33] Received signal 0 from kernel
+Mar 15 15:14:29.769058 aditof aditof-server[721]: I20230315 15:14:29.768600   721 adsd3500_sensor.cpp:1554] statusRegister:0(Adsd3500Status::OK)
+Mar 15 15:14:29.770008 aditof aditof-server[721]: W20230315 15:14:29.769896   721 adsd3500_sensor.cpp:990] Reading Adsd3500 error errno: 5 error: Input/output error
+Mar 15 15:14:29.771132 aditof kernel: [0;1;38;5;185m[0;1;39m[0;1;38;5;185madsd3500 1-0038: Read burst transfer failed[0m
+Mar 15 15:14:35.617001 aditof aditof-server[721]: I20230315 15:14:35.616515   721 adsd3500_interrupt_notifier.cpp:33] Received signal 0 from kernel
+Mar 15 15:14:35.622201 aditof aditof-server[721]: I20230315 15:14:35.622076   721 adsd3500_sensor.cpp:1554] statusRegister:0(Adsd3500Status::OK)
+Mar 15 15:14:35.622484 aditof aditof-server[721]: I20230315 15:14:35.622238   721 adsd3500_interrupt_notifier.cpp:33] Received signal 0 from kernel
+Mar 15 15:14:35.627879 aditof aditof-server[721]: I20230315 15:14:35.627756   721 adsd3500_sensor.cpp:1554] statusRegister:0(Adsd3500Status::OK)
+Mar 15 15:14:35.670600 aditof aditof-server[721]: I20230315 15:14:35.670161   721 adsd3500_sensor.cpp:335] ADSD3500 is ready to communicate with.
+Mar 15 15:14:35.719645 aditof aditof-server[721]: I20230315 15:14:35.719164   721 mode_info.cpp:148] Using new modes table for adsd3500.
+Mar 15 15:14:35.724015 aditof aditof-server[721]: I20230315 15:14:35.723559   721 server.cpp:317] GetControl function
+Mar 15 15:14:35.728004 aditof aditof-server[721]: I20230315 15:14:35.727566   721 server.cpp:317] GetControl function
+Mar 15 15:14:35.732071 aditof aditof-server[721]: I20230315 15:14:35.731614   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.747953 aditof aditof-server[721]: I20230315 15:14:35.747491   721 server.cpp:317] SetControl function
+Mar 15 15:14:35.747953 aditof aditof-server[721]: I20230315 15:14:35.747712   721 mode_info.cpp:144] Using new mixed modes table for adsd3500.
+Mar 15 15:14:35.752020 aditof aditof-server[721]: I20230315 15:14:35.751551   721 server.cpp:317] GetAvailableFrameTypes function
+Mar 15 15:14:35.755686 aditof aditof-server[721]: I20230315 15:14:35.755563   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.799411 aditof aditof-server[721]: I20230315 15:14:35.799182   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.831674 aditof aditof-server[721]: I20230315 15:14:35.831187   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.871775 aditof aditof-server[721]: I20230315 15:14:35.871189   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.883336 aditof aditof-server[721]: I20230315 15:14:35.883170   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.899642 aditof aditof-server[721]: I20230315 15:14:35.899183   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.911640 aditof aditof-server[721]: I20230315 15:14:35.911187   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.927685 aditof aditof-server[721]: I20230315 15:14:35.927203   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.939668 aditof aditof-server[721]: I20230315 15:14:35.939185   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.955402 aditof aditof-server[721]: I20230315 15:14:35.955188   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.967679 aditof aditof-server[721]: I20230315 15:14:35.967180   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.983415 aditof aditof-server[721]: I20230315 15:14:35.983198   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:35.995378 aditof aditof-server[721]: I20230315 15:14:35.995190   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:36.011396 aditof aditof-server[721]: I20230315 15:14:36.011197   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:36.023667 aditof aditof-server[721]: I20230315 15:14:36.023181   721 server.cpp:317] Adsd3500ReadPayloadCmd function
+Mar 15 15:14:36.039399 aditof aditof-server[721]: I20230315 15:14:36.039181   721 server.cpp:317] SetControl function
+Mar 15 15:14:36.047371 aditof aditof-server[721]: I20230315 15:14:36.047179   721 server.cpp:317] Adsd3500WriteCmd function
+Mar 15 15:14:37.927710 aditof aditof-server[721]: I20230315 15:14:37.927207   721 server.cpp:317] Adsd3500WriteCmd function
+Mar 15 15:14:37.931642 aditof aditof-server[721]: I20230315 15:14:37.931160   721 server.cpp:317] Adsd3500WriteCmd function
+Mar 15 15:14:37.934744 aditof aditof-server[721]: I20230315 15:14:37.934617   721 server.cpp:317] Adsd3500WriteCmd function
+Mar 15 15:14:37.939411 aditof aditof-server[721]: I20230315 15:14:37.939191   721 server.cpp:317] Adsd3500WriteCmd function
+Mar 15 15:14:37.943663 aditof aditof-server[721]: I20230315 15:14:37.943192   721 server.cpp:317] Adsd3500WriteCmd function
+Mar 15 15:14:37.947639 aditof aditof-server[721]: I20230315 15:14:37.947181   721 server.cpp:317] Adsd3500WriteCmd function
+Mar 15 15:14:37.951651 aditof aditof-server[721]: I20230315 15:14:37.951184   721 server.cpp:317] SetControl function
+Mar 15 15:14:37.955657 aditof aditof-server[721]: I20230315 15:14:37.955533   721 server.cpp:317] SetControl function
+Mar 15 15:14:37.959311 aditof aditof-server[721]: I20230315 15:14:37.959189   721 server.cpp:317] SetControl function
+Mar 15 15:14:37.963306 aditof aditof-server[721]: I20230315 15:14:37.963183   721 server.cpp:317] SetControl function
+Mar 15 15:14:37.967308 aditof aditof-server[721]: I20230315 15:14:37.967188   721 server.cpp:317] SetControl function
+Mar 15 15:14:37.971378 aditof aditof-server[721]: I20230315 15:14:37.971261   721 server.cpp:317] SetFrameType function
+Mar 15 15:14:37.976720 aditof aditof-server[721]: I20230315 15:14:37.976610   721 adsd3500_sensor.cpp:207] Opening device
+Mar 15 15:14:37.976966 aditof aditof-server[721]: I20230315 15:14:37.976747   721 adsd3500_sensor.cpp:225] Looking for the following cards:
+Mar 15 15:14:37.976966 aditof aditof-server[721]: I20230315 15:14:37.976795   721 adsd3500_sensor.cpp:227] mxc-isi-cap
+Mar 15 15:14:37.976966 aditof aditof-server[721]: I20230315 15:14:37.976846   721 adsd3500_sensor.cpp:239] device: /dev/video0        subdevice: /dev/v4l-subdev1
+Mar 15 15:14:37.977556 aditof aditof-server[721]: I20230315 15:14:37.977069   721 adsd3500_sensor.cpp:463] Setting camera mode to lr-mixed
+Mar 15 15:14:38.220428 aditof aditof-server[721]: I20230315 15:14:38.219830   721 server.cpp:317] GetControl function
+Mar 15 15:14:38.221444 aditof aditof-server[721]: I20230315 15:14:38.221287   721 server.cpp:317] Start function
+Mar 15 15:14:38.221952 aditof aditof-server[721]: I20230315 15:14:38.221451   721 adsd3500_sensor.cpp:376] Starting device 0
+Mar 15 15:14:38.226718 aditof kernel: bypass csc
+Mar 15 15:14:38.226993 aditof kernel: input fmt BA81
+Mar 15 15:14:38.227117 aditof kernel: output fmt BA81
+Mar 15 15:14:38.578686 aditof aditof-server[721]: I20230315 15:14:38.578087   721 server.cpp:317] GetFrame function
+Mar 15 15:14:38.646902 aditof aditof-server[721]: I20230315 15:14:38.646412   721 server.cpp:317] GetFrame function
+Mar 15 15:14:38.748010 aditof aditof-server[721]: I20230315 15:14:38.747524   721 server.cpp:317] GetFrame function
+Mar 15 15:14:38.848103 aditof aditof-server[721]: I20230315 15:14:38.847508   721 server.cpp:317] GetFrame function
+Mar 15 15:14:38.935984 aditof aditof-server[721]: I20230315 15:14:38.935503   721 server.cpp:317] GetFrame function
+Mar 15 15:14:39.076512 aditof aditof-server[721]: I20230315 15:14:39.076339   721 server.cpp:317] GetFrame function
+Mar 15 15:14:39.161973 aditof aditof-server[721]: I20230315 15:14:39.161816   721 server.cpp:317] GetFrame function
+Mar 15 15:14:39.274605 aditof aditof-server[721]: I20230315 15:14:39.274439   721 server.cpp:317] GetFrame function
+Mar 15 15:14:39.355506 aditof aditof-server[721]: I20230315 15:14:39.355223   721 server.cpp:317] GetFrame function
+Mar 15 15:14:39.451982 aditof aditof-server[721]: I20230315 15:14:39.451447   721 server.cpp:317] GetFrame function
+Mar 15 15:14:39.539979 aditof aditof-server[721]: I20230315 15:14:39.539492   721 server.cpp:317] GetFrame function
+Mar 15 15:14:39.643996 aditof aditof-server[721]: I20230315 15:14:39.643488   721 server.cpp:317] GetFrame function
+Mar 15 15:14:39.748066 aditof aditof-server[721]: I20230315 15:14:39.747476   721 server.cpp:317] GetFrame function
+Mar 15 15:14:39.877785 aditof aditof-server[721]: I20230315 15:14:39.877609   721 server.cpp:317] GetFrame function
+Mar 15 15:14:39.947977 aditof aditof-server[721]: I20230315 15:14:39.947503   721 server.cpp:317] GetFrame function
+Mar 15 15:14:40.059586 aditof aditof-server[721]: I20230315 15:14:40.058985   721 server.cpp:317] GetFrame function
+Mar 15 15:14:40.135675 aditof aditof-server[721]: I20230315 15:14:40.135504   721 server.cpp:317] GetFrame function
+Mar 15 15:14:40.250349 aditof aditof-server[721]: I20230315 15:14:40.250001   721 server.cpp:317] GetFrame function
+Mar 15 15:14:40.378483 aditof aditof-server[721]: I20230315 15:14:40.378197   721 server.cpp:317] GetFrame function
+Mar 15 15:14:40.439677 aditof aditof-server[721]: I20230315 15:14:40.439527   721 server.cpp:317] GetFrame function
+Mar 15 15:14:40.532612 aditof aditof-server[721]: I20230315 15:14:40.532446   721 server.cpp:317] GetFrame function
+Mar 15 15:14:40.639662 aditof aditof-server[721]: I20230315 15:14:40.639518   721 server.cpp:317] GetFrame function
+Mar 15 15:14:40.735704 aditof aditof-server[721]: I20230315 15:14:40.735539   721 server.cpp:317] GetFrame function
+Mar 15 15:14:40.833016 aditof aditof-server[721]: I20230315 15:14:40.832849   721 server.cpp:317] GetFrame function
+Mar 15 15:14:40.965724 aditof aditof-server[721]: I20230315 15:14:40.965440   721 server.cpp:317] GetFrame function
+Mar 15 15:14:41.054359 aditof aditof-server[721]: I20230315 15:14:41.053850   721 server.cpp:317] GetFrame function
+Mar 15 15:14:41.131700 aditof aditof-server[721]: I20230315 15:14:41.131193   721 server.cpp:317] GetFrame function
+Mar 15 15:14:41.240173 aditof aditof-server[721]: I20230315 15:14:41.239542   721 server.cpp:317] GetFrame function
+Mar 15 15:14:41.332019 aditof aditof-server[721]: I20230315 15:14:41.331533   721 server.cpp:317] GetFrame function
+Mar 15 15:14:41.448030 aditof aditof-server[721]: I20230315 15:14:41.447533   721 server.cpp:317] GetFrame function
+Mar 15 15:14:41.567544 aditof aditof-server[721]: I20230315 15:14:41.566908   721 server.cpp:317] GetFrame function
+Mar 15 15:14:41.637291 aditof aditof-server[721]: I20230315 15:14:41.637117   721 server.cpp:317] GetFrame function
+Mar 15 15:14:41.777385 aditof aditof-server[721]: I20230315 15:14:41.777220   721 server.cpp:317] GetFrame function
+Mar 15 15:14:41.848952 aditof aditof-server[721]: I20230315 15:14:41.848332   721 server.cpp:317] GetFrame function
+Mar 15 15:14:41.973385 aditof aditof-server[721]: I20230315 15:14:41.973217   721 server.cpp:317] GetFrame function
+Mar 15 15:14:42.044032 aditof aditof-server[721]: I20230315 15:14:42.043524   721 server.cpp:317] GetFrame function
+Mar 15 15:14:42.143633 aditof aditof-server[721]: I20230315 15:14:42.143486   721 server.cpp:317] GetFrame function
+Mar 15 15:14:42.243663 aditof aditof-server[721]: I20230315 15:14:42.243494   721 server.cpp:317] GetFrame function
+Mar 15 15:14:42.343674 aditof aditof-server[721]: I20230315 15:14:42.343505   721 server.cpp:317] GetFrame function
+Mar 15 15:14:42.436985 aditof aditof-server[721]: I20230315 15:14:42.436698   721 server.cpp:317] GetFrame function
+Mar 15 15:14:42.531574 aditof aditof-server[721]: I20230315 15:14:42.531203   721 server.cpp:317] GetFrame function
+Mar 15 15:14:42.683553 aditof aditof-server[721]: I20230315 15:14:42.683028   721 server.cpp:317] GetFrame function
+Mar 15 15:14:42.780793 aditof aditof-server[721]: I20230315 15:14:42.780501   721 server.cpp:317] GetFrame function
+Mar 15 15:14:42.880789 aditof aditof-server[721]: I20230315 15:14:42.880622   721 server.cpp:317] GetFrame function
+Mar 15 15:14:42.958733 aditof aditof-server[721]: I20230315 15:14:42.958564   721 server.cpp:317] GetFrame function
+Mar 15 15:14:43.061810 aditof aditof-server[721]: I20230315 15:14:43.061517   721 server.cpp:317] GetFrame function
+Mar 15 15:14:43.180362 aditof aditof-server[721]: I20230315 15:14:43.180194   721 server.cpp:317] GetFrame function
+Mar 15 15:14:43.281667 aditof aditof-server[721]: I20230315 15:14:43.281497   721 server.cpp:317] GetFrame function
+Mar 15 15:14:43.357130 aditof aditof-server[721]: I20230315 15:14:43.356837   721 server.cpp:317] GetFrame function
+Mar 15 15:14:43.431983 aditof aditof-server[721]: I20230315 15:14:43.431504   721 server.cpp:317] GetFrame function
+Mar 15 15:14:43.535690 aditof aditof-server[721]: I20230315 15:14:43.535521   721 server.cpp:317] GetFrame function
+Mar 15 15:14:43.680478 aditof aditof-server[721]: I20230315 15:14:43.680320   721 server.cpp:317] GetFrame function
+Mar 15 15:14:43.753928 aditof aditof-server[721]: I20230315 15:14:43.753562   721 server.cpp:317] GetFrame function
+Mar 15 15:14:43.839711 aditof aditof-server[721]: I20230315 15:14:43.839542   721 server.cpp:317] GetFrame function
+Mar 15 15:14:43.939941 aditof aditof-server[721]: I20230315 15:14:43.939528   721 server.cpp:317] GetFrame function
+Mar 15 15:14:44.047843 aditof aditof-server[721]: I20230315 15:14:44.047544   721 server.cpp:317] GetFrame function
+Mar 15 15:14:44.139676 aditof aditof-server[721]: I20230315 15:14:44.139508   721 server.cpp:317] GetFrame function
+Mar 15 15:14:44.274127 aditof aditof-server[721]: I20230315 15:14:44.273608   721 server.cpp:317] GetFrame function
+Mar 15 15:14:44.355945 aditof aditof-server[721]: I20230315 15:14:44.355774   721 server.cpp:317] GetFrame function
+Mar 15 15:14:44.462255 aditof aditof-server[721]: I20230315 15:14:44.462088   721 server.cpp:317] GetFrame function
+Mar 15 15:14:44.567569 aditof aditof-server[721]: I20230315 15:14:44.567154   721 server.cpp:317] GetFrame function
+Mar 15 15:14:44.639670 aditof aditof-server[721]: I20230315 15:14:44.639495   721 server.cpp:317] GetFrame function
+Mar 15 15:14:44.748000 aditof aditof-server[721]: I20230315 15:14:44.747526   721 server.cpp:317] GetFrame function
+Mar 15 15:14:44.832708 aditof aditof-server[721]: I20230315 15:14:44.832150   721 server.cpp:317] GetFrame function
+Mar 15 15:14:44.939682 aditof aditof-server[721]: I20230315 15:14:44.939513   721 server.cpp:317] GetFrame function
+Mar 15 15:14:45.054756 aditof aditof-server[721]: I20230315 15:14:45.054405   721 server.cpp:317] GetFrame function
+Mar 15 15:14:45.171548 aditof aditof-server[721]: I20230315 15:14:45.171177   721 server.cpp:317] GetFrame function
+Mar 15 15:14:45.231833 aditof aditof-server[721]: I20230315 15:14:45.231531   721 server.cpp:317] GetFrame function
+Mar 15 15:14:45.339689 aditof aditof-server[721]: I20230315 15:14:45.339525   721 server.cpp:317] GetFrame function
+Mar 15 15:14:45.466575 aditof aditof-server[721]: I20230315 15:14:45.466289   721 server.cpp:317] GetFrame function
+Mar 15 15:14:45.539676 aditof aditof-server[721]: I20230315 15:14:45.539505   721 server.cpp:317] GetFrame function
+Mar 15 15:14:45.669904 aditof aditof-server[721]: I20230315 15:14:45.669734   721 server.cpp:317] GetFrame function
+Mar 15 15:14:45.750693 aditof aditof-server[721]: I20230315 15:14:45.750099   721 server.cpp:317] GetFrame function
+Mar 15 15:14:45.839659 aditof aditof-server[721]: I20230315 15:14:45.839493   721 server.cpp:317] GetFrame function
+Mar 15 15:14:45.948013 aditof aditof-server[721]: I20230315 15:14:45.947506   721 server.cpp:317] GetFrame function
+Mar 15 15:14:46.051285 aditof aditof-server[721]: I20230315 15:14:46.050855   721 server.cpp:317] GetFrame function
+Mar 15 15:14:46.173226 aditof aditof-server[721]: I20230315 15:14:46.173056   721 server.cpp:317] GetFrame function
+Mar 15 15:14:46.244015 aditof aditof-server[721]: I20230315 15:14:46.243505   721 server.cpp:317] GetFrame function
+Mar 15 15:14:46.344091 aditof aditof-server[721]: I20230315 15:14:46.343504   721 server.cpp:317] GetFrame function
+Mar 15 15:14:46.468438 aditof aditof-server[721]: I20230315 15:14:46.468261   721 server.cpp:317] GetFrame function
+Mar 15 15:14:46.540004 aditof aditof-server[721]: I20230315 15:14:46.539490   721 server.cpp:317] GetFrame function
+Mar 15 15:14:46.632061 aditof aditof-server[721]: I20230315 15:14:46.631470   721 server.cpp:317] GetFrame function
+Mar 15 15:14:46.780030 aditof aditof-server[721]: I20230315 15:14:46.779539   721 server.cpp:317] GetFrame function
+Mar 15 15:14:46.846411 aditof aditof-server[721]: I20230315 15:14:46.845925   721 server.cpp:317] GetFrame function
+Mar 15 15:14:46.966532 aditof aditof-server[721]: I20230315 15:14:46.966046   721 server.cpp:317] GetFrame function
+Mar 15 15:14:47.046894 aditof aditof-server[721]: I20230315 15:14:47.046387   721 server.cpp:317] GetFrame function
+Mar 15 15:14:47.183065 aditof aditof-server[721]: I20230315 15:14:47.182840   721 server.cpp:317] GetFrame function
+Mar 15 15:14:47.250805 aditof aditof-server[721]: I20230315 15:14:47.250193   721 server.cpp:317] GetFrame function
+Mar 15 15:14:47.332000 aditof aditof-server[721]: I20230315 15:14:47.331521   721 server.cpp:317] GetFrame function
+Mar 15 15:14:47.472582 aditof aditof-server[721]: I20230315 15:14:47.472419   721 server.cpp:317] GetFrame function
+Mar 15 15:14:47.562211 aditof aditof-server[721]: I20230315 15:14:47.561565   721 server.cpp:317] GetFrame function
+Mar 15 15:14:47.639900 aditof aditof-server[721]: I20230315 15:14:47.639411   721 server.cpp:317] GetFrame function
+Mar 15 15:14:47.765989 aditof aditof-server[721]: I20230315 15:14:47.765818   721 server.cpp:317] GetFrame function
+Mar 15 15:14:47.832054 aditof aditof-server[721]: I20230315 15:14:47.831482   721 server.cpp:317] GetFrame function
+Mar 15 15:14:47.967014 aditof aditof-server[721]: I20230315 15:14:47.966845   721 server.cpp:317] GetFrame function
+Mar 15 15:14:48.044028 aditof aditof-server[721]: I20230315 15:14:48.043545   721 server.cpp:317] GetFrame function
+Mar 15 15:14:48.147983 aditof aditof-server[721]: I20230315 15:14:48.147503   721 server.cpp:317] GetFrame function
+Mar 15 15:14:48.244000 aditof aditof-server[721]: I20230315 15:14:48.243521   721 server.cpp:317] GetFrame function
+Mar 15 15:14:48.328804 aditof aditof-server[721]: I20230315 15:14:48.328325   721 server.cpp:317] GetFrame function
+Mar 15 15:14:48.448122 aditof aditof-server[721]: I20230315 15:14:48.447526   721 server.cpp:317] GetFrame function
+Mar 15 15:14:48.569200 aditof aditof-server[721]: I20230315 15:14:48.569033   721 server.cpp:317] GetFrame function
+Mar 15 15:14:48.647979 aditof aditof-server[721]: I20230315 15:14:48.647517   721 server.cpp:317] GetFrame function
+Mar 15 15:14:48.744099 aditof aditof-server[721]: I20230315 15:14:48.743508   721 server.cpp:317] GetFrame function
+client_loop: send disconnect: Broken pipe
