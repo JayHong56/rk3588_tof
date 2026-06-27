@@ -75,21 +75,22 @@ void ADIController::ConnectNetwork() {
     }
 }
 
-void ADIController::StartCapture() {
+bool ADIController::StartCapture() {
     if (m_networkOnly) {
         if (m_networkStream) {
-            m_networkStream->startRemoteCapture();
+            return m_networkStream->startRemoteCapture();
         }
-        return;
+        return false;
     }
 
     if (m_cameraInUse == -1) {
-        return;
+        return false;
     }
 
     m_stopFlag = false;
     m_workerThread =
         std::thread(std::bind(&ADIController::captureFrames, this));
+    return true;
 }
 
 void ADIController::StopCapture() {

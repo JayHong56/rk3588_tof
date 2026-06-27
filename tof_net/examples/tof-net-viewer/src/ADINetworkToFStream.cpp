@@ -258,7 +258,9 @@ void ensureDirectoryTree(const std::string &dir) {
 
 ADINetworkToFStream::ADINetworkToFStream()
     : m_stopFlag(false), m_running(false), m_clientConnected(false),
-      m_remoteCapturing(false), m_tofiConfig(nullptr),
+      m_remoteCapturing(false), m_waitingForFirstFrame(false),
+      m_lastStartCommandTime(std::chrono::steady_clock::now()),
+      m_tofiConfig(nullptr),
       m_tofiContext(nullptr), m_tofiMode(0) {
     maskFloatingPointTrapsForTofi();
     setStatus("Network listener is idle");
@@ -304,6 +306,7 @@ void ADINetworkToFStream::stop() {
     m_running = false;
     m_clientConnected = false;
     m_remoteCapturing = false;
+    m_waitingForFirstFrame = false;
     setStatus("Network listener stopped");
 }
 
@@ -328,7 +331,21 @@ std::shared_ptr<aditof::Frame> ADINetworkToFStream::getFrame() {
         return m_lastFrame;
     }
 
-    setStatus("Waiting for first RAW ToF frame from network client");
+    if (m_waitingForFirstFrame.load()) {
+        const auto elapsed =
+            std::chrono::duration_cast<std::chrono::seconds>(
+                std::chrono::steady_clock::now() - m_lastStartCommandTime)
+                .count();
+        std::ostringstream ss;
+        ss << "Waiting " << elapsed
+           << "s for first RAW ToF frame after StartCapture";
+        if (!m_clientConnected.load()) {
+            ss << "; Machine A disconnected, likely camera side restarted";
+        }
+        setStatus(ss.str());
+    } else {
+        setStatus("Waiting for first RAW ToF frame from network client");
+    }
     m_lastFrame = buildEmptyFrame();
     return m_lastFrame;
 }
@@ -379,6 +396,8 @@ bool ADINetworkToFStream::sendStartCaptureCommand() {
     }
 
     m_remoteCapturing = true;
+    m_waitingForFirstFrame = true;
+    m_lastStartCommandTime = std::chrono::steady_clock::now();
     std::ostringstream ss;
     ss << "Sent StartCapture to Machine A"
        << " mode=" << payload.mode;
@@ -407,6 +426,7 @@ bool ADINetworkToFStream::sendStopCaptureCommand() {
     }
 
     m_remoteCapturing = false;
+    m_waitingForFirstFrame = false;
     setStatus("Sent StopCapture to Machine A");
     return true;
 }
@@ -481,7 +501,7 @@ void ADINetworkToFStream::workerLoop() {
                             tof_net::StatusPayload st;
                             std::memcpy(&st, message.payload.data(), sizeof(st));
                             std::ostringstream rs;
-                            rs << "Remote status: "
+                            rs << "Remote status code=" << st.code << ": "
                                << tof_net::cstr_to_string(st.text, sizeof(st.text))
                                << " frame=" << st.frame_id;
                             setStatus(rs.str());
@@ -497,14 +517,24 @@ void ADINetworkToFStream::workerLoop() {
                     }
                 }
 
+                const bool captureWasActive = m_remoteCapturing.load();
+                const bool waitingForFirstFrame =
+                    m_waitingForFirstFrame.load();
                 {
                     std::lock_guard<std::mutex> lock(m_socketMutex);
                     m_clientSocket.close();
                     m_clientConnected = false;
                     m_remoteCapturing = false;
+                    m_waitingForFirstFrame = false;
                 }
                 if (!m_stopFlag.load()) {
-                    setStatus("RAW ToF client disconnected; waiting for reconnect");
+                    if (captureWasActive && waitingForFirstFrame) {
+                        setStatus("RAW ToF client disconnected before first frame after StartCapture; Machine A or ToF camera likely restarted");
+                    } else if (captureWasActive) {
+                        setStatus("RAW ToF client disconnected during capture; waiting for reconnect");
+                    } else {
+                        setStatus("RAW ToF client disconnected; waiting for reconnect");
+                    }
                 }
             }
         } catch (const std::exception &e) {
@@ -521,6 +551,7 @@ void ADINetworkToFStream::workerLoop() {
                 m_listenSocket.close();
                 m_clientConnected = false;
                 m_remoteCapturing = false;
+                m_waitingForFirstFrame = false;
             }
         }
     }
@@ -532,6 +563,7 @@ void ADINetworkToFStream::workerLoop() {
     }
     m_clientConnected = false;
     m_remoteCapturing = false;
+    m_waitingForFirstFrame = false;
     m_running = false;
 }
 
@@ -779,6 +811,15 @@ void ADINetworkToFStream::handleDataFrame(const tof_net::Message &message) {
            << header.raw_height << ", raw_bytes=" << header.raw_bytes
            << ", codec=" << header.codec << ", mode=" << header.mode
            << ", frame_type="
+           << tof_net::cstr_to_string(header.frame_type, tof_net::kNameLen);
+        setStatus(ss.str());
+    }
+    if (m_waitingForFirstFrame.exchange(false)) {
+        std::ostringstream ss;
+        ss << "First RAW frame arrived after StartCapture: frame="
+           << header.frame_id << " " << header.raw_width << "x"
+           << header.raw_height << " raw_bytes=" << header.raw_bytes
+           << " frame_type="
            << tof_net::cstr_to_string(header.frame_type, tof_net::kNameLen);
         setStatus(ss.str());
     }

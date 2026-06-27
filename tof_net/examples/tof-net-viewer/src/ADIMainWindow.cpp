@@ -1463,13 +1463,24 @@ void ADIMainWindow::PlayCCD(int modeSelect, int viewSelect) {
                 view->m_ctrl->StopCapture();
             }
 
-            prepareCamera(m_cameraModes[modeSelection].second);
+            const std::string playMode = m_cameraModes[modeSelection].second;
+            my_log.AddLog("Play requested: mode=%s view=%d\n",
+                          playMode.c_str(), viewSelect);
+            prepareCamera(playMode);
             openGLCleanUp();
             initOpenGLIRTexture();
             initOpenGLDepthTexture();
             initOpenGLPointCloudTexture();
 
-            view->m_ctrl->StartCapture();
+            if (!view->m_ctrl->StartCapture()) {
+                my_log.AddLog("StartCapture failed: %s\n",
+                              view->m_ctrl->getNetworkStatusText().c_str());
+                isPlaying = false;
+                captureSeparateEnabled = true;
+                return;
+            }
+            my_log.AddLog("StartCapture sent: %s\n",
+                          view->m_ctrl->getNetworkStatusText().c_str());
             view->m_ctrl->requestFrame();
             captureSeparateEnabled = false;
             modeSelectChanged = modeSelect;

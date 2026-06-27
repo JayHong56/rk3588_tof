@@ -39,7 +39,7 @@ class ADIController {
 		* @brief	Start capture thread
 		*/
     void ConnectNetwork();
-    void StartCapture();
+    bool StartCapture();
 
     /**
 		* @brief	Stops capture thread

@@ -472,18 +472,21 @@ class CameraRawSource {
         if (!camera_) return false;
         if (frameType == mode_name_) return true;
 
+        std::cout << "[collect] switchMode begin: " << mode_name_
+                  << " -> " << frameType << std::endl;
         stop_locked();
         auto st = camera_->setFrameType(frameType);
         if (st != aditof::Status::OK) {
             std::cerr << "[collect] setFrameType(" << frameType
-                      << ") failed\n";
+                      << ") failed, status=" << static_cast<int>(st)
+                      << std::endl;
             return false;
         }
         mode_name_ = frameType;
         // Update args_.mode so DataFrame headers carry the correct mode ID.
         args_.mode = ModeInfo::getInstance()->getModeInfo(frameType).mode;
         std::cout << "[collect] Switched to mode: " << mode_name_
-                  << " (modeId=" << args_.mode << ")\n";
+                  << " (modeId=" << args_.mode << ")" << std::endl;
         return true;
     }
 
@@ -492,7 +495,16 @@ class CameraRawSource {
         stop_locked();
         if (!camera_) throw std::runtime_error("camera not initialized");
 
+        std::cout << "[collect] camera->start() begin: mode=" << mode_name_
+                  << " modeId=" << args_.mode << std::endl;
+        const auto startBegin = std::chrono::steady_clock::now();
         auto st = camera_->start();
+        const auto startMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+                                 std::chrono::steady_clock::now() - startBegin)
+                                 .count();
+        std::cout << "[collect] camera->start() returned status="
+                  << static_cast<int>(st) << " elapsed_ms=" << startMs
+                  << std::endl;
         if (st != aditof::Status::OK) throw std::runtime_error("camera start failed");
 
         if (args_.ext_fsync == 0) {
@@ -518,10 +530,14 @@ class CameraRawSource {
         // behavior here; the first frame after start can carry stale or partially
         // initialized raw payload on some firmware versions.
         try {
+            std::cout << "[collect] dropping first RAW frame after start: requestFrame begin"
+                      << std::endl;
             (void)get_frame_locked();
-            std::cout << "Dropped first RAW frame after camera start\n";
+            std::cout << "[collect] dropped first RAW frame after camera start"
+                      << std::endl;
         } catch (const std::exception &e) {
-            std::cerr << "Warning: failed to drop first frame: " << e.what() << "\n";
+            std::cerr << "Warning: failed to drop first frame: " << e.what()
+                      << std::endl;
         }
     }
 
@@ -770,11 +786,44 @@ void session(const Args &args, CameraRawSource &cam) {
                     std::memcpy(&sc, msg.payload.data(), sizeof(sc));
                     requestedFt = cstr_to_string(sc.frame_type, kNameLen);
                 }
-                stop_thread();
-                if (!requestedFt.empty()) {
-                    cam.switchMode(requestedFt);
+                std::cout << "[collect] StartCapture received"
+                          << (requestedFt.empty() ? "" : ": frame_type=")
+                          << requestedFt << std::endl;
+                try {
+                    {
+                        std::lock_guard<std::mutex> lock(send_mu);
+                        send_status(sock, StatusCode::WaitingForCommand,
+                                    "StartCapture received; preparing camera");
+                    }
+                    stop_thread();
+                    if (!requestedFt.empty()) {
+                        {
+                            std::lock_guard<std::mutex> lock(send_mu);
+                            send_status(sock, StatusCode::WaitingForCommand,
+                                        "switching frame type before start");
+                        }
+                        if (!cam.switchMode(requestedFt)) {
+                            throw std::runtime_error("camera setFrameType failed: " +
+                                                     requestedFt);
+                        }
+                    }
+                    {
+                        std::lock_guard<std::mutex> lock(send_mu);
+                        send_status(sock, StatusCode::WaitingForCommand,
+                                    "calling camera start");
+                    }
+                    cam.start();
+                } catch (const std::exception &e) {
+                    const std::string text =
+                        std::string("StartCapture failed: ") + e.what();
+                    std::cerr << "[collect] " << text << std::endl;
+                    try {
+                        std::lock_guard<std::mutex> lock(send_mu);
+                        send_status(sock, StatusCode::Error, text);
+                    } catch (...) {}
+                    stop_thread();
+                    continue;
                 }
-                cam.start();
                 capture_thread_run = true;
                 {
                     std::lock_guard<std::mutex> lock(send_mu);
