@@ -4,17 +4,17 @@
 # build_*/
 
 # Generated headers
-sdk/include/aditof/version.h
+# sdk/include/aditof/version.h
 
 # Compiled objects
-*.o
-*.a
-*.so
-*.so.*
+# *.o
+# *.a
+# *.so
+# *.so.*
 
 # Dependencies
-*deps/
-*.temp/
+# *deps/
+# *.temp/
 
 # IDE / editor
 .vscode/
