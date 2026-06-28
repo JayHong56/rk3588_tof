@@ -41,10 +41,6 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../sdk/src/cameras/itof-camera"
   "../sdk/include"
   "../sdk/src"
-  "../examples/tof-viewer/external/imgui/src"
-  "../examples/tof-viewer/external/imgui/src/examples"
-  "../examples/tof-viewer/external/imgui/src/examples/libs/gl3w"
-  "../examples/tof-viewer/external/imgui/src/examples/libs/glfw/include"
   "../dependencies/third-party/c_json"
   "../examples/tof-net-common/include"
   "../sdk/common/adi/tofi"
@@ -55,7 +51,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
   "/home/linaro/rk3588_tof/tof_net/build/sdk/CMakeFiles/aditof.dir/DependInfo.cmake"
-  "/home/linaro/rk3588_tof/tof_net/build/examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/DependInfo.cmake"
+  "/home/linaro/rk3588_tof/tof_net/build/examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/DependInfo.cmake"
   "/home/linaro/rk3588_tof/tof_net/build/dependencies/third-party/c_json/CMakeFiles/cjson.dir/DependInfo.cmake"
   "/home/linaro/rk3588_tof/tof_net/build/examples/tof-net-common/CMakeFiles/tof_net_common.dir/DependInfo.cmake"
   "/home/linaro/rk3588_tof/tof_net/build/sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/DependInfo.cmake"

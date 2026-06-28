@@ -149,6 +149,26 @@ sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.o
  /opt/glog/include/glog/logging.h
  /opt/glog/include/glog/platform.h
  /opt/glog/include/glog/vlog_is_on.h
+sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.o
+ ../sdk/include/aditof/connections.h
+ ../sdk/include/aditof/depth_sensor_interface.h
+ ../sdk/include/aditof/frame_definitions.h
+ ../sdk/include/aditof/log.h
+ ../sdk/include/aditof/sdk_exports.h
+ ../sdk/include/aditof/sensor_definitions.h
+ ../sdk/include/aditof/sensor_enumerator_interface.h
+ ../sdk/include/aditof/status_definitions.h
+ ../sdk/include/aditof/storage_interface.h
+ ../sdk/include/aditof/temperature_sensor_interface.h
+ ../sdk/src/cameras/itof-camera/sensor_names.h
+ ../sdk/src/connections/target/target_sensor_enumerator.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp
+ /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/soc/imx/target_definitions.h
+ /opt/glog/include/glog/export.h
+ /opt/glog/include/glog/log_severity.h
+ /opt/glog/include/glog/logging.h
+ /opt/glog/include/glog/platform.h
+ /opt/glog/include/glog/vlog_is_on.h
 sdk/CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.o
  ../sdk/include/aditof/frame_definitions.h
  ../sdk/include/aditof/frame_operations.h
@@ -640,7 +660,27 @@ sdk/CMakeFiles/aditof.dir/src/connections/network/network_temperature_sensor.cpp
  /opt/websockets/include/libwebsockets/lws-x509.h
  /opt/websockets/include/lws_config.h
  sdk/buffer.pb.h
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.o
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.o
+ ../sdk/include/aditof/connections.h
+ ../sdk/include/aditof/depth_sensor_interface.h
+ ../sdk/include/aditof/frame_definitions.h
+ ../sdk/include/aditof/frame_operations.h
+ ../sdk/include/aditof/log.h
+ ../sdk/include/aditof/sdk_exports.h
+ ../sdk/include/aditof/sensor_definitions.h
+ ../sdk/include/aditof/status_definitions.h
+ ../sdk/src/cameras/itof-camera/mode_info.h
+ ../sdk/src/utils.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/mode_info.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3100_sensor.cpp
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3100_sensor.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/v4l_buffer_access_interface.h
+ /opt/glog/include/glog/export.h
+ /opt/glog/include/glog/log_severity.h
+ /opt/glog/include/glog/logging.h
+ /opt/glog/include/glog/platform.h
+ /opt/glog/include/glog/vlog_is_on.h
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.o
  ../sdk/include/aditof/connections.h
  ../sdk/include/aditof/depth_sensor_interface.h
  ../sdk/include/aditof/frame_definitions.h
@@ -648,71 +688,60 @@ sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.o
  ../sdk/include/aditof/sdk_exports.h
  ../sdk/include/aditof/sensor_definitions.h
  ../sdk/include/aditof/status_definitions.h
- ../sdk/src/connections/usb/usb_depth_sensor.h
- ../sdk/src/connections/usb/usb_utils.h
- ../sdk/src/device_utils.h
- /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_depth_sensor_linux.cpp
- /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_linux_utils.h
+ ../sdk/src/cameras/itof-camera/mode_info.h
+ ../sdk/src/connections/target/v4l_buffer_access_interface.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_interrupt_notifier.cpp
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_interrupt_notifier.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_sensor.h
  /opt/glog/include/glog/export.h
  /opt/glog/include/glog/log_severity.h
  /opt/glog/include/glog/logging.h
  /opt/glog/include/glog/platform.h
  /opt/glog/include/glog/vlog_is_on.h
- /opt/protobuf/include/google/protobuf/arena.h
- /opt/protobuf/include/google/protobuf/arena_impl.h
- /opt/protobuf/include/google/protobuf/arenastring.h
- /opt/protobuf/include/google/protobuf/descriptor.h
- /opt/protobuf/include/google/protobuf/extension_set.h
- /opt/protobuf/include/google/protobuf/generated_enum_reflection.h
- /opt/protobuf/include/google/protobuf/generated_enum_util.h
- /opt/protobuf/include/google/protobuf/generated_message_reflection.h
- /opt/protobuf/include/google/protobuf/generated_message_table_driven.h
- /opt/protobuf/include/google/protobuf/generated_message_util.h
- /opt/protobuf/include/google/protobuf/has_bits.h
- /opt/protobuf/include/google/protobuf/implicit_weak_message.h
- /opt/protobuf/include/google/protobuf/inlined_string_field.h
- /opt/protobuf/include/google/protobuf/io/coded_stream.h
- /opt/protobuf/include/google/protobuf/io/zero_copy_stream.h
- /opt/protobuf/include/google/protobuf/map.h
- /opt/protobuf/include/google/protobuf/map_entry_lite.h
- /opt/protobuf/include/google/protobuf/map_field_lite.h
- /opt/protobuf/include/google/protobuf/map_type_handler.h
- /opt/protobuf/include/google/protobuf/message.h
- /opt/protobuf/include/google/protobuf/message_lite.h
- /opt/protobuf/include/google/protobuf/metadata.h
- /opt/protobuf/include/google/protobuf/metadata_lite.h
- /opt/protobuf/include/google/protobuf/parse_context.h
- /opt/protobuf/include/google/protobuf/port.h
- /opt/protobuf/include/google/protobuf/port_def.inc
- /opt/protobuf/include/google/protobuf/port_undef.inc
- /opt/protobuf/include/google/protobuf/repeated_field.h
- /opt/protobuf/include/google/protobuf/stubs/casts.h
- /opt/protobuf/include/google/protobuf/stubs/common.h
- /opt/protobuf/include/google/protobuf/stubs/fastmem.h
- /opt/protobuf/include/google/protobuf/stubs/hash.h
- /opt/protobuf/include/google/protobuf/stubs/logging.h
- /opt/protobuf/include/google/protobuf/stubs/macros.h
- /opt/protobuf/include/google/protobuf/stubs/mutex.h
- /opt/protobuf/include/google/protobuf/stubs/once.h
- /opt/protobuf/include/google/protobuf/stubs/platform_macros.h
- /opt/protobuf/include/google/protobuf/stubs/port.h
- /opt/protobuf/include/google/protobuf/stubs/stringpiece.h
- /opt/protobuf/include/google/protobuf/stubs/strutil.h
- /opt/protobuf/include/google/protobuf/unknown_field_set.h
- /opt/protobuf/include/google/protobuf/wire_format_lite.h
- sdk/usb_buffer.pb.h
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.o
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.o
+ ../sdk/include/aditof/connections.h
+ ../sdk/include/aditof/depth_sensor_interface.h
+ ../sdk/include/aditof/frame_definitions.h
+ ../sdk/include/aditof/frame_operations.h
+ ../sdk/include/aditof/log.h
+ ../sdk/include/aditof/sdk_exports.h
+ ../sdk/include/aditof/sensor_definitions.h
+ ../sdk/include/aditof/status_definitions.h
+ ../sdk/src/cameras/itof-camera/mode_info.h
+ ../sdk/src/connections/target/v4l_buffer_access_interface.h
+ ../sdk/src/utils.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_interrupt_notifier.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_sensor.cpp
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_sensor.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/gpio.h
+ /opt/glog/include/glog/export.h
+ /opt/glog/include/glog/log_severity.h
+ /opt/glog/include/glog/logging.h
+ /opt/glog/include/glog/platform.h
+ /opt/glog/include/glog/vlog_is_on.h
+sdk/CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.o
  ../sdk/include/aditof/log.h
  ../sdk/include/aditof/sdk_exports.h
  ../sdk/include/aditof/status_definitions.h
- /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_linux_utils.cpp
- /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_linux_utils.h
+ ../sdk/include/aditof/storage_interface.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/eeprom.cpp
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/eeprom.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/i2c_common.h
  /opt/glog/include/glog/export.h
  /opt/glog/include/glog/log_severity.h
  /opt/glog/include/glog/logging.h
  /opt/glog/include/glog/platform.h
  /opt/glog/include/glog/vlog_is_on.h
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.o
+sdk/CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.o
+ ../sdk/include/aditof/log.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/gpio.cpp
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/gpio.h
+ /opt/glog/include/glog/export.h
+ /opt/glog/include/glog/log_severity.h
+ /opt/glog/include/glog/logging.h
+ /opt/glog/include/glog/platform.h
+ /opt/glog/include/glog/vlog_is_on.h
+sdk/CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.o
  ../sdk/include/aditof/connections.h
  ../sdk/include/aditof/depth_sensor_interface.h
  ../sdk/include/aditof/frame_definitions.h
@@ -723,127 +752,14 @@ sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.o
  ../sdk/include/aditof/status_definitions.h
  ../sdk/include/aditof/storage_interface.h
  ../sdk/include/aditof/temperature_sensor_interface.h
- ../sdk/src/connections/usb/linux/usb_linux_utils.h
- ../sdk/src/connections/usb/usb_depth_sensor.h
- ../sdk/src/connections/usb/usb_sensor_enumerator.h
- ../sdk/src/connections/usb/usb_storage.h
- ../sdk/src/connections/usb/usb_temperature_sensor.h
- ../sdk/src/connections/usb/usb_utils.h
- ../sdk/src/utils.h
- /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_sensor_enumerator.cpp
- /opt/glog/include/glog/export.h
- /opt/glog/include/glog/log_severity.h
- /opt/glog/include/glog/logging.h
- /opt/glog/include/glog/platform.h
- /opt/glog/include/glog/vlog_is_on.h
- /opt/protobuf/include/google/protobuf/arena.h
- /opt/protobuf/include/google/protobuf/arena_impl.h
- /opt/protobuf/include/google/protobuf/arenastring.h
- /opt/protobuf/include/google/protobuf/descriptor.h
- /opt/protobuf/include/google/protobuf/extension_set.h
- /opt/protobuf/include/google/protobuf/generated_enum_reflection.h
- /opt/protobuf/include/google/protobuf/generated_enum_util.h
- /opt/protobuf/include/google/protobuf/generated_message_reflection.h
- /opt/protobuf/include/google/protobuf/generated_message_table_driven.h
- /opt/protobuf/include/google/protobuf/generated_message_util.h
- /opt/protobuf/include/google/protobuf/has_bits.h
- /opt/protobuf/include/google/protobuf/implicit_weak_message.h
- /opt/protobuf/include/google/protobuf/inlined_string_field.h
- /opt/protobuf/include/google/protobuf/io/coded_stream.h
- /opt/protobuf/include/google/protobuf/io/zero_copy_stream.h
- /opt/protobuf/include/google/protobuf/map.h
- /opt/protobuf/include/google/protobuf/map_entry_lite.h
- /opt/protobuf/include/google/protobuf/map_field_lite.h
- /opt/protobuf/include/google/protobuf/map_type_handler.h
- /opt/protobuf/include/google/protobuf/message.h
- /opt/protobuf/include/google/protobuf/message_lite.h
- /opt/protobuf/include/google/protobuf/metadata.h
- /opt/protobuf/include/google/protobuf/metadata_lite.h
- /opt/protobuf/include/google/protobuf/parse_context.h
- /opt/protobuf/include/google/protobuf/port.h
- /opt/protobuf/include/google/protobuf/port_def.inc
- /opt/protobuf/include/google/protobuf/port_undef.inc
- /opt/protobuf/include/google/protobuf/repeated_field.h
- /opt/protobuf/include/google/protobuf/stubs/casts.h
- /opt/protobuf/include/google/protobuf/stubs/common.h
- /opt/protobuf/include/google/protobuf/stubs/fastmem.h
- /opt/protobuf/include/google/protobuf/stubs/hash.h
- /opt/protobuf/include/google/protobuf/stubs/logging.h
- /opt/protobuf/include/google/protobuf/stubs/macros.h
- /opt/protobuf/include/google/protobuf/stubs/mutex.h
- /opt/protobuf/include/google/protobuf/stubs/once.h
- /opt/protobuf/include/google/protobuf/stubs/platform_macros.h
- /opt/protobuf/include/google/protobuf/stubs/port.h
- /opt/protobuf/include/google/protobuf/stubs/stringpiece.h
- /opt/protobuf/include/google/protobuf/stubs/strutil.h
- /opt/protobuf/include/google/protobuf/unknown_field_set.h
- /opt/protobuf/include/google/protobuf/wire_format_lite.h
- sdk/usb_buffer.pb.h
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.o
- ../sdk/include/aditof/log.h
- ../sdk/include/aditof/sdk_exports.h
- ../sdk/include/aditof/status_definitions.h
- ../sdk/include/aditof/storage_interface.h
- ../sdk/src/connections/usb/usb_storage.h
- ../sdk/src/utils.h
- /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_linux_utils.h
- /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_storage_linux.cpp
- /opt/glog/include/glog/export.h
- /opt/glog/include/glog/log_severity.h
- /opt/glog/include/glog/logging.h
- /opt/glog/include/glog/platform.h
- /opt/glog/include/glog/vlog_is_on.h
- /opt/protobuf/include/google/protobuf/arena.h
- /opt/protobuf/include/google/protobuf/arena_impl.h
- /opt/protobuf/include/google/protobuf/arenastring.h
- /opt/protobuf/include/google/protobuf/descriptor.h
- /opt/protobuf/include/google/protobuf/extension_set.h
- /opt/protobuf/include/google/protobuf/generated_enum_reflection.h
- /opt/protobuf/include/google/protobuf/generated_enum_util.h
- /opt/protobuf/include/google/protobuf/generated_message_reflection.h
- /opt/protobuf/include/google/protobuf/generated_message_table_driven.h
- /opt/protobuf/include/google/protobuf/generated_message_util.h
- /opt/protobuf/include/google/protobuf/has_bits.h
- /opt/protobuf/include/google/protobuf/implicit_weak_message.h
- /opt/protobuf/include/google/protobuf/inlined_string_field.h
- /opt/protobuf/include/google/protobuf/io/coded_stream.h
- /opt/protobuf/include/google/protobuf/io/zero_copy_stream.h
- /opt/protobuf/include/google/protobuf/map.h
- /opt/protobuf/include/google/protobuf/map_entry_lite.h
- /opt/protobuf/include/google/protobuf/map_field_lite.h
- /opt/protobuf/include/google/protobuf/map_type_handler.h
- /opt/protobuf/include/google/protobuf/message.h
- /opt/protobuf/include/google/protobuf/message_lite.h
- /opt/protobuf/include/google/protobuf/metadata.h
- /opt/protobuf/include/google/protobuf/metadata_lite.h
- /opt/protobuf/include/google/protobuf/parse_context.h
- /opt/protobuf/include/google/protobuf/port.h
- /opt/protobuf/include/google/protobuf/port_def.inc
- /opt/protobuf/include/google/protobuf/port_undef.inc
- /opt/protobuf/include/google/protobuf/repeated_field.h
- /opt/protobuf/include/google/protobuf/stubs/casts.h
- /opt/protobuf/include/google/protobuf/stubs/common.h
- /opt/protobuf/include/google/protobuf/stubs/fastmem.h
- /opt/protobuf/include/google/protobuf/stubs/hash.h
- /opt/protobuf/include/google/protobuf/stubs/logging.h
- /opt/protobuf/include/google/protobuf/stubs/macros.h
- /opt/protobuf/include/google/protobuf/stubs/mutex.h
- /opt/protobuf/include/google/protobuf/stubs/once.h
- /opt/protobuf/include/google/protobuf/stubs/platform_macros.h
- /opt/protobuf/include/google/protobuf/stubs/port.h
- /opt/protobuf/include/google/protobuf/stubs/stringpiece.h
- /opt/protobuf/include/google/protobuf/stubs/strutil.h
- /opt/protobuf/include/google/protobuf/unknown_field_set.h
- /opt/protobuf/include/google/protobuf/wire_format_lite.h
- sdk/usb_buffer.pb.h
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.o
- ../sdk/include/aditof/log.h
- ../sdk/include/aditof/sdk_exports.h
- ../sdk/include/aditof/status_definitions.h
- ../sdk/include/aditof/temperature_sensor_interface.h
- ../sdk/src/connections/usb/usb_temperature_sensor.h
- /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_linux_utils.h
- /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_temperature_sensor_linux.cpp
+ ../sdk/src/cameras/itof-camera/mode_info.h
+ ../sdk/src/connections/target/adsd3100_sensor.h
+ ../sdk/src/connections/target/adsd3500_interrupt_notifier.h
+ ../sdk/src/connections/target/adsd3500_sensor.h
+ ../sdk/src/connections/target/eeprom.h
+ ../sdk/src/connections/target/target_sensor_enumerator.h
+ ../sdk/src/connections/target/v4l_buffer_access_interface.h
+ /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/target_sensor_enumerator.cpp
  /opt/glog/include/glog/export.h
  /opt/glog/include/glog/log_severity.h
  /opt/glog/include/glog/logging.h

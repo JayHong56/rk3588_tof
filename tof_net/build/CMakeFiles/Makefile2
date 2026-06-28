@@ -102,19 +102,78 @@ clean: tools/clean
 # Directory level rules for directory apps
 
 # Recursive "all" directory target.
-apps/all:
+apps/all: apps/uvc-app/all
+apps/all: apps/server/all
 
 .PHONY : apps/all
 
 # Recursive "preinstall" directory target.
-apps/preinstall:
+apps/preinstall: apps/uvc-app/preinstall
+apps/preinstall: apps/server/preinstall
 
 .PHONY : apps/preinstall
 
 # Recursive "clean" directory target.
-apps/clean:
+apps/clean: apps/uvc-app/clean
+apps/clean: apps/server/clean
 
 .PHONY : apps/clean
+
+#=============================================================================
+# Directory level rules for directory apps/server
+
+# Recursive "all" directory target.
+apps/server/all: apps/server/CMakeFiles/aditof-server.dir/all
+
+.PHONY : apps/server/all
+
+# Recursive "preinstall" directory target.
+apps/server/preinstall:
+
+.PHONY : apps/server/preinstall
+
+# Recursive "clean" directory target.
+apps/server/clean: apps/server/CMakeFiles/aditof-server.dir/clean
+
+.PHONY : apps/server/clean
+
+#=============================================================================
+# Directory level rules for directory apps/uvc-app
+
+# Recursive "all" directory target.
+apps/uvc-app/all: apps/uvc-app/CMakeFiles/uvc-app.dir/all
+apps/uvc-app/all: apps/uvc-app/lib/all
+
+.PHONY : apps/uvc-app/all
+
+# Recursive "preinstall" directory target.
+apps/uvc-app/preinstall: apps/uvc-app/lib/preinstall
+
+.PHONY : apps/uvc-app/preinstall
+
+# Recursive "clean" directory target.
+apps/uvc-app/clean: apps/uvc-app/CMakeFiles/uvc-app.dir/clean
+apps/uvc-app/clean: apps/uvc-app/lib/clean
+
+.PHONY : apps/uvc-app/clean
+
+#=============================================================================
+# Directory level rules for directory apps/uvc-app/lib
+
+# Recursive "all" directory target.
+apps/uvc-app/lib/all: apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/all
+
+.PHONY : apps/uvc-app/lib/all
+
+# Recursive "preinstall" directory target.
+apps/uvc-app/lib/preinstall:
+
+.PHONY : apps/uvc-app/lib/preinstall
+
+# Recursive "clean" directory target.
+apps/uvc-app/lib/clean: apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/clean
+
+.PHONY : apps/uvc-app/lib/clean
 
 #=============================================================================
 # Directory level rules for directory dependencies
@@ -179,7 +238,6 @@ dependencies/third-party/doc_opt/clean: dependencies/third-party/doc_opt/CMakeFi
 # Recursive "all" directory target.
 examples/all: examples/first-frame/all
 examples/all: examples/data_collect/all
-examples/all: examples/tof-viewer/all
 examples/all: examples/tof-net-common/all
 examples/all: examples/tof-net-collect/all
 examples/all: examples/tof-net-viewer/all
@@ -191,7 +249,6 @@ examples/all: examples/point_cloud/all
 # Recursive "preinstall" directory target.
 examples/preinstall: examples/first-frame/preinstall
 examples/preinstall: examples/data_collect/preinstall
-examples/preinstall: examples/tof-viewer/preinstall
 examples/preinstall: examples/tof-net-common/preinstall
 examples/preinstall: examples/tof-net-collect/preinstall
 examples/preinstall: examples/tof-net-viewer/preinstall
@@ -203,7 +260,6 @@ examples/preinstall: examples/point_cloud/preinstall
 # Recursive "clean" directory target.
 examples/clean: examples/first-frame/clean
 examples/clean: examples/data_collect/clean
-examples/clean: examples/tof-viewer/clean
 examples/clean: examples/tof-net-common/clean
 examples/clean: examples/tof-net-collect/clean
 examples/clean: examples/tof-net-viewer/clean
@@ -325,56 +381,38 @@ examples/tof-net-common/clean: examples/tof-net-common/CMakeFiles/tof_net_common
 
 # Recursive "all" directory target.
 examples/tof-net-viewer/all: examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/all
+examples/tof-net-viewer/all: examples/tof-net-viewer/external/imgui/all
 
 .PHONY : examples/tof-net-viewer/all
 
 # Recursive "preinstall" directory target.
-examples/tof-net-viewer/preinstall:
+examples/tof-net-viewer/preinstall: examples/tof-net-viewer/external/imgui/preinstall
 
 .PHONY : examples/tof-net-viewer/preinstall
 
 # Recursive "clean" directory target.
 examples/tof-net-viewer/clean: examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/clean
+examples/tof-net-viewer/clean: examples/tof-net-viewer/external/imgui/clean
 
 .PHONY : examples/tof-net-viewer/clean
 
 #=============================================================================
-# Directory level rules for directory examples/tof-viewer
+# Directory level rules for directory examples/tof-net-viewer/external/imgui
 
 # Recursive "all" directory target.
-examples/tof-viewer/all: examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/all
-examples/tof-viewer/all: examples/tof-viewer/external/imgui/all
+examples/tof-net-viewer/external/imgui/all: examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/all
 
-.PHONY : examples/tof-viewer/all
-
-# Recursive "preinstall" directory target.
-examples/tof-viewer/preinstall: examples/tof-viewer/external/imgui/preinstall
-
-.PHONY : examples/tof-viewer/preinstall
-
-# Recursive "clean" directory target.
-examples/tof-viewer/clean: examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/clean
-examples/tof-viewer/clean: examples/tof-viewer/external/imgui/clean
-
-.PHONY : examples/tof-viewer/clean
-
-#=============================================================================
-# Directory level rules for directory examples/tof-viewer/external/imgui
-
-# Recursive "all" directory target.
-examples/tof-viewer/external/imgui/all: examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/all
-
-.PHONY : examples/tof-viewer/external/imgui/all
+.PHONY : examples/tof-net-viewer/external/imgui/all
 
 # Recursive "preinstall" directory target.
-examples/tof-viewer/external/imgui/preinstall:
+examples/tof-net-viewer/external/imgui/preinstall:
 
-.PHONY : examples/tof-viewer/external/imgui/preinstall
+.PHONY : examples/tof-net-viewer/external/imgui/preinstall
 
 # Recursive "clean" directory target.
-examples/tof-viewer/external/imgui/clean: examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/clean
+examples/tof-net-viewer/external/imgui/clean: examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/clean
 
-.PHONY : examples/tof-viewer/external/imgui/clean
+.PHONY : examples/tof-net-viewer/external/imgui/clean
 
 #=============================================================================
 # Directory level rules for directory sdk
@@ -441,19 +479,76 @@ sdk/common/adi/depth-compute-opensource/clean: sdk/common/adi/depth-compute-open
 # Directory level rules for directory tools
 
 # Recursive "all" directory target.
-tools/all:
+tools/all: tools/nvm_tools/all
 
 .PHONY : tools/all
 
 # Recursive "preinstall" directory target.
-tools/preinstall:
+tools/preinstall: tools/nvm_tools/preinstall
 
 .PHONY : tools/preinstall
 
 # Recursive "clean" directory target.
-tools/clean:
+tools/clean: tools/nvm_tools/clean
 
 .PHONY : tools/clean
+
+#=============================================================================
+# Directory level rules for directory tools/nvm_tools
+
+# Recursive "all" directory target.
+tools/nvm_tools/all: tools/nvm_tools/fw_upgrade/all
+tools/nvm_tools/all: tools/nvm_tools/nvm_write/all
+
+.PHONY : tools/nvm_tools/all
+
+# Recursive "preinstall" directory target.
+tools/nvm_tools/preinstall: tools/nvm_tools/fw_upgrade/preinstall
+tools/nvm_tools/preinstall: tools/nvm_tools/nvm_write/preinstall
+
+.PHONY : tools/nvm_tools/preinstall
+
+# Recursive "clean" directory target.
+tools/nvm_tools/clean: tools/nvm_tools/fw_upgrade/clean
+tools/nvm_tools/clean: tools/nvm_tools/nvm_write/clean
+
+.PHONY : tools/nvm_tools/clean
+
+#=============================================================================
+# Directory level rules for directory tools/nvm_tools/fw_upgrade
+
+# Recursive "all" directory target.
+tools/nvm_tools/fw_upgrade/all: tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/all
+
+.PHONY : tools/nvm_tools/fw_upgrade/all
+
+# Recursive "preinstall" directory target.
+tools/nvm_tools/fw_upgrade/preinstall:
+
+.PHONY : tools/nvm_tools/fw_upgrade/preinstall
+
+# Recursive "clean" directory target.
+tools/nvm_tools/fw_upgrade/clean: tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/clean
+
+.PHONY : tools/nvm_tools/fw_upgrade/clean
+
+#=============================================================================
+# Directory level rules for directory tools/nvm_tools/nvm_write
+
+# Recursive "all" directory target.
+tools/nvm_tools/nvm_write/all: tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/all
+
+.PHONY : tools/nvm_tools/nvm_write/all
+
+# Recursive "preinstall" directory target.
+tools/nvm_tools/nvm_write/preinstall:
+
+.PHONY : tools/nvm_tools/nvm_write/preinstall
+
+# Recursive "clean" directory target.
+tools/nvm_tools/nvm_write/clean: tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/clean
+
+.PHONY : tools/nvm_tools/nvm_write/clean
 
 #=============================================================================
 # Target rules for target dependencies/third-party/c_json/CMakeFiles/cjson.dir
@@ -462,7 +557,7 @@ tools/clean:
 dependencies/third-party/c_json/CMakeFiles/cjson.dir/all:
 	$(MAKE) $(MAKESILENT) -f dependencies/third-party/c_json/CMakeFiles/cjson.dir/build.make dependencies/third-party/c_json/CMakeFiles/cjson.dir/depend
 	$(MAKE) $(MAKESILENT) -f dependencies/third-party/c_json/CMakeFiles/cjson.dir/build.make dependencies/third-party/c_json/CMakeFiles/cjson.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=55,56 "Built target cjson"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=48,49 "Built target cjson"
 .PHONY : dependencies/third-party/c_json/CMakeFiles/cjson.dir/all
 
 # Build rule for subdir invocation for target.
@@ -489,7 +584,7 @@ dependencies/third-party/c_json/CMakeFiles/cjson.dir/clean:
 dependencies/third-party/doc_opt/CMakeFiles/doc_opt.dir/all:
 	$(MAKE) $(MAKESILENT) -f dependencies/third-party/doc_opt/CMakeFiles/doc_opt.dir/build.make dependencies/third-party/doc_opt/CMakeFiles/doc_opt.dir/depend
 	$(MAKE) $(MAKESILENT) -f dependencies/third-party/doc_opt/CMakeFiles/doc_opt.dir/build.make dependencies/third-party/doc_opt/CMakeFiles/doc_opt.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=59,60 "Built target doc_opt"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=51,52 "Built target doc_opt"
 .PHONY : dependencies/third-party/doc_opt/CMakeFiles/doc_opt.dir/all
 
 # Build rule for subdir invocation for target.
@@ -510,6 +605,88 @@ dependencies/third-party/doc_opt/CMakeFiles/doc_opt.dir/clean:
 .PHONY : dependencies/third-party/doc_opt/CMakeFiles/doc_opt.dir/clean
 
 #=============================================================================
+# Target rules for target apps/uvc-app/CMakeFiles/uvc-app.dir
+
+# All Build rule for target.
+apps/uvc-app/CMakeFiles/uvc-app.dir/all: apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/all
+apps/uvc-app/CMakeFiles/uvc-app.dir/all: sdk/CMakeFiles/aditof.dir/all
+	$(MAKE) $(MAKESILENT) -f apps/uvc-app/CMakeFiles/uvc-app.dir/build.make apps/uvc-app/CMakeFiles/uvc-app.dir/depend
+	$(MAKE) $(MAKESILENT) -f apps/uvc-app/CMakeFiles/uvc-app.dir/build.make apps/uvc-app/CMakeFiles/uvc-app.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=87,88,89,90,91 "Built target uvc-app"
+.PHONY : apps/uvc-app/CMakeFiles/uvc-app.dir/all
+
+# Build rule for subdir invocation for target.
+apps/uvc-app/CMakeFiles/uvc-app.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 53
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 apps/uvc-app/CMakeFiles/uvc-app.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
+.PHONY : apps/uvc-app/CMakeFiles/uvc-app.dir/rule
+
+# Convenience name for target.
+uvc-app: apps/uvc-app/CMakeFiles/uvc-app.dir/rule
+
+.PHONY : uvc-app
+
+# clean rule for target.
+apps/uvc-app/CMakeFiles/uvc-app.dir/clean:
+	$(MAKE) $(MAKESILENT) -f apps/uvc-app/CMakeFiles/uvc-app.dir/build.make apps/uvc-app/CMakeFiles/uvc-app.dir/clean
+.PHONY : apps/uvc-app/CMakeFiles/uvc-app.dir/clean
+
+#=============================================================================
+# Target rules for target apps/uvc-app/lib/CMakeFiles/uvcgadget.dir
+
+# All Build rule for target.
+apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/all:
+	$(MAKE) $(MAKESILENT) -f apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/build.make apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/depend
+	$(MAKE) $(MAKESILENT) -f apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/build.make apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=92,93,94,95,96,97,98,99,100 "Built target uvcgadget"
+.PHONY : apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/all
+
+# Build rule for subdir invocation for target.
+apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 9
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
+.PHONY : apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/rule
+
+# Convenience name for target.
+uvcgadget: apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/rule
+
+.PHONY : uvcgadget
+
+# clean rule for target.
+apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/clean:
+	$(MAKE) $(MAKESILENT) -f apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/build.make apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/clean
+.PHONY : apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/clean
+
+#=============================================================================
+# Target rules for target apps/server/CMakeFiles/aditof-server.dir
+
+# All Build rule for target.
+apps/server/CMakeFiles/aditof-server.dir/all: sdk/CMakeFiles/aditof.dir/all
+	$(MAKE) $(MAKESILENT) -f apps/server/CMakeFiles/aditof-server.dir/build.make apps/server/CMakeFiles/aditof-server.dir/depend
+	$(MAKE) $(MAKESILENT) -f apps/server/CMakeFiles/aditof-server.dir/build.make apps/server/CMakeFiles/aditof-server.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=42,43,44,45 "Built target aditof-server"
+.PHONY : apps/server/CMakeFiles/aditof-server.dir/all
+
+# Build rule for subdir invocation for target.
+apps/server/CMakeFiles/aditof-server.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 43
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 apps/server/CMakeFiles/aditof-server.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
+.PHONY : apps/server/CMakeFiles/aditof-server.dir/rule
+
+# Convenience name for target.
+aditof-server: apps/server/CMakeFiles/aditof-server.dir/rule
+
+.PHONY : aditof-server
+
+# clean rule for target.
+apps/server/CMakeFiles/aditof-server.dir/clean:
+	$(MAKE) $(MAKESILENT) -f apps/server/CMakeFiles/aditof-server.dir/build.make apps/server/CMakeFiles/aditof-server.dir/clean
+.PHONY : apps/server/CMakeFiles/aditof-server.dir/clean
+
+#=============================================================================
 # Target rules for target sdk/CMakeFiles/aditof.dir
 
 # All Build rule for target.
@@ -519,12 +696,12 @@ sdk/CMakeFiles/aditof.dir/all: sdk/common/adi/depth-compute-opensource/CMakeFile
 sdk/CMakeFiles/aditof.dir/all: sdk/common/adi/ccb/CMakeFiles/ccb.dir/all
 	$(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/depend
 	$(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52 "Built target aditof"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41 "Built target aditof"
 .PHONY : sdk/CMakeFiles/aditof.dir/all
 
 # Build rule for subdir invocation for target.
 sdk/CMakeFiles/aditof.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 40
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 39
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sdk/CMakeFiles/aditof.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
 .PHONY : sdk/CMakeFiles/aditof.dir/rule
@@ -546,7 +723,7 @@ sdk/CMakeFiles/aditof.dir/clean:
 sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_config.dir/all:
 	$(MAKE) $(MAKESILENT) -f sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_config.dir/build.make sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_config.dir/depend
 	$(MAKE) $(MAKESILENT) -f sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_config.dir/build.make sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_config.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=87,88 "Built target tofi_config"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=85,86 "Built target tofi_config"
 .PHONY : sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_config.dir/all
 
 # Build rule for subdir invocation for target.
@@ -573,12 +750,12 @@ sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_config.dir/clean:
 sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/all:
 	$(MAKE) $(MAKESILENT) -f sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/build.make sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/depend
 	$(MAKE) $(MAKESILENT) -f sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/build.make sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=84,85,86 "Built target tofi_compute"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=83,84 "Built target tofi_compute"
 .PHONY : sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/all
 
 # Build rule for subdir invocation for target.
 sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
 .PHONY : sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/rule
@@ -600,7 +777,7 @@ sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/clean:
 sdk/common/adi/ccb/CMakeFiles/ccb.dir/all:
 	$(MAKE) $(MAKESILENT) -f sdk/common/adi/ccb/CMakeFiles/ccb.dir/build.make sdk/common/adi/ccb/CMakeFiles/ccb.dir/depend
 	$(MAKE) $(MAKESILENT) -f sdk/common/adi/ccb/CMakeFiles/ccb.dir/build.make sdk/common/adi/ccb/CMakeFiles/ccb.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=53,54 "Built target ccb"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=46,47 "Built target ccb"
 .PHONY : sdk/common/adi/ccb/CMakeFiles/ccb.dir/all
 
 # Build rule for subdir invocation for target.
@@ -627,12 +804,12 @@ sdk/common/adi/ccb/CMakeFiles/ccb.dir/clean:
 examples/first-frame/CMakeFiles/first-frame.dir/all: sdk/CMakeFiles/aditof.dir/all
 	$(MAKE) $(MAKESILENT) -f examples/first-frame/CMakeFiles/first-frame.dir/build.make examples/first-frame/CMakeFiles/first-frame.dir/depend
 	$(MAKE) $(MAKESILENT) -f examples/first-frame/CMakeFiles/first-frame.dir/build.make examples/first-frame/CMakeFiles/first-frame.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=61,62 "Built target first-frame"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=53,54 "Built target first-frame"
 .PHONY : examples/first-frame/CMakeFiles/first-frame.dir/all
 
 # Build rule for subdir invocation for target.
 examples/first-frame/CMakeFiles/first-frame.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 42
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 41
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/first-frame/CMakeFiles/first-frame.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
 .PHONY : examples/first-frame/CMakeFiles/first-frame.dir/rule
@@ -655,12 +832,12 @@ examples/data_collect/CMakeFiles/data_collect.dir/all: dependencies/third-party/
 examples/data_collect/CMakeFiles/data_collect.dir/all: sdk/CMakeFiles/aditof.dir/all
 	$(MAKE) $(MAKESILENT) -f examples/data_collect/CMakeFiles/data_collect.dir/build.make examples/data_collect/CMakeFiles/data_collect.dir/depend
 	$(MAKE) $(MAKESILENT) -f examples/data_collect/CMakeFiles/data_collect.dir/build.make examples/data_collect/CMakeFiles/data_collect.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=57,58 "Built target data_collect"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=50 "Built target data_collect"
 .PHONY : examples/data_collect/CMakeFiles/data_collect.dir/all
 
 # Build rule for subdir invocation for target.
 examples/data_collect/CMakeFiles/data_collect.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 44
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 42
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/data_collect/CMakeFiles/data_collect.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
 .PHONY : examples/data_collect/CMakeFiles/data_collect.dir/rule
@@ -676,69 +853,13 @@ examples/data_collect/CMakeFiles/data_collect.dir/clean:
 .PHONY : examples/data_collect/CMakeFiles/data_collect.dir/clean
 
 #=============================================================================
-# Target rules for target examples/tof-viewer/CMakeFiles/ADIToFGUI.dir
-
-# All Build rule for target.
-examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/all: dependencies/third-party/c_json/CMakeFiles/cjson.dir/all
-examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/all: sdk/CMakeFiles/aditof.dir/all
-examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/all: examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/all
-	$(MAKE) $(MAKESILENT) -f examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/build.make examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/depend
-	$(MAKE) $(MAKESILENT) -f examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/build.make examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target ADIToFGUI"
-.PHONY : examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/all
-
-# Build rule for subdir invocation for target.
-examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 58
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
-.PHONY : examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/rule
-
-# Convenience name for target.
-ADIToFGUI: examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/rule
-
-.PHONY : ADIToFGUI
-
-# clean rule for target.
-examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/clean:
-	$(MAKE) $(MAKESILENT) -f examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/build.make examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/clean
-.PHONY : examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/clean
-
-#=============================================================================
-# Target rules for target examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir
-
-# All Build rule for target.
-examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/all:
-	$(MAKE) $(MAKESILENT) -f examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/build.make examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/depend
-	$(MAKE) $(MAKESILENT) -f examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/build.make examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=65,66,67,68,69,70,71,72 "Built target imgui"
-.PHONY : examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/all
-
-# Build rule for subdir invocation for target.
-examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 8
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
-.PHONY : examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/rule
-
-# Convenience name for target.
-imgui: examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/rule
-
-.PHONY : imgui
-
-# clean rule for target.
-examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/clean:
-	$(MAKE) $(MAKESILENT) -f examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/build.make examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/clean
-.PHONY : examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/clean
-
-#=============================================================================
 # Target rules for target examples/tof-net-common/CMakeFiles/tof_net_common.dir
 
 # All Build rule for target.
 examples/tof-net-common/CMakeFiles/tof_net_common.dir/all:
 	$(MAKE) $(MAKESILENT) -f examples/tof-net-common/CMakeFiles/tof_net_common.dir/build.make examples/tof-net-common/CMakeFiles/tof_net_common.dir/depend
 	$(MAKE) $(MAKESILENT) -f examples/tof-net-common/CMakeFiles/tof_net_common.dir/build.make examples/tof-net-common/CMakeFiles/tof_net_common.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=80,81,82,83 "Built target tof_net_common"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=79,80,81,82 "Built target tof_net_common"
 .PHONY : examples/tof-net-common/CMakeFiles/tof_net_common.dir/all
 
 # Build rule for subdir invocation for target.
@@ -766,12 +887,12 @@ examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/all: sdk/CMakeFiles/adit
 examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/all: examples/tof-net-common/CMakeFiles/tof_net_common.dir/all
 	$(MAKE) $(MAKESILENT) -f examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/build.make examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/depend
 	$(MAKE) $(MAKESILENT) -f examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/build.make examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=78,79 "Built target tof_net_collect"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=77,78 "Built target tof_net_collect"
 .PHONY : examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/all
 
 # Build rule for subdir invocation for target.
 examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 46
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 45
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
 .PHONY : examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/rule
@@ -794,16 +915,16 @@ examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/all: dependencies/third-part
 examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/all: sdk/CMakeFiles/aditof.dir/all
 examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/all: sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_config.dir/all
 examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/all: sdk/common/adi/depth-compute-opensource/CMakeFiles/tofi_compute.dir/all
-examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/all: examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/all
 examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/all: examples/tof-net-common/CMakeFiles/tof_net_common.dir/all
+examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/all: examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/all
 	$(MAKE) $(MAKESILENT) -f examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/build.make examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/depend
 	$(MAKE) $(MAKESILENT) -f examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/build.make examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=11,12,13,14,15,16,17,18,19,20,21 "Built target ADIToFNetGUI"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target ADIToFNetGUI"
 .PHONY : examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/all
 
 # Build rule for subdir invocation for target.
 examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 63
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 60
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
 .PHONY : examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/rule
@@ -819,18 +940,45 @@ examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/clean:
 .PHONY : examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/clean
 
 #=============================================================================
+# Target rules for target examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir
+
+# All Build rule for target.
+examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/all:
+	$(MAKE) $(MAKESILENT) -f examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/build.make examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/depend
+	$(MAKE) $(MAKESILENT) -f examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/build.make examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=61,62,63,64,65,66,67 "Built target imgui"
+.PHONY : examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/all
+
+# Build rule for subdir invocation for target.
+examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 7
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
+.PHONY : examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/rule
+
+# Convenience name for target.
+imgui: examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/rule
+
+.PHONY : imgui
+
+# clean rule for target.
+examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/clean:
+	$(MAKE) $(MAKESILENT) -f examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/build.make examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/clean
+.PHONY : examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/clean
+
+#=============================================================================
 # Target rules for target examples/first-frame-network/CMakeFiles/first-frame-network.dir
 
 # All Build rule for target.
 examples/first-frame-network/CMakeFiles/first-frame-network.dir/all: sdk/CMakeFiles/aditof.dir/all
 	$(MAKE) $(MAKESILENT) -f examples/first-frame-network/CMakeFiles/first-frame-network.dir/build.make examples/first-frame-network/CMakeFiles/first-frame-network.dir/depend
 	$(MAKE) $(MAKESILENT) -f examples/first-frame-network/CMakeFiles/first-frame-network.dir/build.make examples/first-frame-network/CMakeFiles/first-frame-network.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=63,64 "Built target first-frame-network"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=55,56 "Built target first-frame-network"
 .PHONY : examples/first-frame-network/CMakeFiles/first-frame-network.dir/all
 
 # Build rule for subdir invocation for target.
 examples/first-frame-network/CMakeFiles/first-frame-network.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 42
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 41
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 examples/first-frame-network/CMakeFiles/first-frame-network.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
 .PHONY : examples/first-frame-network/CMakeFiles/first-frame-network.dir/rule
@@ -852,7 +1000,7 @@ examples/first-frame-network/CMakeFiles/first-frame-network.dir/clean:
 examples/point_cloud/CMakeFiles/point_cloud.dir/all: dependencies/third-party/doc_opt/CMakeFiles/doc_opt.dir/all
 	$(MAKE) $(MAKESILENT) -f examples/point_cloud/CMakeFiles/point_cloud.dir/build.make examples/point_cloud/CMakeFiles/point_cloud.dir/depend
 	$(MAKE) $(MAKESILENT) -f examples/point_cloud/CMakeFiles/point_cloud.dir/build.make examples/point_cloud/CMakeFiles/point_cloud.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=73,74,75,76,77 "Built target point_cloud"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=72,73,74,75,76 "Built target point_cloud"
 .PHONY : examples/point_cloud/CMakeFiles/point_cloud.dir/all
 
 # Build rule for subdir invocation for target.
@@ -871,6 +1019,60 @@ point_cloud: examples/point_cloud/CMakeFiles/point_cloud.dir/rule
 examples/point_cloud/CMakeFiles/point_cloud.dir/clean:
 	$(MAKE) $(MAKESILENT) -f examples/point_cloud/CMakeFiles/point_cloud.dir/build.make examples/point_cloud/CMakeFiles/point_cloud.dir/clean
 .PHONY : examples/point_cloud/CMakeFiles/point_cloud.dir/clean
+
+#=============================================================================
+# Target rules for target tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir
+
+# All Build rule for target.
+tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/all:
+	$(MAKE) $(MAKESILENT) -f tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/build.make tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/depend
+	$(MAKE) $(MAKESILENT) -f tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/build.make tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=57,58,59,60 "Built target fw_upgrade"
+.PHONY : tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/all
+
+# Build rule for subdir invocation for target.
+tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 4
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
+.PHONY : tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/rule
+
+# Convenience name for target.
+fw_upgrade: tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/rule
+
+.PHONY : fw_upgrade
+
+# clean rule for target.
+tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/clean:
+	$(MAKE) $(MAKESILENT) -f tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/build.make tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/clean
+.PHONY : tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/clean
+
+#=============================================================================
+# Target rules for target tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir
+
+# All Build rule for target.
+tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/all:
+	$(MAKE) $(MAKESILENT) -f tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/build.make tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/depend
+	$(MAKE) $(MAKESILENT) -f tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/build.make tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=68,69,70,71 "Built target nvm_write"
+.PHONY : tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/all
+
+# Build rule for subdir invocation for target.
+tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 4
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/linaro/rk3588_tof/tof_net/build/CMakeFiles 0
+.PHONY : tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/rule
+
+# Convenience name for target.
+nvm_write: tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/rule
+
+.PHONY : nvm_write
+
+# clean rule for target.
+tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/clean:
+	$(MAKE) $(MAKESILENT) -f tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/build.make tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/clean
+.PHONY : tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

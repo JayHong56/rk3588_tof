@@ -406,6 +406,33 @@ src/cameras/itof-camera/module_memory.cpp.s:
 	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.s
 .PHONY : src/cameras/itof-camera/module_memory.cpp.s
 
+src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.o: src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.o
+
+.PHONY : src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.o
+
+# target to build an object file
+src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.o:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.o
+.PHONY : src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.o
+
+src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.i: src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.i
+
+.PHONY : src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.i
+
+# target to preprocess a source file
+src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.i:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.i
+.PHONY : src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.i
+
+src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.s: src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.s
+
+.PHONY : src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.s
+
+# target to generate assembly for a file
+src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.s:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.s
+.PHONY : src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.s
+
 src/cameras/itof-frame/frame_impl.o: src/cameras/itof-frame/frame_impl.cpp.o
 
 .PHONY : src/cameras/itof-frame/frame_impl.o
@@ -568,140 +595,167 @@ src/connections/network/network_temperature_sensor.cpp.s:
 	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/network/network_temperature_sensor.cpp.s
 .PHONY : src/connections/network/network_temperature_sensor.cpp.s
 
-src/connections/usb/linux/usb_depth_sensor_linux.o: src/connections/usb/linux/usb_depth_sensor_linux.cpp.o
+src/connections/target/adsd3100_sensor.o: src/connections/target/adsd3100_sensor.cpp.o
 
-.PHONY : src/connections/usb/linux/usb_depth_sensor_linux.o
-
-# target to build an object file
-src/connections/usb/linux/usb_depth_sensor_linux.cpp.o:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.o
-.PHONY : src/connections/usb/linux/usb_depth_sensor_linux.cpp.o
-
-src/connections/usb/linux/usb_depth_sensor_linux.i: src/connections/usb/linux/usb_depth_sensor_linux.cpp.i
-
-.PHONY : src/connections/usb/linux/usb_depth_sensor_linux.i
-
-# target to preprocess a source file
-src/connections/usb/linux/usb_depth_sensor_linux.cpp.i:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.i
-.PHONY : src/connections/usb/linux/usb_depth_sensor_linux.cpp.i
-
-src/connections/usb/linux/usb_depth_sensor_linux.s: src/connections/usb/linux/usb_depth_sensor_linux.cpp.s
-
-.PHONY : src/connections/usb/linux/usb_depth_sensor_linux.s
-
-# target to generate assembly for a file
-src/connections/usb/linux/usb_depth_sensor_linux.cpp.s:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.s
-.PHONY : src/connections/usb/linux/usb_depth_sensor_linux.cpp.s
-
-src/connections/usb/linux/usb_linux_utils.o: src/connections/usb/linux/usb_linux_utils.cpp.o
-
-.PHONY : src/connections/usb/linux/usb_linux_utils.o
+.PHONY : src/connections/target/adsd3100_sensor.o
 
 # target to build an object file
-src/connections/usb/linux/usb_linux_utils.cpp.o:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.o
-.PHONY : src/connections/usb/linux/usb_linux_utils.cpp.o
+src/connections/target/adsd3100_sensor.cpp.o:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.o
+.PHONY : src/connections/target/adsd3100_sensor.cpp.o
 
-src/connections/usb/linux/usb_linux_utils.i: src/connections/usb/linux/usb_linux_utils.cpp.i
+src/connections/target/adsd3100_sensor.i: src/connections/target/adsd3100_sensor.cpp.i
 
-.PHONY : src/connections/usb/linux/usb_linux_utils.i
+.PHONY : src/connections/target/adsd3100_sensor.i
 
 # target to preprocess a source file
-src/connections/usb/linux/usb_linux_utils.cpp.i:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.i
-.PHONY : src/connections/usb/linux/usb_linux_utils.cpp.i
+src/connections/target/adsd3100_sensor.cpp.i:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.i
+.PHONY : src/connections/target/adsd3100_sensor.cpp.i
 
-src/connections/usb/linux/usb_linux_utils.s: src/connections/usb/linux/usb_linux_utils.cpp.s
+src/connections/target/adsd3100_sensor.s: src/connections/target/adsd3100_sensor.cpp.s
 
-.PHONY : src/connections/usb/linux/usb_linux_utils.s
+.PHONY : src/connections/target/adsd3100_sensor.s
 
 # target to generate assembly for a file
-src/connections/usb/linux/usb_linux_utils.cpp.s:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.s
-.PHONY : src/connections/usb/linux/usb_linux_utils.cpp.s
+src/connections/target/adsd3100_sensor.cpp.s:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.s
+.PHONY : src/connections/target/adsd3100_sensor.cpp.s
 
-src/connections/usb/linux/usb_sensor_enumerator.o: src/connections/usb/linux/usb_sensor_enumerator.cpp.o
+src/connections/target/adsd3500_interrupt_notifier.o: src/connections/target/adsd3500_interrupt_notifier.cpp.o
 
-.PHONY : src/connections/usb/linux/usb_sensor_enumerator.o
+.PHONY : src/connections/target/adsd3500_interrupt_notifier.o
 
 # target to build an object file
-src/connections/usb/linux/usb_sensor_enumerator.cpp.o:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.o
-.PHONY : src/connections/usb/linux/usb_sensor_enumerator.cpp.o
+src/connections/target/adsd3500_interrupt_notifier.cpp.o:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.o
+.PHONY : src/connections/target/adsd3500_interrupt_notifier.cpp.o
 
-src/connections/usb/linux/usb_sensor_enumerator.i: src/connections/usb/linux/usb_sensor_enumerator.cpp.i
+src/connections/target/adsd3500_interrupt_notifier.i: src/connections/target/adsd3500_interrupt_notifier.cpp.i
 
-.PHONY : src/connections/usb/linux/usb_sensor_enumerator.i
+.PHONY : src/connections/target/adsd3500_interrupt_notifier.i
 
 # target to preprocess a source file
-src/connections/usb/linux/usb_sensor_enumerator.cpp.i:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.i
-.PHONY : src/connections/usb/linux/usb_sensor_enumerator.cpp.i
+src/connections/target/adsd3500_interrupt_notifier.cpp.i:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.i
+.PHONY : src/connections/target/adsd3500_interrupt_notifier.cpp.i
 
-src/connections/usb/linux/usb_sensor_enumerator.s: src/connections/usb/linux/usb_sensor_enumerator.cpp.s
+src/connections/target/adsd3500_interrupt_notifier.s: src/connections/target/adsd3500_interrupt_notifier.cpp.s
 
-.PHONY : src/connections/usb/linux/usb_sensor_enumerator.s
+.PHONY : src/connections/target/adsd3500_interrupt_notifier.s
 
 # target to generate assembly for a file
-src/connections/usb/linux/usb_sensor_enumerator.cpp.s:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.s
-.PHONY : src/connections/usb/linux/usb_sensor_enumerator.cpp.s
+src/connections/target/adsd3500_interrupt_notifier.cpp.s:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.s
+.PHONY : src/connections/target/adsd3500_interrupt_notifier.cpp.s
 
-src/connections/usb/linux/usb_storage_linux.o: src/connections/usb/linux/usb_storage_linux.cpp.o
+src/connections/target/adsd3500_sensor.o: src/connections/target/adsd3500_sensor.cpp.o
 
-.PHONY : src/connections/usb/linux/usb_storage_linux.o
+.PHONY : src/connections/target/adsd3500_sensor.o
 
 # target to build an object file
-src/connections/usb/linux/usb_storage_linux.cpp.o:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.o
-.PHONY : src/connections/usb/linux/usb_storage_linux.cpp.o
+src/connections/target/adsd3500_sensor.cpp.o:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.o
+.PHONY : src/connections/target/adsd3500_sensor.cpp.o
 
-src/connections/usb/linux/usb_storage_linux.i: src/connections/usb/linux/usb_storage_linux.cpp.i
+src/connections/target/adsd3500_sensor.i: src/connections/target/adsd3500_sensor.cpp.i
 
-.PHONY : src/connections/usb/linux/usb_storage_linux.i
+.PHONY : src/connections/target/adsd3500_sensor.i
 
 # target to preprocess a source file
-src/connections/usb/linux/usb_storage_linux.cpp.i:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.i
-.PHONY : src/connections/usb/linux/usb_storage_linux.cpp.i
+src/connections/target/adsd3500_sensor.cpp.i:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.i
+.PHONY : src/connections/target/adsd3500_sensor.cpp.i
 
-src/connections/usb/linux/usb_storage_linux.s: src/connections/usb/linux/usb_storage_linux.cpp.s
+src/connections/target/adsd3500_sensor.s: src/connections/target/adsd3500_sensor.cpp.s
 
-.PHONY : src/connections/usb/linux/usb_storage_linux.s
+.PHONY : src/connections/target/adsd3500_sensor.s
 
 # target to generate assembly for a file
-src/connections/usb/linux/usb_storage_linux.cpp.s:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.s
-.PHONY : src/connections/usb/linux/usb_storage_linux.cpp.s
+src/connections/target/adsd3500_sensor.cpp.s:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.s
+.PHONY : src/connections/target/adsd3500_sensor.cpp.s
 
-src/connections/usb/linux/usb_temperature_sensor_linux.o: src/connections/usb/linux/usb_temperature_sensor_linux.cpp.o
+src/connections/target/eeprom.o: src/connections/target/eeprom.cpp.o
 
-.PHONY : src/connections/usb/linux/usb_temperature_sensor_linux.o
+.PHONY : src/connections/target/eeprom.o
 
 # target to build an object file
-src/connections/usb/linux/usb_temperature_sensor_linux.cpp.o:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.o
-.PHONY : src/connections/usb/linux/usb_temperature_sensor_linux.cpp.o
+src/connections/target/eeprom.cpp.o:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.o
+.PHONY : src/connections/target/eeprom.cpp.o
 
-src/connections/usb/linux/usb_temperature_sensor_linux.i: src/connections/usb/linux/usb_temperature_sensor_linux.cpp.i
+src/connections/target/eeprom.i: src/connections/target/eeprom.cpp.i
 
-.PHONY : src/connections/usb/linux/usb_temperature_sensor_linux.i
+.PHONY : src/connections/target/eeprom.i
 
 # target to preprocess a source file
-src/connections/usb/linux/usb_temperature_sensor_linux.cpp.i:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.i
-.PHONY : src/connections/usb/linux/usb_temperature_sensor_linux.cpp.i
+src/connections/target/eeprom.cpp.i:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.i
+.PHONY : src/connections/target/eeprom.cpp.i
 
-src/connections/usb/linux/usb_temperature_sensor_linux.s: src/connections/usb/linux/usb_temperature_sensor_linux.cpp.s
+src/connections/target/eeprom.s: src/connections/target/eeprom.cpp.s
 
-.PHONY : src/connections/usb/linux/usb_temperature_sensor_linux.s
+.PHONY : src/connections/target/eeprom.s
 
 # target to generate assembly for a file
-src/connections/usb/linux/usb_temperature_sensor_linux.cpp.s:
-	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.s
-.PHONY : src/connections/usb/linux/usb_temperature_sensor_linux.cpp.s
+src/connections/target/eeprom.cpp.s:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.s
+.PHONY : src/connections/target/eeprom.cpp.s
+
+src/connections/target/gpio.o: src/connections/target/gpio.cpp.o
+
+.PHONY : src/connections/target/gpio.o
+
+# target to build an object file
+src/connections/target/gpio.cpp.o:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.o
+.PHONY : src/connections/target/gpio.cpp.o
+
+src/connections/target/gpio.i: src/connections/target/gpio.cpp.i
+
+.PHONY : src/connections/target/gpio.i
+
+# target to preprocess a source file
+src/connections/target/gpio.cpp.i:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.i
+.PHONY : src/connections/target/gpio.cpp.i
+
+src/connections/target/gpio.s: src/connections/target/gpio.cpp.s
+
+.PHONY : src/connections/target/gpio.s
+
+# target to generate assembly for a file
+src/connections/target/gpio.cpp.s:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.s
+.PHONY : src/connections/target/gpio.cpp.s
+
+src/connections/target/target_sensor_enumerator.o: src/connections/target/target_sensor_enumerator.cpp.o
+
+.PHONY : src/connections/target/target_sensor_enumerator.o
+
+# target to build an object file
+src/connections/target/target_sensor_enumerator.cpp.o:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.o
+.PHONY : src/connections/target/target_sensor_enumerator.cpp.o
+
+src/connections/target/target_sensor_enumerator.i: src/connections/target/target_sensor_enumerator.cpp.i
+
+.PHONY : src/connections/target/target_sensor_enumerator.i
+
+# target to preprocess a source file
+src/connections/target/target_sensor_enumerator.cpp.i:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.i
+.PHONY : src/connections/target/target_sensor_enumerator.cpp.i
+
+src/connections/target/target_sensor_enumerator.s: src/connections/target/target_sensor_enumerator.cpp.s
+
+.PHONY : src/connections/target/target_sensor_enumerator.s
+
+# target to generate assembly for a file
+src/connections/target/target_sensor_enumerator.cpp.s:
+	cd /home/linaro/rk3588_tof/tof_net/build && $(MAKE) $(MAKESILENT) -f sdk/CMakeFiles/aditof.dir/build.make sdk/CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.s
+.PHONY : src/connections/target/target_sensor_enumerator.cpp.s
 
 src/connections/usb/usb_utils.o: src/connections/usb/usb_utils.cpp.o
 
@@ -983,6 +1037,9 @@ help:
 	@echo "... src/cameras/itof-camera/module_memory.o"
 	@echo "... src/cameras/itof-camera/module_memory.i"
 	@echo "... src/cameras/itof-camera/module_memory.s"
+	@echo "... src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.o"
+	@echo "... src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.i"
+	@echo "... src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.s"
 	@echo "... src/cameras/itof-frame/frame_impl.o"
 	@echo "... src/cameras/itof-frame/frame_impl.i"
 	@echo "... src/cameras/itof-frame/frame_impl.s"
@@ -1001,21 +1058,24 @@ help:
 	@echo "... src/connections/network/network_temperature_sensor.o"
 	@echo "... src/connections/network/network_temperature_sensor.i"
 	@echo "... src/connections/network/network_temperature_sensor.s"
-	@echo "... src/connections/usb/linux/usb_depth_sensor_linux.o"
-	@echo "... src/connections/usb/linux/usb_depth_sensor_linux.i"
-	@echo "... src/connections/usb/linux/usb_depth_sensor_linux.s"
-	@echo "... src/connections/usb/linux/usb_linux_utils.o"
-	@echo "... src/connections/usb/linux/usb_linux_utils.i"
-	@echo "... src/connections/usb/linux/usb_linux_utils.s"
-	@echo "... src/connections/usb/linux/usb_sensor_enumerator.o"
-	@echo "... src/connections/usb/linux/usb_sensor_enumerator.i"
-	@echo "... src/connections/usb/linux/usb_sensor_enumerator.s"
-	@echo "... src/connections/usb/linux/usb_storage_linux.o"
-	@echo "... src/connections/usb/linux/usb_storage_linux.i"
-	@echo "... src/connections/usb/linux/usb_storage_linux.s"
-	@echo "... src/connections/usb/linux/usb_temperature_sensor_linux.o"
-	@echo "... src/connections/usb/linux/usb_temperature_sensor_linux.i"
-	@echo "... src/connections/usb/linux/usb_temperature_sensor_linux.s"
+	@echo "... src/connections/target/adsd3100_sensor.o"
+	@echo "... src/connections/target/adsd3100_sensor.i"
+	@echo "... src/connections/target/adsd3100_sensor.s"
+	@echo "... src/connections/target/adsd3500_interrupt_notifier.o"
+	@echo "... src/connections/target/adsd3500_interrupt_notifier.i"
+	@echo "... src/connections/target/adsd3500_interrupt_notifier.s"
+	@echo "... src/connections/target/adsd3500_sensor.o"
+	@echo "... src/connections/target/adsd3500_sensor.i"
+	@echo "... src/connections/target/adsd3500_sensor.s"
+	@echo "... src/connections/target/eeprom.o"
+	@echo "... src/connections/target/eeprom.i"
+	@echo "... src/connections/target/eeprom.s"
+	@echo "... src/connections/target/gpio.o"
+	@echo "... src/connections/target/gpio.i"
+	@echo "... src/connections/target/gpio.s"
+	@echo "... src/connections/target/target_sensor_enumerator.o"
+	@echo "... src/connections/target/target_sensor_enumerator.i"
+	@echo "... src/connections/target/target_sensor_enumerator.s"
 	@echo "... src/connections/usb/usb_utils.o"
 	@echo "... src/connections/usb/usb_utils.i"
 	@echo "... src/connections/usb/usb_utils.s"

@@ -66,7 +66,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
        NOT IS_SYMLINK "${file}")
       file(RPATH_CHANGE
            FILE "${file}"
-           OLD_RPATH "/opt/websockets/lib:/opt/glog/lib:/home/linaro/rk3588_tof/tof_net/build/sdk/common/adi/depth-compute-opensource:"
+           OLD_RPATH "/opt/websockets/lib:/opt/glog/lib:\$ORIGIN/common/adi/depth-compute-opensource:"
            NEW_RPATH "")
       if(CMAKE_INSTALL_DO_STRIP)
         execute_process(COMMAND "/usr/bin/strip" "${file}")
@@ -87,7 +87,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libaditof.so")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libaditof.so"
-         OLD_RPATH "/opt/websockets/lib:/opt/glog/lib:/home/linaro/rk3588_tof/tof_net/build/sdk/common/adi/depth-compute-opensource:"
+         OLD_RPATH "/opt/websockets/lib:/opt/glog/lib:\$ORIGIN/common/adi/depth-compute-opensource:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libaditof.so")

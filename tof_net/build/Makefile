@@ -202,6 +202,45 @@ doc_opt/fast:
 .PHONY : doc_opt/fast
 
 #=============================================================================
+# Target rules for targets named uvc-app
+
+# Build rule for target.
+uvc-app: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 uvc-app
+.PHONY : uvc-app
+
+# fast build rule for target.
+uvc-app/fast:
+	$(MAKE) $(MAKESILENT) -f apps/uvc-app/CMakeFiles/uvc-app.dir/build.make apps/uvc-app/CMakeFiles/uvc-app.dir/build
+.PHONY : uvc-app/fast
+
+#=============================================================================
+# Target rules for targets named uvcgadget
+
+# Build rule for target.
+uvcgadget: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 uvcgadget
+.PHONY : uvcgadget
+
+# fast build rule for target.
+uvcgadget/fast:
+	$(MAKE) $(MAKESILENT) -f apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/build.make apps/uvc-app/lib/CMakeFiles/uvcgadget.dir/build
+.PHONY : uvcgadget/fast
+
+#=============================================================================
+# Target rules for targets named aditof-server
+
+# Build rule for target.
+aditof-server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 aditof-server
+.PHONY : aditof-server
+
+# fast build rule for target.
+aditof-server/fast:
+	$(MAKE) $(MAKESILENT) -f apps/server/CMakeFiles/aditof-server.dir/build.make apps/server/CMakeFiles/aditof-server.dir/build
+.PHONY : aditof-server/fast
+
+#=============================================================================
 # Target rules for targets named aditof
 
 # Build rule for target.
@@ -280,32 +319,6 @@ data_collect/fast:
 .PHONY : data_collect/fast
 
 #=============================================================================
-# Target rules for targets named ADIToFGUI
-
-# Build rule for target.
-ADIToFGUI: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ADIToFGUI
-.PHONY : ADIToFGUI
-
-# fast build rule for target.
-ADIToFGUI/fast:
-	$(MAKE) $(MAKESILENT) -f examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/build.make examples/tof-viewer/CMakeFiles/ADIToFGUI.dir/build
-.PHONY : ADIToFGUI/fast
-
-#=============================================================================
-# Target rules for targets named imgui
-
-# Build rule for target.
-imgui: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 imgui
-.PHONY : imgui
-
-# fast build rule for target.
-imgui/fast:
-	$(MAKE) $(MAKESILENT) -f examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/build.make examples/tof-viewer/external/imgui/CMakeFiles/imgui.dir/build
-.PHONY : imgui/fast
-
-#=============================================================================
 # Target rules for targets named tof_net_common
 
 # Build rule for target.
@@ -345,6 +358,19 @@ ADIToFNetGUI/fast:
 .PHONY : ADIToFNetGUI/fast
 
 #=============================================================================
+# Target rules for targets named imgui
+
+# Build rule for target.
+imgui: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 imgui
+.PHONY : imgui
+
+# fast build rule for target.
+imgui/fast:
+	$(MAKE) $(MAKESILENT) -f examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/build.make examples/tof-net-viewer/external/imgui/CMakeFiles/imgui.dir/build
+.PHONY : imgui/fast
+
+#=============================================================================
 # Target rules for targets named first-frame-network
 
 # Build rule for target.
@@ -370,6 +396,32 @@ point_cloud/fast:
 	$(MAKE) $(MAKESILENT) -f examples/point_cloud/CMakeFiles/point_cloud.dir/build.make examples/point_cloud/CMakeFiles/point_cloud.dir/build
 .PHONY : point_cloud/fast
 
+#=============================================================================
+# Target rules for targets named fw_upgrade
+
+# Build rule for target.
+fw_upgrade: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fw_upgrade
+.PHONY : fw_upgrade
+
+# fast build rule for target.
+fw_upgrade/fast:
+	$(MAKE) $(MAKESILENT) -f tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/build.make tools/nvm_tools/fw_upgrade/CMakeFiles/fw_upgrade.dir/build
+.PHONY : fw_upgrade/fast
+
+#=============================================================================
+# Target rules for targets named nvm_write
+
+# Build rule for target.
+nvm_write: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 nvm_write
+.PHONY : nvm_write
+
+# fast build rule for target.
+nvm_write/fast:
+	$(MAKE) $(MAKESILENT) -f tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/build.make tools/nvm_tools/nvm_write/CMakeFiles/nvm_write.dir/build
+.PHONY : nvm_write/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -382,21 +434,25 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... ADIToFGUI"
 	@echo "... ADIToFNetGUI"
 	@echo "... aditof"
+	@echo "... aditof-server"
 	@echo "... ccb"
 	@echo "... cjson"
 	@echo "... data_collect"
 	@echo "... doc_opt"
 	@echo "... first-frame"
 	@echo "... first-frame-network"
+	@echo "... fw_upgrade"
 	@echo "... imgui"
+	@echo "... nvm_write"
 	@echo "... point_cloud"
 	@echo "... tof_net_collect"
 	@echo "... tof_net_common"
 	@echo "... tofi_compute"
 	@echo "... tofi_config"
+	@echo "... uvc-app"
+	@echo "... uvcgadget"
 .PHONY : help
 
 

@@ -42,11 +42,17 @@ if(NOT DEFINED CMAKE_OBJDUMP)
   set(CMAKE_OBJDUMP "/usr/bin/objdump")
 endif()
 
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE PROGRAM FILES
+    "/home/linaro/rk3588_tof/tof_net/build/examples/first-frame/first-frame"
+    "/home/linaro/rk3588_tof/tof_net/build/examples/data_collect/data_collect"
+    )
+endif()
+
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/linaro/rk3588_tof/tof_net/build/examples/first-frame/cmake_install.cmake")
   include("/home/linaro/rk3588_tof/tof_net/build/examples/data_collect/cmake_install.cmake")
-  include("/home/linaro/rk3588_tof/tof_net/build/examples/tof-viewer/cmake_install.cmake")
   include("/home/linaro/rk3588_tof/tof_net/build/examples/tof-net-common/cmake_install.cmake")
   include("/home/linaro/rk3588_tof/tof_net/build/examples/tof-net-collect/cmake_install.cmake")
   include("/home/linaro/rk3588_tof/tof_net/build/examples/tof-net-viewer/cmake_install.cmake")

@@ -296,6 +296,9 @@ GIT_EXECUTABLE:FILEPATH=/usr/bin/git
 //The directory containing a CMake configuration file for Libwebsockets.
 Libwebsockets_DIR:PATH=/opt/websockets/lib/cmake/libwebsockets
 
+//No help, variable specified on the command line.
+NXP:UNINITIALIZED=ON
+
 //Path to a file.
 OPENGL_EGL_INCLUDE_DIR:PATH=/usr/include
 
@@ -420,6 +423,12 @@ adi_tof_project_BINARY_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/build
 adi_tof_project_SOURCE_DIR:STATIC=/home/linaro/rk3588_tof/tof_net
 
 //Value Computed by CMake
+aditof-server_BINARY_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/build/apps/server
+
+//Value Computed by CMake
+aditof-server_SOURCE_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/apps/server
+
+//Value Computed by CMake
 aditof_BINARY_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/build/sdk
 
 //Dependencies for the target
@@ -488,11 +497,29 @@ first-frame_BINARY_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/build/examples/fir
 //Value Computed by CMake
 first-frame_SOURCE_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/examples/first-frame
 
+//Value Computed by CMake
+fw_upgrade_BINARY_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/build/tools/nvm_tools/fw_upgrade
+
+//Value Computed by CMake
+fw_upgrade_SOURCE_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/tools/nvm_tools/fw_upgrade
+
 //The directory containing a CMake configuration file for glfw3.
 glfw3_DIR:PATH=/usr/lib/aarch64-linux-gnu/cmake/glfw3
 
 //The directory containing a CMake configuration file for glog.
 glog_DIR:PATH=/opt/glog/lib/cmake/glog
+
+//Value Computed by CMake
+nvm_tools_BINARY_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/build/tools/nvm_tools
+
+//Value Computed by CMake
+nvm_tools_SOURCE_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/tools/nvm_tools
+
+//Value Computed by CMake
+nvm_write_BINARY_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/build/tools/nvm_tools/nvm_write
+
+//Value Computed by CMake
+nvm_write_SOURCE_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/tools/nvm_tools/nvm_write
 
 //Path to a library.
 pkgcfg_lib_PC_ZSTD_zstd:FILEPATH=/usr/lib/aarch64-linux-gnu/libzstd.so
@@ -523,6 +550,12 @@ tools_BINARY_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/build/tools
 
 //Value Computed by CMake
 tools_SOURCE_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/tools
+
+//Value Computed by CMake
+uvc-app_BINARY_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/build/apps/uvc-app
+
+//Value Computed by CMake
+uvc-app_SOURCE_DIR:STATIC=/home/linaro/rk3588_tof/tof_net/apps/uvc-app
 
 
 ########################
@@ -669,7 +702,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=19
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=24
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

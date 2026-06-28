@@ -235,9 +235,22 @@ sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/camera_itof.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/cameras/itof-camera/camera_itof.cpp.s"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/camera_itof.cpp -o CMakeFiles/aditof.dir/src/cameras/itof-camera/camera_itof.cpp.s
 
+sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o: sdk/CMakeFiles/aditof.dir/flags.make
+sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o: ../sdk/src/cameras/itof-camera/crc.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/crc.c
+
+sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.i"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/crc.c > CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.i
+
+sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.s"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/crc.c -o CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.s
+
 sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/mode_info.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
 sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/mode_info.cpp.o: ../sdk/src/cameras/itof-camera/mode_info.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/mode_info.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/mode_info.cpp.o"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/cameras/itof-camera/mode_info.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/mode_info.cpp
 
 sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/mode_info.cpp.i: cmake_force
@@ -250,7 +263,7 @@ sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/mode_info.cpp.s: cmake_force
 
 sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
 sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.o: ../sdk/src/cameras/itof-camera/module_memory.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.o"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/module_memory.cpp
 
 sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.i: cmake_force
@@ -261,22 +274,22 @@ sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.s: cmake_for
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.s"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/module_memory.cpp -o CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.s
 
-sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o: sdk/CMakeFiles/aditof.dir/flags.make
-sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o: ../sdk/src/cameras/itof-camera/crc.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/crc.c
+sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
+sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.o: ../sdk/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.o"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp
 
-sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.i"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/crc.c > CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.i
+sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.i"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp > CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.i
 
-sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.s"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/crc.c -o CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.s
+sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.s"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp -o CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.s
 
 sdk/CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
 sdk/CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.o: ../sdk/src/cameras/itof-frame/frame_impl.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object sdk/CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object sdk/CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.o"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-frame/frame_impl.cpp
 
 sdk/CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.i: cmake_force
@@ -287,74 +300,87 @@ sdk/CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.s"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-frame/frame_impl.cpp -o CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.s
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.o: ../sdk/src/connections/usb/linux/usb_depth_sensor_linux.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.o"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_depth_sensor_linux.cpp
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.o: ../sdk/src/connections/target/adsd3100_sensor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.o"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3100_sensor.cpp
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.i"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_depth_sensor_linux.cpp > CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.i
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.i"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3100_sensor.cpp > CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.i
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.s"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_depth_sensor_linux.cpp -o CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.s
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.s"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3100_sensor.cpp -o CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.s
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.o: ../sdk/src/connections/usb/linux/usb_linux_utils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.o"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_linux_utils.cpp
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.o: ../sdk/src/connections/target/adsd3500_interrupt_notifier.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.o"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_interrupt_notifier.cpp
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.i"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_linux_utils.cpp > CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.i
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.i"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_interrupt_notifier.cpp > CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.i
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.s"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_linux_utils.cpp -o CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.s
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.s"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_interrupt_notifier.cpp -o CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.s
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.o: ../sdk/src/connections/usb/linux/usb_sensor_enumerator.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.o"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_sensor_enumerator.cpp
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.o: ../sdk/src/connections/target/adsd3500_sensor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.o"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_sensor.cpp
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.i"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_sensor_enumerator.cpp > CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.i
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.i"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_sensor.cpp > CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.i
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.s"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_sensor_enumerator.cpp -o CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.s
+sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.s"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/adsd3500_sensor.cpp -o CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.s
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.o: ../sdk/src/connections/usb/linux/usb_storage_linux.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.o"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_storage_linux.cpp
+sdk/CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
+sdk/CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.o: ../sdk/src/connections/target/eeprom.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.o"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/eeprom.cpp
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.i"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_storage_linux.cpp > CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.i
+sdk/CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.i"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/eeprom.cpp > CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.i
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.s"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_storage_linux.cpp -o CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.s
+sdk/CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.s"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/eeprom.cpp -o CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.s
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.o: ../sdk/src/connections/usb/linux/usb_temperature_sensor_linux.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.o"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_temperature_sensor_linux.cpp
+sdk/CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
+sdk/CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.o: ../sdk/src/connections/target/gpio.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.o"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/gpio.cpp
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.i"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_temperature_sensor_linux.cpp > CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.i
+sdk/CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.i"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/gpio.cpp > CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.i
 
-sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.s"
-	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux/usb_temperature_sensor_linux.cpp -o CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.s
+sdk/CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.s"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/gpio.cpp -o CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.s
+
+sdk/CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
+sdk/CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.o: ../sdk/src/connections/target/target_sensor_enumerator.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.o"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/target_sensor_enumerator.cpp
+
+sdk/CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.i"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/target_sensor_enumerator.cpp > CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.i
+
+sdk/CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.s"
+	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/target_sensor_enumerator.cpp -o CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.s
 
 sdk/CMakeFiles/aditof.dir/src/connections/network/network.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
 sdk/CMakeFiles/aditof.dir/src/connections/network/network.cpp.o: ../sdk/src/connections/network/network.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/network/network.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/network/network.cpp.o"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/network/network.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/network/network.cpp
 
 sdk/CMakeFiles/aditof.dir/src/connections/network/network.cpp.i: cmake_force
@@ -367,7 +393,7 @@ sdk/CMakeFiles/aditof.dir/src/connections/network/network.cpp.s: cmake_force
 
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_depth_sensor.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_depth_sensor.cpp.o: ../sdk/src/connections/network/network_depth_sensor.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/network/network_depth_sensor.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/network/network_depth_sensor.cpp.o"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/network/network_depth_sensor.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/network/network_depth_sensor.cpp
 
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_depth_sensor.cpp.i: cmake_force
@@ -380,7 +406,7 @@ sdk/CMakeFiles/aditof.dir/src/connections/network/network_depth_sensor.cpp.s: cm
 
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_sensor_enumerator.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_sensor_enumerator.cpp.o: ../sdk/src/connections/network/network_sensor_enumerator.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/network/network_sensor_enumerator.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/network/network_sensor_enumerator.cpp.o"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/network/network_sensor_enumerator.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/network/network_sensor_enumerator.cpp
 
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_sensor_enumerator.cpp.i: cmake_force
@@ -393,7 +419,7 @@ sdk/CMakeFiles/aditof.dir/src/connections/network/network_sensor_enumerator.cpp.
 
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_storage.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_storage.cpp.o: ../sdk/src/connections/network/network_storage.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/network/network_storage.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/network/network_storage.cpp.o"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/network/network_storage.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/network/network_storage.cpp
 
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_storage.cpp.i: cmake_force
@@ -406,7 +432,7 @@ sdk/CMakeFiles/aditof.dir/src/connections/network/network_storage.cpp.s: cmake_f
 
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_temperature_sensor.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_temperature_sensor.cpp.o: ../sdk/src/connections/network/network_temperature_sensor.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/network/network_temperature_sensor.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/network/network_temperature_sensor.cpp.o"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/network/network_temperature_sensor.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/network/network_temperature_sensor.cpp
 
 sdk/CMakeFiles/aditof.dir/src/connections/network/network_temperature_sensor.cpp.i: cmake_force
@@ -419,7 +445,7 @@ sdk/CMakeFiles/aditof.dir/src/connections/network/network_temperature_sensor.cpp
 
 sdk/CMakeFiles/aditof.dir/buffer.pb.cc.o: sdk/CMakeFiles/aditof.dir/flags.make
 sdk/CMakeFiles/aditof.dir/buffer.pb.cc.o: sdk/buffer.pb.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object sdk/CMakeFiles/aditof.dir/buffer.pb.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object sdk/CMakeFiles/aditof.dir/buffer.pb.cc.o"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/buffer.pb.cc.o -c /home/linaro/rk3588_tof/tof_net/build/sdk/buffer.pb.cc
 
 sdk/CMakeFiles/aditof.dir/buffer.pb.cc.i: cmake_force
@@ -432,7 +458,7 @@ sdk/CMakeFiles/aditof.dir/buffer.pb.cc.s: cmake_force
 
 sdk/CMakeFiles/aditof.dir/usb_buffer.pb.cc.o: sdk/CMakeFiles/aditof.dir/flags.make
 sdk/CMakeFiles/aditof.dir/usb_buffer.pb.cc.o: sdk/usb_buffer.pb.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object sdk/CMakeFiles/aditof.dir/usb_buffer.pb.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object sdk/CMakeFiles/aditof.dir/usb_buffer.pb.cc.o"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/usb_buffer.pb.cc.o -c /home/linaro/rk3588_tof/tof_net/build/sdk/usb_buffer.pb.cc
 
 sdk/CMakeFiles/aditof.dir/usb_buffer.pb.cc.i: cmake_force
@@ -445,7 +471,7 @@ sdk/CMakeFiles/aditof.dir/usb_buffer.pb.cc.s: cmake_force
 
 sdk/CMakeFiles/aditof.dir/src/connections/usb/usb_utils.cpp.o: sdk/CMakeFiles/aditof.dir/flags.make
 sdk/CMakeFiles/aditof.dir/src/connections/usb/usb_utils.cpp.o: ../sdk/src/connections/usb/usb_utils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/usb/usb_utils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object sdk/CMakeFiles/aditof.dir/src/connections/usb/usb_utils.cpp.o"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/aditof.dir/src/connections/usb/usb_utils.cpp.o -c /home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/usb_utils.cpp
 
 sdk/CMakeFiles/aditof.dir/src/connections/usb/usb_utils.cpp.i: cmake_force
@@ -469,15 +495,17 @@ aditof_OBJECTS = \
 "CMakeFiles/aditof.dir/src/cameras/itof-camera/adsd3100_configuration.cpp.o" \
 "CMakeFiles/aditof.dir/src/cameras/itof-camera/calibration_itof.cpp.o" \
 "CMakeFiles/aditof.dir/src/cameras/itof-camera/camera_itof.cpp.o" \
+"CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o" \
 "CMakeFiles/aditof.dir/src/cameras/itof-camera/mode_info.cpp.o" \
 "CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.o" \
-"CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o" \
+"CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.o" \
 "CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.o" \
-"CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.o" \
-"CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.o" \
-"CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.o" \
-"CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.o" \
-"CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.o" \
+"CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.o" \
+"CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.o" \
+"CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.o" \
+"CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.o" \
+"CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.o" \
+"CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.o" \
 "CMakeFiles/aditof.dir/src/connections/network/network.cpp.o" \
 "CMakeFiles/aditof.dir/src/connections/network/network_depth_sensor.cpp.o" \
 "CMakeFiles/aditof.dir/src/connections/network/network_sensor_enumerator.cpp.o" \
@@ -501,15 +529,17 @@ sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/common/adi/tofi/tofi_util.c.o
 sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/adsd3100_configuration.cpp.o
 sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/calibration_itof.cpp.o
 sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/camera_itof.cpp.o
+sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o
 sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/mode_info.cpp.o
 sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/module_memory.cpp.o
-sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/crc.c.o
+sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp.o
 sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/cameras/itof-frame/frame_impl.cpp.o
-sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_depth_sensor_linux.cpp.o
-sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_linux_utils.cpp.o
-sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_sensor_enumerator.cpp.o
-sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_storage_linux.cpp.o
-sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/usb/linux/usb_temperature_sensor_linux.cpp.o
+sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3100_sensor.cpp.o
+sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_interrupt_notifier.cpp.o
+sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/target/adsd3500_sensor.cpp.o
+sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/target/eeprom.cpp.o
+sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/target/gpio.cpp.o
+sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/target/target_sensor_enumerator.cpp.o
 sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/network/network.cpp.o
 sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/network/network_depth_sensor.cpp.o
 sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/src/connections/network/network_sensor_enumerator.cpp.o
@@ -527,7 +557,7 @@ sdk/libaditof.so.4.2.0: sdk/common/adi/depth-compute-opensource/libtofi_config.s
 sdk/libaditof.so.4.2.0: dependencies/third-party/c_json/libcjson.a
 sdk/libaditof.so.4.2.0: sdk/common/adi/ccb/libccb.a
 sdk/libaditof.so.4.2.0: sdk/CMakeFiles/aditof.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Linking CXX shared library libaditof.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/linaro/rk3588_tof/tof_net/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Linking CXX shared library libaditof.so"
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/aditof.dir/link.txt --verbose=$(VERBOSE)
 	cd /home/linaro/rk3588_tof/tof_net/build/sdk && $(CMAKE_COMMAND) -E cmake_symlink_library libaditof.so.4.2.0 libaditof.so.1.0 libaditof.so
 

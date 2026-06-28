@@ -235,7 +235,7 @@ examples/tof-net-viewer/tof-net-viewer: examples/tof-net-viewer/CMakeFiles/ADITo
 examples/tof-net-viewer/tof-net-viewer: examples/tof-net-viewer/CMakeFiles/ADIToFNetGUI.dir/build.make
 examples/tof-net-viewer/tof-net-viewer: /usr/lib/aarch64-linux-gnu/libglfw.so.3.3
 examples/tof-net-viewer/tof-net-viewer: sdk/libaditof.so.4.2.0
-examples/tof-net-viewer/tof-net-viewer: examples/tof-viewer/external/imgui/libimgui.a
+examples/tof-net-viewer/tof-net-viewer: examples/tof-net-viewer/external/imgui/libimgui.a
 examples/tof-net-viewer/tof-net-viewer: /usr/lib/aarch64-linux-gnu/libGL.so
 examples/tof-net-viewer/tof-net-viewer: dependencies/third-party/c_json/libcjson.a
 examples/tof-net-viewer/tof-net-viewer: examples/tof-net-common/libtof_net_common.a

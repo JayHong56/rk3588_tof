@@ -3,15 +3,15 @@
 
 # compile C with /usr/bin/cc
 # compile CXX with /usr/bin/c++
-C_DEFINES = -DADITOFSDK_GIT_BRANCH=\"\" -DADITOFSDK_GIT_COMMIT=\"\" -DCONFIG_DIR_NAME=\"config\" -DGLOG_CUSTOM_PREFIX_SUPPORT -DHAS_NETWORK -DRESOURCES=\"/home/linaro/rk3588_tof/tof_net/build/resources\" -DSDK_EXPORTS -DUSE_GLOG -DUSE_PROTOBUF -Daditof_EXPORTS
+C_DEFINES = -DADITOFSDK_GIT_BRANCH=\"\" -DADITOFSDK_GIT_COMMIT=\"\" -DCONFIG_DIR_NAME=\"config\" -DGLOG_CUSTOM_PREFIX_SUPPORT -DHAS_NETWORK -DNXP -DRESOURCES=\"/home/linaro/rk3588_tof/tof_net/build/resources\" -DSDK_EXPORTS -DUSE_GLOG -DUSE_PROTOBUF -Daditof_EXPORTS
 
-C_INCLUDES = -I/home/linaro/rk3588_tof/tof_net/sdk/include -I/home/linaro/rk3588_tof/tof_net/sdk/src -I/home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux -I/home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi -I/opt/protobuf/include -I/home/linaro/rk3588_tof/tof_net/build/sdk -I/opt/websockets/lib/cmake/libwebsockets/../../../include -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi/tofi -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi/ccb/include -I/home/linaro/rk3588_tof/tof_net/dependencies/third-party/c_json -isystem /opt/glog/include
+C_INCLUDES = -I/home/linaro/rk3588_tof/tof_net/sdk/include -I/home/linaro/rk3588_tof/tof_net/sdk/src -I/home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/soc/imx -I/home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi -I/opt/protobuf/include -I/home/linaro/rk3588_tof/tof_net/build/sdk -I/opt/websockets/lib/cmake/libwebsockets/../../../include -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi/tofi -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi/ccb/include -I/home/linaro/rk3588_tof/tof_net/dependencies/third-party/c_json -isystem /opt/glog/include
 
 C_FLAGS = -fPIC -Wall -Wno-unknown-pragmas -Werror=return-type -Werror=uninitialized -Werror=init-self
 
-CXX_DEFINES = -DADITOFSDK_GIT_BRANCH=\"\" -DADITOFSDK_GIT_COMMIT=\"\" -DCONFIG_DIR_NAME=\"config\" -DGLOG_CUSTOM_PREFIX_SUPPORT -DHAS_NETWORK -DRESOURCES=\"/home/linaro/rk3588_tof/tof_net/build/resources\" -DSDK_EXPORTS -DUSE_GLOG -DUSE_PROTOBUF -Daditof_EXPORTS
+CXX_DEFINES = -DADITOFSDK_GIT_BRANCH=\"\" -DADITOFSDK_GIT_COMMIT=\"\" -DCONFIG_DIR_NAME=\"config\" -DGLOG_CUSTOM_PREFIX_SUPPORT -DHAS_NETWORK -DNXP -DRESOURCES=\"/home/linaro/rk3588_tof/tof_net/build/resources\" -DSDK_EXPORTS -DUSE_GLOG -DUSE_PROTOBUF -Daditof_EXPORTS
 
-CXX_INCLUDES = -I/home/linaro/rk3588_tof/tof_net/sdk/include -I/home/linaro/rk3588_tof/tof_net/sdk/src -I/home/linaro/rk3588_tof/tof_net/sdk/src/connections/usb/linux -I/home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi -I/opt/protobuf/include -I/home/linaro/rk3588_tof/tof_net/build/sdk -I/opt/websockets/lib/cmake/libwebsockets/../../../include -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi/tofi -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi/ccb/include -I/home/linaro/rk3588_tof/tof_net/dependencies/third-party/c_json -isystem /opt/glog/include
+CXX_INCLUDES = -I/home/linaro/rk3588_tof/tof_net/sdk/include -I/home/linaro/rk3588_tof/tof_net/sdk/src -I/home/linaro/rk3588_tof/tof_net/sdk/src/connections/target/soc/imx -I/home/linaro/rk3588_tof/tof_net/sdk/src/cameras/itof-camera -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi -I/opt/protobuf/include -I/home/linaro/rk3588_tof/tof_net/build/sdk -I/opt/websockets/lib/cmake/libwebsockets/../../../include -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi/tofi -I/home/linaro/rk3588_tof/tof_net/sdk/common/adi/ccb/include -I/home/linaro/rk3588_tof/tof_net/dependencies/third-party/c_json -isystem /opt/glog/include
 
 CXX_FLAGS = -fPIC -Wall -Wno-unknown-pragmas -Werror=return-type -Werror=uninitialized -Werror=init-self -std=gnu++11
 

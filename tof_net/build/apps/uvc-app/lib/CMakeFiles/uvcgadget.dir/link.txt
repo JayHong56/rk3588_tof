@@ -1,0 +1,2 @@
+/usr/bin/ar qc libuvcgadget.a CMakeFiles/uvcgadget.dir/configfs.c.o CMakeFiles/uvcgadget.dir/events.c.o CMakeFiles/uvcgadget.dir/stream.c.o CMakeFiles/uvcgadget.dir/uvc.c.o CMakeFiles/uvcgadget.dir/v4l2-source.c.o CMakeFiles/uvcgadget.dir/v4l2.c.o CMakeFiles/uvcgadget.dir/video-buffers.c.o CMakeFiles/uvcgadget.dir/video-source.c.o
+/usr/bin/ranlib libuvcgadget.a

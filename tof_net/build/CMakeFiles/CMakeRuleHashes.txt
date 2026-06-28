@@ -1,3 +1,5 @@
 # Hashes of file build rules.
+714762bece5ed1f4a78a1f1522af722f apps/server/buffer.pb.h
+72bd15ccca0816a489f522812a99e7e8 apps/uvc-app/buffer.pb.h
 0d77e2fb7b32dcb90d738fd6434ec256 sdk/buffer.pb.h
 a481dfa128343b878bc1671f8a526683 sdk/usb_buffer.pb.h
