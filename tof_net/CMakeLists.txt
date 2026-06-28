@@ -32,6 +32,10 @@ option(WITH_GLOG_DEPENDENCY "Build with GLOG dependency to be used for logging" 
 option(WITH_PROTOBUF_DEPENDENCY "Build with PROTOBUF dependency to be used for serializing messages" ON)
 option(WITH_EMBEDDED_LINUX_TOOLS "Build with embedded Linux command line tools" ON)
 
+if(UNIX AND NOT APPLE)
+        set(CMAKE_BUILD_RPATH_USE_ORIGIN ON)
+endif()
+
 
 ################################## Git ########################################
 include(FindGit OPTIONAL)

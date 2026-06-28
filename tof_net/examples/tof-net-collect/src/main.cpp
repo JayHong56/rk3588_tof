@@ -508,9 +508,15 @@ class CameraRawSource {
         if (st != aditof::Status::OK) throw std::runtime_error("camera start failed");
 
         if (args_.ext_fsync == 0) {
-            camera_->setControl("syncMode", "0, 0"); // Master, timer driven.
+            std::cout << "[collect] setControl(syncMode=0,0) begin" << std::endl;
+            auto syncStatus = camera_->setControl("syncMode", "0, 0"); // Master, timer driven.
+            std::cout << "[collect] setControl(syncMode=0,0) returned status="
+                      << static_cast<int>(syncStatus) << std::endl;
         } else if (args_.ext_fsync == 1) {
-            camera_->setControl("syncMode", "2, 0"); // Slave.
+            std::cout << "[collect] setControl(syncMode=2,0) begin" << std::endl;
+            auto syncStatus = camera_->setControl("syncMode", "2, 0"); // Slave.
+            std::cout << "[collect] setControl(syncMode=2,0) returned status="
+                      << static_cast<int>(syncStatus) << std::endl;
         }
 
         capturing_ = true;
@@ -622,11 +628,23 @@ class CameraRawSource {
         if (!capturing_) throw std::runtime_error("not capturing");
 
         aditof::Frame frame;
+        std::cout << "[collect] get_frame_locked: requestFrame begin" << std::endl;
+        const auto requestBegin = std::chrono::steady_clock::now();
         auto st = camera_->requestFrame(&frame);
+        const auto requestMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+                                   std::chrono::steady_clock::now() - requestBegin)
+                                   .count();
+        std::cout << "[collect] get_frame_locked: requestFrame returned status="
+                  << static_cast<int>(st) << " elapsed_ms=" << requestMs
+                  << std::endl;
         if (st != aditof::Status::OK) throw std::runtime_error("camera requestFrame failed");
 
         aditof::FrameDetails details;
+        std::cout << "[collect] get_frame_locked: getDetails begin" << std::endl;
         st = frame.getDetails(details);
+        std::cout << "[collect] get_frame_locked: getDetails returned status="
+                  << static_cast<int>(st) << " width=" << details.width
+                  << " height=" << details.height << std::endl;
         if (st != aditof::Status::OK) throw std::runtime_error("frame getDetails failed");
 
         aditof::FrameDataDetails rawDetails;
@@ -638,6 +656,12 @@ class CameraRawSource {
         uint32_t rawBytes = 0;
         if (get_raw_plane_details(details, rawDetails)) {
             rawBytes = checked_raw_byte_count(rawDetails);
+            std::cout << "[collect] get_frame_locked: raw plane metadata width="
+                      << rawDetails.width << " height=" << rawDetails.height
+                      << " subelement_size=" << rawDetails.subelementSize
+                      << " subelements_per_element="
+                      << rawDetails.subelementsPerElement
+                      << " bytes=" << rawBytes << std::endl;
         } else {
             // Older SDKs may not expose plane metadata for raw. Fall back to
             // the data_collect-compatible ADSD3500 byte-per-pixel table.
@@ -651,10 +675,17 @@ class CameraRawSource {
             rawBytes = static_cast<uint32_t>(raw_size_u64);
             rawDetails.width = details.width;
             rawDetails.height = details.height;
+            std::cout << "[collect] get_frame_locked: raw plane fallback width="
+                      << rawDetails.width << " height=" << rawDetails.height
+                      << " subframes=" << subFrames << " bytes=" << rawBytes
+                      << std::endl;
         }
 
         uint16_t *pData = nullptr;
+        std::cout << "[collect] get_frame_locked: getData(raw) begin" << std::endl;
         st = frame.getData("raw", &pData);
+        std::cout << "[collect] get_frame_locked: getData(raw) returned status="
+                  << static_cast<int>(st) << " ptr=" << pData << std::endl;
         if (st != aditof::Status::OK || pData == nullptr) {
             throw std::runtime_error("frame getData(raw) failed");
         }
@@ -669,6 +700,8 @@ class CameraRawSource {
         out.frame_type = mode_name_;
         out.data.resize(out.bytes);
         std::memcpy(out.data.data(), reinterpret_cast<const uint8_t *>(pData), out.bytes);
+        std::cout << "[collect] get_frame_locked: copied RAW frame bytes="
+                  << out.bytes << " mode=" << out.frame_type << std::endl;
         return out;
     }
 

@@ -738,7 +738,19 @@ aditof::Status CameraItof::requestFrame(aditof::Frame *frame,
         return status;
     }
 
+    LOG(INFO) << "CameraItof::requestFrame: depthSensor->getFrame begin"
+              << " frameType=" << m_details.frameType.type
+              << " width=" << m_details.frameType.width
+              << " height=" << m_details.frameType.height
+              << " totalCaptures=" << static_cast<int>(totalCaptures);
+    const auto getFrameBegin = std::chrono::steady_clock::now();
     status = m_depthSensor->getFrame(frameDataLocation);
+    const auto getFrameMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+                                std::chrono::steady_clock::now() - getFrameBegin)
+                                .count();
+    LOG(INFO) << "CameraItof::requestFrame: depthSensor->getFrame returned"
+              << " status=" << static_cast<int>(status)
+              << " elapsed_ms=" << getFrameMs;
     if (status != Status::OK) {
         LOG(WARNING) << "Failed to get frame from device";
     }

@@ -13,6 +13,7 @@
 #include "cameras/itof-camera/mode_info.h"
 #include <algorithm>
 #include <arm_neon.h>
+#include <chrono>
 #include <cmath>
 #include <fcntl.h>
 #include <fstream>
@@ -723,30 +724,64 @@ aditof::Status Adsd3500Sensor::getFrame(uint16_t *buffer) {
     uint8_t *pdata;
     dev = &m_implData->videoDevs[0];
     m_capturesPerFrame = 1;
+    LOG(INFO) << "Adsd3500Sensor::getFrame enter"
+              << " fd=" << dev->fd
+              << " started=" << dev->started
+              << " nVideoBuffers=" << dev->nVideoBuffers
+              << " capturesPerFrame=" << m_capturesPerFrame
+              << " videoBuffersType=" << dev->videoBuffersType;
     for (int idx = 0; idx < m_capturesPerFrame; idx++) {
+        LOG(INFO) << "Adsd3500Sensor::getFrame: waitForBuffer begin"
+                  << " idx=" << idx;
         status = waitForBufferPrivate(dev);
+        LOG(INFO) << "Adsd3500Sensor::getFrame: waitForBuffer returned"
+                  << " idx=" << idx
+                  << " status=" << static_cast<int>(status);
         if (status != Status::OK) {
             return status;
         }
 
+        LOG(INFO) << "Adsd3500Sensor::getFrame: DQBUF begin"
+                  << " idx=" << idx;
         status = dequeueInternalBufferPrivate(buf[idx], dev);
+        LOG(INFO) << "Adsd3500Sensor::getFrame: DQBUF returned"
+                  << " idx=" << idx
+                  << " status=" << static_cast<int>(status)
+                  << " bufferIndex=" << buf[idx].index
+                  << " bytesused=" << buf[idx].bytesused
+                  << " flags=" << buf[idx].flags
+                  << " sequence=" << buf[idx].sequence;
         if (status != Status::OK) {
             return status;
         }
 
         status = getInternalBufferPrivate(&pdata, buf_data_len, buf[idx], dev);
+        LOG(INFO) << "Adsd3500Sensor::getFrame: getInternalBuffer returned"
+                  << " idx=" << idx
+                  << " status=" << static_cast<int>(status)
+                  << " data_len=" << buf_data_len
+                  << " pdata=" << static_cast<void *>(pdata);
         if (status != Status::OK) {
             return status;
         }
 
         memcpy(buffer, pdata, buf_data_len);
 
+        LOG(INFO) << "Adsd3500Sensor::getFrame: QBUF begin"
+                  << " idx=" << idx
+                  << " bufferIndex=" << buf[idx].index;
         status = enqueueInternalBufferPrivate(buf[idx], dev);
+        LOG(INFO) << "Adsd3500Sensor::getFrame: QBUF returned"
+                  << " idx=" << idx
+                  << " status=" << static_cast<int>(status)
+                  << " bufferIndex=" << buf[idx].index;
         if (status != Status::OK) {
             return status;
         }
     }
 
+    LOG(INFO) << "Adsd3500Sensor::getFrame done"
+              << " status=" << static_cast<int>(status);
     return status;
 }
 
@@ -1329,7 +1364,19 @@ aditof::Status Adsd3500Sensor::waitForBufferPrivate(struct VideoDev *dev) {
     tv.tv_sec = 20;
     tv.tv_usec = 0;
 
+    LOG(INFO) << "waitForBufferPrivate: select begin"
+              << " fd=" << dev->fd
+              << " timeout_sec=" << tv.tv_sec;
+    const auto selectBegin = std::chrono::steady_clock::now();
     r = select(dev->fd + 1, &fds, NULL, NULL, &tv);
+    const auto selectMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+                              std::chrono::steady_clock::now() - selectBegin)
+                              .count();
+    LOG(INFO) << "waitForBufferPrivate: select returned"
+              << " r=" << r
+              << " errno=" << errno
+              << " elapsed_ms=" << selectMs
+              << " fd_isset=" << (r > 0 ? FD_ISSET(dev->fd, &fds) : 0);
 
     if (r == -1) {
         LOG(WARNING) << "select error "
@@ -1357,6 +1404,12 @@ Adsd3500Sensor::dequeueInternalBufferPrivate(struct v4l2_buffer &buf,
     buf.length = 1;
     buf.m.planes = dev->planes;
 
+    LOG(INFO) << "dequeueInternalBufferPrivate: VIDIOC_DQBUF begin"
+              << " fd=" << dev->fd
+              << " type=" << buf.type
+              << " memory=" << buf.memory
+              << " length=" << buf.length
+              << " planes=" << buf.m.planes;
     if (xioctl(dev->fd, VIDIOC_DQBUF, &buf) == -1) {
         LOG(WARNING) << "VIDIOC_DQBUF error "
                      << "errno: " << errno << " error: " << strerror(errno);
@@ -1368,6 +1421,12 @@ Adsd3500Sensor::dequeueInternalBufferPrivate(struct v4l2_buffer &buf,
             return Status::GENERIC_ERROR;
         }
     }
+    LOG(INFO) << "dequeueInternalBufferPrivate: VIDIOC_DQBUF done"
+              << " bufferIndex=" << buf.index
+              << " bytesused=" << buf.bytesused
+              << " flags=" << buf.flags
+              << " sequence=" << buf.sequence
+              << " length=" << buf.length;
 
     if (buf.index >= dev->nVideoBuffers) {
         LOG(WARNING) << "Not enough buffers avaialable";
@@ -1395,11 +1454,24 @@ Adsd3500Sensor::enqueueInternalBufferPrivate(struct v4l2_buffer &buf,
     if (dev == nullptr)
         dev = &m_implData->videoDevs[0];
 
+    LOG(INFO) << "enqueueInternalBufferPrivate: VIDIOC_QBUF begin"
+              << " fd=" << dev->fd
+              << " bufferIndex=" << buf.index
+              << " bytesused=" << buf.bytesused
+              << " flags=" << buf.flags
+              << " sequence=" << buf.sequence
+              << " type=" << buf.type
+              << " memory=" << buf.memory
+              << " length=" << buf.length;
     if (xioctl(dev->fd, VIDIOC_QBUF, &buf) == -1) {
         LOG(WARNING) << "VIDIOC_QBUF error "
                      << "errno: " << errno << " error: " << strerror(errno);
         return aditof::Status::GENERIC_ERROR;
     }
+    LOG(INFO) << "enqueueInternalBufferPrivate: VIDIOC_QBUF done"
+              << " bufferIndex=" << buf.index
+              << " flags=" << buf.flags
+              << " sequence=" << buf.sequence;
 
     return aditof::Status::OK;
 }
