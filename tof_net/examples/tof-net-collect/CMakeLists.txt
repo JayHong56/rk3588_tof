@@ -24,6 +24,7 @@ if(TARGET aditof)
     get_filename_component(TOF_SOURCE_ROOT "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
     target_include_directories(${PROJECT_NAME} PRIVATE
         "${TOF_SOURCE_ROOT}/sdk/src/cameras/itof-camera"
+        "${TOF_SOURCE_ROOT}/sdk/src"
         "${TOF_SOURCE_ROOT}/sdk/common/adi/tofi"
     )
 else()
@@ -42,6 +43,7 @@ else()
     # (tofi_camera_intrinsics.h) for ADSD3500 dealias export.
     target_include_directories(${PROJECT_NAME} PRIVATE
         "${TOF_SOURCE_ROOT}/sdk/src/cameras/itof-camera"
+        "${TOF_SOURCE_ROOT}/sdk/src"
         "${TOF_SOURCE_ROOT}/sdk/common/adi/tofi"
     )
     target_link_libraries(${PROJECT_NAME} PRIVATE ${ADITOF_LIBRARY})

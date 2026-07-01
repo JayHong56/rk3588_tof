@@ -6,9 +6,20 @@
 #include <aditof/depth_sensor_interface.h>
 #include <aditof/frame.h>
 #include <aditof/frame_definitions.h>
+#include <aditof/sensor_definitions.h>
+#include <aditof/sensor_enumerator_factory.h>
+#include <aditof/sensor_enumerator_interface.h>
 #include <aditof/status_definitions.h>
 #include <aditof/system.h>
 #include <aditof/version.h>
+
+#if __has_include("connections/target/v4l_buffer_access_interface.h")
+#include "connections/target/v4l_buffer_access_interface.h"
+#include <linux/videodev2.h>
+#define TOF_NET_HAS_V4L_BUFFER_ACCESS 1
+#else
+#define TOF_NET_HAS_V4L_BUFFER_ACCESS 0
+#endif
 
 // For TofiXYZDealiasData / CameraIntrinsics used by adsd3500 dealias export
 #if __has_include(<tofi/tofi_camera_intrinsics.h>)
@@ -18,15 +29,20 @@
 #endif
 
 #include "mode_info.h"
+#include "crc.h"
 
+#include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <cctype>
 #include <csignal>
-#include <cstdlib>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <iterator>
+#include <map>
 #include <memory>
 #include <mutex>
 #include <stdexcept>
@@ -87,6 +103,15 @@ std::vector<uint8_t> read_whole_file(const std::string &path) {
                                 std::istreambuf_iterator<char>());
 }
 
+std::string read_whole_text_file(const std::string &path) {
+    std::ifstream stream(path, std::ios::binary);
+    if (!stream) {
+        throw std::runtime_error("Cannot open file: " + path);
+    }
+    return std::string(std::istreambuf_iterator<char>(stream),
+                       std::istreambuf_iterator<char>());
+}
+
 bool is_absolute_path(const std::string &path) {
     if (path.empty()) return false;
 #ifdef _WIN32
@@ -117,6 +142,59 @@ std::string resolve_config_path(const std::string &requested, const char *argv0)
         if (file_exists(alt)) return alt;
     }
     return requested;
+}
+
+std::string trim(std::string s) {
+    auto is_space = [](unsigned char c) { return std::isspace(c) != 0; };
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(),
+                                    [&](unsigned char c) { return !is_space(c); }));
+    s.erase(std::find_if(s.rbegin(), s.rend(),
+                         [&](unsigned char c) { return !is_space(c); })
+                .base(),
+            s.end());
+    return s;
+}
+
+std::vector<std::string> split(const std::string &s, char delimiter) {
+    std::vector<std::string> out;
+    std::string item;
+    std::istringstream stream(s);
+    while (std::getline(stream, item, delimiter)) {
+        item = trim(item);
+        if (!item.empty()) out.push_back(item);
+    }
+    return out;
+}
+
+std::string json_string_value(const std::string &json, const std::string &key) {
+    const std::string quotedKey = "\"" + key + "\"";
+    auto pos = json.find(quotedKey);
+    if (pos == std::string::npos) return {};
+    pos = json.find(':', pos + quotedKey.size());
+    if (pos == std::string::npos) return {};
+    pos = json.find('"', pos + 1);
+    if (pos == std::string::npos) return {};
+    const auto end = json.find('"', pos + 1);
+    if (end == std::string::npos) return {};
+    return json.substr(pos + 1, end - pos - 1);
+}
+
+std::map<std::string, std::string> parse_ini_key_values(const std::string &path) {
+    std::ifstream stream(path);
+    if (!stream) {
+        throw std::runtime_error("Cannot open INI file: " + path);
+    }
+
+    std::map<std::string, std::string> values;
+    std::string line;
+    while (std::getline(stream, line)) {
+        line = trim(line);
+        if (line.empty() || line[0] == '#' || line[0] == ';') continue;
+        const auto pos = line.find('=');
+        if (pos == std::string::npos) continue;
+        values[trim(line.substr(0, pos))] = trim(line.substr(pos + 1));
+    }
+    return values;
 }
 
 void usage() {
@@ -202,6 +280,10 @@ class CameraRawSource {
     explicit CameraRawSource(const Args &args) : args_(args) {}
 
     void initialize() {
+        if (args_.camera_ip.empty() && initialize_direct_sensor_if_available()) {
+            return;
+        }
+
         aditof::System system;
         std::vector<std::shared_ptr<aditof::Camera>> cameras;
 
@@ -277,6 +359,10 @@ class CameraRawSource {
 
         sensor_ = camera_->getSensor();
         if (!sensor_) throw std::runtime_error("camera getSensor failed");
+#if TOF_NET_HAS_V4L_BUFFER_ACCESS
+        v4l_buffer_access_ =
+            std::dynamic_pointer_cast<aditof::V4lBufferAccessInterface>(sensor_);
+#endif
         st = sensor_->getName(sensor_name_);
         if (st != aditof::Status::OK) sensor_name_.clear();
 
@@ -338,19 +424,22 @@ class CameraRawSource {
     // sequence in CameraItof that populates m_xyz_dealias_data[mode].
     std::vector<DealiasEntry> export_dealias_data() {
         std::lock_guard<std::mutex> lock(mu_);
-        if (!camera_ || !sensor_) {
-            throw std::runtime_error("camera not initialized");
+        if (!sensor_ || (!use_direct_sensor_ && !camera_)) {
+            throw std::runtime_error("camera/sensor not initialized");
         }
         if (sensor_name_ != "adsd3500") {
             std::cout << "Dealias export only supported for adsd3500; skipping\n";
             return {};
         }
 
-        // Get all available frame types from the camera
         std::vector<std::string> frameTypes;
-        auto st = camera_->getAvailableFrameTypes(frameTypes);
-        if (st != aditof::Status::OK || frameTypes.empty()) {
-            throw std::runtime_error("getAvailableFrameTypes failed");
+        if (use_direct_sensor_) {
+            frameTypes = available_frame_type_names();
+        } else {
+            auto st = camera_->getAvailableFrameTypes(frameTypes);
+            if (st != aditof::Status::OK || frameTypes.empty()) {
+                throw std::runtime_error("getAvailableFrameTypes failed");
+            }
         }
 
         std::vector<DealiasEntry> entries;
@@ -365,7 +454,7 @@ class CameraRawSource {
             intrinsics[0] = mode;
             dealiasParams[0] = mode;
 
-            st = sensor_->adsd3500_read_payload_cmd(0x01, intrinsics, 56);
+            auto st = sensor_->adsd3500_read_payload_cmd(0x01, intrinsics, 56);
             if (st != aditof::Status::OK) {
                 std::cerr << "Warning: failed to read intrinsics (cmd 0x01) for "
                           << ft << "\n";
@@ -416,8 +505,8 @@ class CameraRawSource {
 
     ModuleCcb export_module_ccb() {
         std::lock_guard<std::mutex> lock(mu_);
-        if (!camera_) {
-            throw std::runtime_error("camera not initialized");
+        if (!sensor_ || (!use_direct_sensor_ && !camera_)) {
+            throw std::runtime_error("camera/sensor not initialized");
         }
 
         std::vector<std::string> candidates;
@@ -433,10 +522,27 @@ class CameraRawSource {
         for (const std::string &path : candidates) {
             try {
                 std::remove(path.c_str());
-                auto st = camera_->setControl("saveModuleCCB", path);
-                if (st != aditof::Status::OK) {
-                    lastError = "saveModuleCCB failed for " + path;
-                    std::cerr << "Warning: " << lastError << "\n";
+                if (use_direct_sensor_) {
+                    ModuleCcb out;
+                    out.path = path;
+                    out.data = read_current_module_ccb_direct();
+                    std::ofstream file(path, std::ios::binary);
+                    if (!file) {
+                        lastError = "cannot create " + path;
+                        continue;
+                    }
+                    file.write(reinterpret_cast<const char *>(out.data.data()),
+                               static_cast<std::streamsize>(out.data.size()));
+                    file.close();
+                    std::cout << "Exported current module CCB: " << path
+                              << " (" << out.data.size() << " bytes)\n";
+                    return out;
+                } else {
+                    auto st = camera_->setControl("saveModuleCCB", path);
+                    if (st != aditof::Status::OK) {
+                        lastError = "saveModuleCCB failed for " + path;
+                        std::cerr << "Warning: " << lastError << "\n";
+                    }
                 }
 
                 if (!file_exists(path)) {
@@ -469,13 +575,14 @@ class CameraRawSource {
     // all other initialization (enableDepthCompute=off, sensor config, etc.).
     bool switchMode(const std::string &frameType) {
         std::lock_guard<std::mutex> lock(mu_);
-        if (!camera_) return false;
+        if (!sensor_ || (!use_direct_sensor_ && !camera_)) return false;
         if (frameType == mode_name_) return true;
 
         std::cout << "[collect] switchMode begin: " << mode_name_
                   << " -> " << frameType << std::endl;
         stop_locked();
-        auto st = camera_->setFrameType(frameType);
+        auto st = use_direct_sensor_ ? set_direct_frame_type(frameType)
+                                     : camera_->setFrameType(frameType);
         if (st != aditof::Status::OK) {
             std::cerr << "[collect] setFrameType(" << frameType
                       << ") failed, status=" << static_cast<int>(st)
@@ -493,26 +600,34 @@ class CameraRawSource {
     void start() {
         std::lock_guard<std::mutex> lock(mu_);
         stop_locked();
-        if (!camera_) throw std::runtime_error("camera not initialized");
+        if (!sensor_ || (!use_direct_sensor_ && !camera_)) {
+            throw std::runtime_error("camera/sensor not initialized");
+        }
 
-        std::cout << "[collect] camera->start() begin: mode=" << mode_name_
+        std::cout << "[collect] "
+                  << (use_direct_sensor_ ? "sensor->start()" : "camera->start()")
+                  << " begin: mode=" << mode_name_
                   << " modeId=" << args_.mode << std::endl;
         const auto startBegin = std::chrono::steady_clock::now();
-        auto st = camera_->start();
+        auto st = use_direct_sensor_ ? sensor_->start() : camera_->start();
         const auto startMs = std::chrono::duration_cast<std::chrono::milliseconds>(
                                  std::chrono::steady_clock::now() - startBegin)
                                  .count();
-        std::cout << "[collect] camera->start() returned status="
+        std::cout << "[collect] "
+                  << (use_direct_sensor_ ? "sensor->start()" : "camera->start()")
+                  << " returned status="
                   << static_cast<int>(st) << " elapsed_ms=" << startMs
                   << std::endl;
-        if (st != aditof::Status::OK) throw std::runtime_error("camera start failed");
+        if (st != aditof::Status::OK) {
+            throw std::runtime_error("camera/sensor start failed");
+        }
 
-        if (args_.ext_fsync == 0) {
+        if (!use_direct_sensor_ && args_.ext_fsync == 0) {
             std::cout << "[collect] setControl(syncMode=0,0) begin" << std::endl;
             auto syncStatus = camera_->setControl("syncMode", "0, 0"); // Master, timer driven.
             std::cout << "[collect] setControl(syncMode=0,0) returned status="
                       << static_cast<int>(syncStatus) << std::endl;
-        } else if (args_.ext_fsync == 1) {
+        } else if (!use_direct_sensor_ && args_.ext_fsync == 1) {
             std::cout << "[collect] setControl(syncMode=2,0) begin" << std::endl;
             auto syncStatus = camera_->setControl("syncMode", "2, 0"); // Slave.
             std::cout << "[collect] setControl(syncMode=2,0) returned status="
@@ -532,19 +647,10 @@ class CameraRawSource {
             }
         }
 
-        // data_collect drops the first frame before saving. Keep the same
-        // behavior here; the first frame after start can carry stale or partially
-        // initialized raw payload on some firmware versions.
-        try {
-            std::cout << "[collect] dropping first RAW frame after start: requestFrame begin"
-                      << std::endl;
-            (void)get_frame_locked();
-            std::cout << "[collect] dropped first RAW frame after camera start"
-                      << std::endl;
-        } catch (const std::exception &e) {
-            std::cerr << "Warning: failed to drop first frame: " << e.what()
-                      << std::endl;
-        }
+        // Keep the first frame for diagnostics. On this target path the first
+        // DQBUF can be the only successful frame before a later select timeout.
+        std::cout << "[collect] first RAW frame after start will be sent"
+                  << std::endl;
     }
 
     void stop() {
@@ -560,6 +666,336 @@ class CameraRawSource {
     uint32_t max_frames() const { return args_.n_frames; }
 
   private:
+    bool initialize_direct_sensor_if_available() {
+#if TOF_NET_HAS_V4L_BUFFER_ACCESS
+        auto enumerator = aditof::SensorEnumeratorFactory::buildTargetSensorEnumerator();
+        if (!enumerator) return false;
+
+        std::vector<std::shared_ptr<aditof::DepthSensorInterface>> depthSensors;
+        auto st = enumerator->searchSensors();
+        if (st != aditof::Status::OK) return false;
+        st = enumerator->getDepthSensors(depthSensors);
+        if (st != aditof::Status::OK || depthSensors.empty()) return false;
+
+        auto sensor = depthSensors.front();
+        std::string sensorName;
+        sensor->getName(sensorName);
+        auto v4lAccess =
+            std::dynamic_pointer_cast<aditof::V4lBufferAccessInterface>(sensor);
+        if (sensorName != "adsd3500" || !v4lAccess) return false;
+
+        std::cout << "[collect] Using direct target DepthSensorInterface path\n";
+
+        sensor_ = sensor;
+        sensor_name_ = sensorName;
+        v4l_buffer_access_ = v4lAccess;
+        sensor_enumerator_ = std::move(enumerator);
+
+        st = sensor_->open();
+        if (st != aditof::Status::OK) {
+            throw std::runtime_error("direct sensor open failed");
+        }
+
+        configure_direct_sensor_mode_table();
+        load_direct_config();
+
+        std::vector<aditof::DepthSensorFrameType> frameTypes;
+        st = sensor_->getAvailableFrameTypes(frameTypes);
+        if (st != aditof::Status::OK || frameTypes.empty()) {
+            throw std::runtime_error("direct sensor getAvailableFrameTypes failed");
+        }
+        available_sensor_frame_types_ = frameTypes;
+
+        mode_name_ = mode_name_from_id(args_.mode);
+        if (mode_name_.empty()) {
+            throw std::runtime_error("invalid --m mode for direct sensor");
+        }
+
+        std::string kernelVersion;
+        std::string uBootVersion;
+        std::string sdVersion;
+        sensor_enumerator_->getKernelVersion(kernelVersion);
+        sensor_enumerator_->getUbootVersion(uBootVersion);
+        sensor_enumerator_->getSdVersion(sdVersion);
+
+        std::cout << "Camera initialized. SDK " << aditof::getApiVersion() << "\n";
+        std::cout << "SD card image version: " << sdVersion << "\n";
+        std::cout << "Kernel version: " << kernelVersion << "\n";
+        std::cout << "U-Boot version: " << uBootVersion << "\n";
+
+        print_available_frame_types();
+        print_common_status();
+
+        if (direct_config_.fps != 0) {
+            auto fpsStatus =
+                sensor_->setControl("fps", std::to_string(direct_config_.fps));
+            std::cout << "[collect] direct sensor setControl(fps="
+                      << direct_config_.fps << ") returned status="
+                      << static_cast<int>(fpsStatus) << "\n";
+        }
+
+        if (direct_config_.fsync_mode >= 0) {
+            auto fsyncStatus = sensor_->adsd3500_write_cmd(
+                0x0025, static_cast<uint16_t>(direct_config_.fsync_mode));
+            std::cout << "[collect] direct sensor set FSYNC toggle mode="
+                      << direct_config_.fsync_mode << " returned status="
+                      << static_cast<int>(fsyncStatus) << "\n";
+        }
+
+        use_direct_sensor_ = true;
+        st = set_direct_frame_type(mode_name_);
+        if (st != aditof::Status::OK) {
+            throw std::runtime_error("direct sensor setFrameType failed: " +
+                                     mode_name_);
+        }
+
+        std::cout << "Mode: " << args_.mode << " -> " << mode_name_ << "\n";
+        std::cout << "Frame type: raw, depth compute: off\n";
+        return true;
+#else
+        return false;
+#endif
+    }
+
+    void print_available_frame_types() const {
+        std::cout << "[collect] Available frame types ("
+                  << available_frame_type_names().size() << "):\n";
+        for (const auto &ft : available_frame_type_names()) {
+            auto info = ModeInfo::getInstance()->getModeInfo(ft);
+            std::cout << "[collect]   " << ft
+                      << " modeId=" << static_cast<int>(info.mode)
+                      << " w=" << info.width << " h=" << info.height
+                      << " subframes=" << static_cast<int>(info.subframes)
+                      << " passive_ir=" << static_cast<int>(info.passive_ir)
+                      << "\n";
+        }
+    }
+
+    void print_common_status() const {
+        std::cout << "[collect] Sensor name: " << sensor_name_ << "\n";
+        std::cout << "[collect] Selected mode: --m " << args_.mode
+                  << " -> " << mode_name_ << "\n";
+        std::cout << "[collect] Sensor config: " << args_.sensor_configuration
+                  << "\n";
+        std::cout << "[collect] Server IP: " << args_.server_ip << ":"
+                  << args_.port << ", bind: "
+                  << (args_.bind_ip.empty() ? "auto" : args_.bind_ip) << "\n";
+        std::cout << "[collect] Zstd level: " << args_.zstd_level
+                  << ", reconnect: " << (args_.reconnect ? "yes" : "no")
+                  << "\n";
+        std::cout << "[collect] Camera ready, waiting for Machine B viewer...\n";
+    }
+
+    std::vector<std::string> available_frame_type_names() const {
+        std::vector<std::string> names;
+        if (use_direct_sensor_ || !available_sensor_frame_types_.empty()) {
+            for (const auto &type : available_sensor_frame_types_) {
+                names.push_back(type.type);
+            }
+        }
+        return names;
+    }
+
+    std::string mode_name_from_id(uint16_t modeId) const {
+        for (const auto &type : available_sensor_frame_types_) {
+            auto info = ModeInfo::getInstance()->getModeInfo(type.type);
+            if (info.mode == modeId) return type.type;
+        }
+        auto info = ModeInfo::getInstance()->getModeInfo(modeId);
+        return info.mode_name;
+    }
+
+    const aditof::DepthSensorFrameType *find_sensor_frame_type(
+        const std::string &frameType) const {
+        auto it = std::find_if(available_sensor_frame_types_.begin(),
+                               available_sensor_frame_types_.end(),
+                               [&](const aditof::DepthSensorFrameType &type) {
+                                   return type.type == frameType;
+                               });
+        if (it == available_sensor_frame_types_.end()) return nullptr;
+        return &(*it);
+    }
+
+    void configure_direct_sensor_mode_table() {
+        std::string imagerType;
+        auto st = sensor_->getControl("imagerType", imagerType);
+        if (st != aditof::Status::OK || imagerType.empty() || imagerType == "0") {
+            imagerType = "1";
+        }
+
+        int modeVersion = 2;
+        uint8_t dealiasParams[32] = {0};
+        dealiasParams[0] = 5;
+        st = sensor_->adsd3500_read_payload_cmd(0x02, dealiasParams, 32);
+        if (st == aditof::Status::OK) {
+            TofiXYZDealiasData dealiasStruct;
+            std::memset(&dealiasStruct, 0, sizeof(dealiasStruct));
+            std::memcpy(&dealiasStruct, dealiasParams,
+                        sizeof(TofiXYZDealiasData) - sizeof(CameraIntrinsics));
+            if ((dealiasStruct.n_rows == 512 && dealiasStruct.n_cols == 512) ||
+                (dealiasStruct.n_rows == 320 && dealiasStruct.n_cols == 256)) {
+                modeVersion = 3;
+            }
+        } else {
+            modeVersion = 3;
+            std::cerr << "Warning: failed to probe mixed mode dealias data;"
+                      << " assuming modeInfoVersion=3\n";
+        }
+
+        const int imager = std::stoi(imagerType);
+        ModeInfo::getInstance()->setImagerTypeAndModeVersion(imager, modeVersion);
+        st = sensor_->setControl("modeInfoVersion", std::to_string(modeVersion));
+        if (st != aditof::Status::OK) {
+            throw std::runtime_error("direct sensor setControl(modeInfoVersion) failed");
+        }
+        std::cout << "[collect] direct sensor mode table: imagerType=" << imager
+                  << " modeInfoVersion=" << modeVersion << "\n";
+    }
+
+    struct DirectConfig {
+        int fps = 0;
+        int fsync_mode = -1;
+        std::map<std::string, std::string> ini_by_mode;
+    };
+
+    void load_direct_config() {
+        direct_config_ = DirectConfig{};
+        const std::string json = read_whole_text_file(args_.initialization_config);
+
+        const std::string fps = json_string_value(json, "FPS");
+        if (!fps.empty()) direct_config_.fps = std::stoi(fps);
+
+        const std::string fsync = json_string_value(json, "FSYNC_MODE");
+        if (!fsync.empty()) direct_config_.fsync_mode = std::stoi(fsync);
+
+        const std::string depthIni = json_string_value(json, "DEPTH_INI");
+        for (const auto &entry : split(depthIni, ';')) {
+            std::string resolved = entry;
+            if (!is_absolute_path(resolved) && !file_exists(resolved)) {
+                resolved = join_path(dirname_of(args_.initialization_config), entry);
+            }
+            std::string base = resolved;
+            const auto slash = base.find_last_of("/\\");
+            if (slash != std::string::npos) base = base.substr(slash + 1);
+            const auto dot = base.find_last_of('.');
+            if (dot != std::string::npos) base = base.substr(0, dot);
+            const auto us = base.find_last_of('_');
+            if (us == std::string::npos) continue;
+            direct_config_.ini_by_mode[base.substr(us + 1)] = resolved;
+        }
+    }
+
+    void apply_direct_ini_controls(const std::string &frameType) {
+        const auto it = direct_config_.ini_by_mode.find(frameType);
+        if (it == direct_config_.ini_by_mode.end()) {
+            std::cerr << "Warning: no DEPTH_INI entry for " << frameType << "\n";
+            return;
+        }
+
+        const auto kv = parse_ini_key_values(it->second);
+        auto set_from_bits = [&](const char *key, const char *control) {
+            const auto valueIt = kv.find(key);
+            if (valueIt == kv.end()) return;
+            std::string mapped = "2";
+            if (valueIt->second == "16") mapped = "6";
+            else if (valueIt->second == "14") mapped = "5";
+            else if (valueIt->second == "12") mapped = "4";
+            else if (valueIt->second == "10") mapped = "3";
+            else if (valueIt->second == "8") mapped = "2";
+            else if (valueIt->second == "4") mapped = "1";
+            else mapped = "0";
+            auto st = sensor_->setControl(control, mapped);
+            std::cout << "[collect] direct sensor setControl(" << control
+                      << "=" << mapped << ") from " << key
+                      << " returned status=" << static_cast<int>(st) << "\n";
+        };
+
+        set_from_bits("bitsInPhaseOrDepth", "phaseDepthBits");
+        set_from_bits("bitsInConf", "confidenceBits");
+        set_from_bits("bitsInAB", "abBits");
+
+        const auto partialIt = kv.find("partialDepthEnable");
+        if (partialIt != kv.end()) {
+            const std::string enabled = (partialIt->second == "0") ? "1" : "0";
+            auto st = sensor_->setControl("depthEnable", enabled);
+            std::cout << "[collect] direct sensor setControl(depthEnable="
+                      << enabled << ") returned status=" << static_cast<int>(st)
+                      << "\n";
+            st = sensor_->setControl("abAveraging", enabled);
+            std::cout << "[collect] direct sensor setControl(abAveraging="
+                      << enabled << ") returned status=" << static_cast<int>(st)
+                      << "\n";
+        }
+    }
+
+    aditof::Status set_direct_frame_type(const std::string &frameType) {
+        const auto *type = find_sensor_frame_type(frameType);
+        if (!type) return aditof::Status::INVALID_ARGUMENT;
+        apply_direct_ini_controls(frameType);
+        return sensor_->setFrameType(*type);
+    }
+
+    std::vector<uint8_t> read_current_module_ccb_direct() {
+        uint8_t ccbHeader[16] = {0};
+        ccbHeader[0] = 1;
+        auto st = sensor_->adsd3500_read_payload_cmd(0x13, ccbHeader, 16);
+        if (st != aditof::Status::OK) {
+            throw std::runtime_error("failed to get CCB command header");
+        }
+
+        uint16_t chunkSize = 0;
+        uint32_t ccbFileSize = 0;
+        uint32_t crcOfCCB = 0;
+        std::memcpy(&chunkSize, ccbHeader + 1, sizeof(chunkSize));
+        std::memcpy(&ccbFileSize, ccbHeader + 4, sizeof(ccbFileSize));
+        std::memcpy(&crcOfCCB, ccbHeader + 12, sizeof(crcOfCCB));
+        if (chunkSize == 0 || ccbFileSize <= 4) {
+            throw std::runtime_error("invalid CCB header from ADSD3500");
+        }
+
+        std::vector<uint8_t> ccbContent(ccbFileSize);
+        const uint32_t fullChunks = ccbFileSize / chunkSize;
+        for (uint32_t i = 0; i < fullChunks; ++i) {
+            st = sensor_->adsd3500_read_payload(ccbContent.data() + i * chunkSize,
+                                                chunkSize);
+            if (st != aditof::Status::OK) {
+                throw std::runtime_error("failed to read CCB chunk " +
+                                         std::to_string(i));
+            }
+            if (i % 20 == 0) {
+                std::cout << "[collect] read CCB chunk " << i << " out of "
+                          << (fullChunks + 1) << "\n";
+            }
+        }
+
+        const uint32_t remainder = ccbFileSize % chunkSize;
+        if (remainder != 0) {
+            st = sensor_->adsd3500_read_payload(
+                ccbContent.data() + fullChunks * chunkSize, remainder);
+            if (st != aditof::Status::OK) {
+                throw std::runtime_error("failed to read final CCB chunk");
+            }
+        }
+
+        uint8_t switchBuf[] = {0xAD, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00,
+                               0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+        st = sensor_->adsd3500_write_payload(
+            switchBuf, sizeof(switchBuf) / sizeof(switchBuf[0]));
+        if (st != aditof::Status::OK) {
+            throw std::runtime_error("failed to switch ADSD3500 back to standard mode");
+        }
+
+        const uint32_t computedCrc =
+            crcFast(ccbContent.data(), static_cast<int>(ccbFileSize - 4), true) ^
+            0xFFFFFFFF;
+        if (crcOfCCB != ~computedCrc) {
+            throw std::runtime_error("invalid CRC for CCB read from ADSD3500");
+        }
+
+        ccbContent.resize(ccbFileSize - 4);
+        return ccbContent;
+    }
+
     static uint32_t checked_raw_byte_count(const aditof::FrameDataDetails &details) {
         const uint64_t bytes = static_cast<uint64_t>(details.width) *
                                static_cast<uint64_t>(details.height) *
@@ -626,6 +1062,12 @@ class CameraRawSource {
 
     RawFrame get_frame_locked() {
         if (!capturing_) throw std::runtime_error("not capturing");
+
+#if TOF_NET_HAS_V4L_BUFFER_ACCESS
+        if (sensor_name_ == "adsd3500" && v4l_buffer_access_) {
+            return get_frame_direct_v4l_locked();
+        }
+#endif
 
         aditof::Frame frame;
         std::cout << "[collect] get_frame_locked: requestFrame begin" << std::endl;
@@ -705,9 +1147,87 @@ class CameraRawSource {
         return out;
     }
 
+#if TOF_NET_HAS_V4L_BUFFER_ACCESS
+    RawFrame get_frame_direct_v4l_locked() {
+        std::cout << "[collect] get_frame_direct_v4l: waitForBuffer begin"
+                  << std::endl;
+        const auto begin = std::chrono::steady_clock::now();
+        auto st = v4l_buffer_access_->waitForBuffer();
+        const auto waitMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+                                std::chrono::steady_clock::now() - begin)
+                                .count();
+        std::cout << "[collect] get_frame_direct_v4l: waitForBuffer returned status="
+                  << static_cast<int>(st) << " elapsed_ms=" << waitMs
+                  << std::endl;
+        if (st != aditof::Status::OK) {
+            throw std::runtime_error("direct V4L waitForBuffer failed");
+        }
+
+        struct v4l2_buffer buf;
+        std::cout << "[collect] get_frame_direct_v4l: DQBUF begin" << std::endl;
+        st = v4l_buffer_access_->dequeueInternalBuffer(buf);
+        std::cout << "[collect] get_frame_direct_v4l: DQBUF returned status="
+                  << static_cast<int>(st) << " index=" << buf.index
+                  << " bytesused=" << buf.bytesused
+                  << " flags=" << buf.flags
+                  << " sequence=" << buf.sequence << std::endl;
+        if (st != aditof::Status::OK) {
+            throw std::runtime_error("direct V4L DQBUF failed");
+        }
+
+        uint8_t *buffer = nullptr;
+        uint32_t bytes = 0;
+        try {
+            std::cout << "[collect] get_frame_direct_v4l: getInternalBuffer begin"
+                      << std::endl;
+            st = v4l_buffer_access_->getInternalBuffer(&buffer, bytes, buf);
+            std::cout << "[collect] get_frame_direct_v4l: getInternalBuffer returned status="
+                      << static_cast<int>(st) << " bytes=" << bytes
+                      << " ptr=" << static_cast<void *>(buffer) << std::endl;
+            if (st != aditof::Status::OK || buffer == nullptr || bytes == 0) {
+                throw std::runtime_error("direct V4L getInternalBuffer failed");
+            }
+
+            RawFrame out;
+            const auto modeInfo = ModeInfo::getInstance()->getModeInfo(args_.mode);
+            out.width = modeInfo.width;
+            out.height = modeInfo.height;
+            out.bytes = bytes;
+            out.subelement_size = 2;
+            out.subelements_per_element =
+                (modeInfo.width != 0 && modeInfo.height != 0)
+                    ? bytes / (modeInfo.width * modeInfo.height * out.subelement_size)
+                    : 0;
+            out.mode = args_.mode;
+            out.frame_type = mode_name_;
+            out.data.resize(out.bytes);
+            std::memcpy(out.data.data(), buffer, out.bytes);
+
+            std::cout << "[collect] get_frame_direct_v4l: QBUF begin index="
+                      << buf.index << std::endl;
+            st = v4l_buffer_access_->enqueueInternalBuffer(buf);
+            std::cout << "[collect] get_frame_direct_v4l: QBUF returned status="
+                      << static_cast<int>(st) << " index=" << buf.index
+                      << std::endl;
+            if (st != aditof::Status::OK) {
+                throw std::runtime_error("direct V4L QBUF failed");
+            }
+
+            return out;
+        } catch (...) {
+            (void)v4l_buffer_access_->enqueueInternalBuffer(buf);
+            throw;
+        }
+    }
+#endif
+
     void stop_locked() {
-        if (capturing_ && camera_) {
-            camera_->stop();
+        if (capturing_) {
+            if (use_direct_sensor_ && sensor_) {
+                sensor_->stop();
+            } else if (camera_) {
+                camera_->stop();
+            }
         }
         capturing_ = false;
     }
@@ -715,8 +1235,15 @@ class CameraRawSource {
     Args args_;
     std::shared_ptr<aditof::Camera> camera_;
     std::shared_ptr<aditof::DepthSensorInterface> sensor_;
+    std::unique_ptr<aditof::SensorEnumeratorInterface> sensor_enumerator_;
+    std::vector<aditof::DepthSensorFrameType> available_sensor_frame_types_;
+#if TOF_NET_HAS_V4L_BUFFER_ACCESS
+    std::shared_ptr<aditof::V4lBufferAccessInterface> v4l_buffer_access_;
+#endif
     mutable std::mutex mu_;
     std::atomic<bool> capturing_{false};
+    bool use_direct_sensor_ = false;
+    DirectConfig direct_config_;
     std::string mode_name_;
     std::string sensor_name_;
 };
