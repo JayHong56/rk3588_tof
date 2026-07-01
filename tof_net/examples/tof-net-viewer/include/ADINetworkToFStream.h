@@ -45,7 +45,7 @@ class ADINetworkToFStream {
         std::string receivedCcbFile = "./config/received_machine_a_module.ccb";
         std::string receivedCfgFile = "./config/received_machine_a_module.cfg";
         std::string iniFile;
-        std::string frameType = "lr-qnative";
+        std::string frameType = "lr-mixed";
         uint16_t mode = 0;
         uint32_t requestedFps = 0;
         bool enableXyz = true;

@@ -1330,6 +1330,16 @@ void ADIMainWindow::InitCamera() {
     if (m_cameraModes.empty()) {
         modeSelection = 0;
         m_cameraModes.emplace_back(0, "lr-qnative");
+    } else {
+        auto lrMixed = std::find_if(
+            m_cameraModes.begin(), m_cameraModes.end(),
+            [](const std::pair<int, std::string> &mode) {
+                return mode.second == "lr-mixed";
+            });
+        if (lrMixed != m_cameraModes.end()) {
+            modeSelection = static_cast<int>(
+                std::distance(m_cameraModes.begin(), lrMixed));
+        }
     }
 
     configureNetworkRawInput(m_cameraModes[modeSelection].second);

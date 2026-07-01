@@ -105,13 +105,13 @@ std::string trimFrameType(std::string frameType) {
 std::string sanitizeFrameType(std::string frameType) {
     frameType = trimFrameType(std::move(frameType));
     if (frameType.empty()) {
-        return "lr-qnative";
+        return "lr-mixed";
     }
 #ifndef ENBABLE_PASSIVE_IR
     if (frameType == "pcm" || frameType == "pcm-native") {
         LOG(WARNING) << "Passive IR frame type " << frameType
-                     << " requested in non-passive-IR build; using lr-qnative";
-        return "lr-qnative";
+                     << " requested in non-passive-IR build; using lr-mixed";
+        return "lr-mixed";
     }
 #endif
     return frameType;
