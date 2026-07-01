@@ -16,6 +16,7 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <poll.h>
 #include <sstream>
 #include <stdexcept>
 #include <sys/stat.h>
@@ -275,6 +276,50 @@ void ensureDirectoryTree(const std::string &dir) {
     }
 }
 
+constexpr auto kSocketPollInterval = std::chrono::milliseconds(1000);
+constexpr auto kActiveStreamSilenceTimeout = std::chrono::seconds(5);
+
+bool waitForReadableSocket(int fd, std::chrono::milliseconds timeout,
+                           short *revents) {
+    pollfd pfd{};
+    pfd.fd = fd;
+    pfd.events = POLLIN | POLLERR | POLLHUP | POLLNVAL;
+
+    int rc = 0;
+    do {
+        rc = ::poll(&pfd, 1, static_cast<int>(timeout.count()));
+    } while (rc < 0 && errno == EINTR);
+
+    if (rc < 0) {
+        throw std::runtime_error(std::string("poll failed: ") +
+                                 std::strerror(errno));
+    }
+
+    if (revents) {
+        *revents = pfd.revents;
+    }
+    return rc > 0;
+}
+
+std::string socketEventsToString(short events) {
+    std::ostringstream ss;
+    bool first = true;
+    auto append = [&](const char *name) {
+        if (!first) {
+            ss << "|";
+        }
+        ss << name;
+        first = false;
+    };
+
+    if (events & POLLIN) append("POLLIN");
+    if (events & POLLERR) append("POLLERR");
+    if (events & POLLHUP) append("POLLHUP");
+    if (events & POLLNVAL) append("POLLNVAL");
+    if (first) ss << "0";
+    return ss.str();
+}
+
 } // namespace
 
 ADINetworkToFStream::ADINetworkToFStream()
@@ -500,8 +545,59 @@ void ADINetworkToFStream::workerLoop() {
                 // StartCapture so Machine A begins streaming only when the user
                 // requests display.
 
+                auto lastMessageTime = std::chrono::steady_clock::now();
                 while (!m_stopFlag.load() && m_clientSocket.valid()) {
-                    tof_net::Message message = m_clientSocket.recv_message();
+                    short socketEvents = 0;
+                    const bool readable = waitForReadableSocket(
+                        m_clientSocket.fd(), kSocketPollInterval,
+                        &socketEvents);
+                    if (!readable) {
+                        const bool activeStream =
+                            m_remoteCapturing.load() ||
+                            m_waitingForFirstFrame.load();
+                        const auto silence =
+                            std::chrono::steady_clock::now() -
+                            lastMessageTime;
+                        if (activeStream &&
+                            silence >= kActiveStreamSilenceTimeout) {
+                            std::ostringstream stale;
+                            stale << "RAW ToF client timed out during capture; "
+                                  << "no network message for "
+                                  << std::chrono::duration_cast<
+                                         std::chrono::seconds>(silence)
+                                         .count()
+                                  << "s, closing stale socket and waiting for "
+                                     "reconnect";
+                            setStatus(stale.str());
+                            LOG(WARNING) << stale.str();
+                            break;
+                        }
+                        continue;
+                    }
+
+                    if ((socketEvents & (POLLERR | POLLNVAL)) ||
+                        ((socketEvents & POLLHUP) &&
+                         !(socketEvents & POLLIN))) {
+                        std::ostringstream gone;
+                        gone << "RAW ToF client socket closed/events="
+                             << socketEventsToString(socketEvents);
+                        setStatus(gone.str());
+                        LOG(WARNING) << gone.str();
+                        break;
+                    }
+
+                    tof_net::Message message;
+                    try {
+                        message = m_clientSocket.recv_message();
+                    } catch (const std::exception &e) {
+                        std::ostringstream gone;
+                        gone << "RAW ToF client disconnected while receiving: "
+                             << e.what();
+                        setStatus(gone.str());
+                        LOG(WARNING) << gone.str();
+                        break;
+                    }
+                    lastMessageTime = std::chrono::steady_clock::now();
                     if (message.type == tof_net::MessageType::DataFrame) {
                         handleDataFrame(message);
                     } else if (message.type == tof_net::MessageType::Hello) {
@@ -534,6 +630,11 @@ void ADINetworkToFStream::workerLoop() {
                             LOG(INFO) << rs.str();
                             const std::string statusText =
                                 tof_net::cstr_to_string(st.text, sizeof(st.text));
+                            if (st.code == static_cast<uint16_t>(
+                                               tof_net::StatusCode::Stopped)) {
+                                m_remoteCapturing = false;
+                                m_waitingForFirstFrame = false;
+                            }
                             if (st.code == static_cast<uint16_t>(
                                                tof_net::StatusCode::WaitingForCommand) &&
                                 statusText.find("waiting for start command") !=
