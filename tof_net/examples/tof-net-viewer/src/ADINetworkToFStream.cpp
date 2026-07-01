@@ -91,17 +91,38 @@ static const Adsd3500ModeEntry kAdsd3500ModeTable[] = {
     {6, "sr-mixed"},
 };
 
+std::string trimFrameType(std::string frameType) {
+    frameType.erase(frameType.begin(),
+                    std::find_if(frameType.begin(), frameType.end(),
+                                 [](unsigned char c) { return !std::isspace(c); }));
+    frameType.erase(std::find_if(frameType.rbegin(), frameType.rend(),
+                                 [](unsigned char c) { return !std::isspace(c); })
+                        .base(),
+                    frameType.end());
+    return frameType;
+}
+
+std::string sanitizeFrameType(std::string frameType) {
+    frameType = trimFrameType(std::move(frameType));
+    if (frameType.empty()) {
+        return "lr-qnative";
+    }
+#ifndef ENBABLE_PASSIVE_IR
+    if (frameType == "pcm" || frameType == "pcm-native") {
+        LOG(WARNING) << "Passive IR frame type " << frameType
+                     << " requested in non-passive-IR build; using lr-qnative";
+        return "lr-qnative";
+    }
+#endif
+    return frameType;
+}
+
 } // namespace
 
 uint8_t adicontroller::ADINetworkToFStream::convertModeName(
     const std::string &frameType) {
     // Strip whitespace and try exact match first, then prefix match.
-    std::string ft = frameType;
-    ft.erase(ft.begin(), std::find_if(ft.begin(), ft.end(),
-                                       [](unsigned char c) { return !std::isspace(c); }));
-    ft.erase(std::find_if(ft.rbegin(), ft.rend(),
-                           [](unsigned char c) { return !std::isspace(c); }).base(),
-             ft.end());
+    std::string ft = trimFrameType(frameType);
 
     if (ft.empty()) {
         return 0;
@@ -259,7 +280,7 @@ void ensureDirectoryTree(const std::string &dir) {
 ADINetworkToFStream::ADINetworkToFStream()
     : m_stopFlag(false), m_running(false), m_clientConnected(false),
       m_remoteCapturing(false), m_waitingForFirstFrame(false),
-      m_lastStartCommandTime(std::chrono::steady_clock::now()),
+      m_autoStartSent(false), m_lastStartCommandTime(std::chrono::steady_clock::now()),
       m_tofiConfig(nullptr),
       m_tofiContext(nullptr), m_tofiMode(0) {
     maskFloatingPointTrapsForTofi();
@@ -274,6 +295,8 @@ ADINetworkToFStream::~ADINetworkToFStream() {
 void ADINetworkToFStream::configure(const Config &config) {
     std::lock_guard<std::mutex> lock(m_configMutex);
     m_config = config;
+    m_config.frameType = sanitizeFrameType(m_config.frameType);
+    m_config.mode = convertModeName(m_config.frameType);
 }
 
 void ADINetworkToFStream::start() {
@@ -307,6 +330,7 @@ void ADINetworkToFStream::stop() {
     m_clientConnected = false;
     m_remoteCapturing = false;
     m_waitingForFirstFrame = false;
+    m_autoStartSent = false;
     setStatus("Network listener stopped");
 }
 
@@ -317,7 +341,8 @@ void ADINetworkToFStream::requestFrame() {
 
 void ADINetworkToFStream::setFrameType(const std::string &frameType) {
     std::lock_guard<std::mutex> lock(m_configMutex);
-    m_config.frameType = frameType;
+    m_config.frameType = sanitizeFrameType(frameType);
+    m_config.mode = convertModeName(m_config.frameType);
 }
 
 std::shared_ptr<aditof::Frame> ADINetworkToFStream::getFrame() {
@@ -379,7 +404,7 @@ bool ADINetworkToFStream::sendStartCaptureCommand() {
     tof_net::StartCapturePayload payload;
     tof_net::copy_cstr(payload.frame_type, sizeof(payload.frame_type),
                        config.frameType);
-    payload.mode = config.mode;
+    payload.mode = convertModeName(config.frameType);
     payload.requested_fps = config.requestedFps;
 
     try {
@@ -461,6 +486,7 @@ void ADINetworkToFStream::workerLoop() {
                     m_clientSocket = std::move(accepted);
                     m_clientConnected = true;
                     m_remoteCapturing = false;
+                    m_autoStartSent = false;
                 }
 
                 std::ostringstream connected;
@@ -506,6 +532,16 @@ void ADINetworkToFStream::workerLoop() {
                                << " frame=" << st.frame_id;
                             setStatus(rs.str());
                             LOG(INFO) << rs.str();
+                            const std::string statusText =
+                                tof_net::cstr_to_string(st.text, sizeof(st.text));
+                            if (st.code == static_cast<uint16_t>(
+                                               tof_net::StatusCode::WaitingForCommand) &&
+                                statusText.find("waiting for start command") !=
+                                    std::string::npos &&
+                                !m_autoStartSent.exchange(true)) {
+                                LOG(INFO) << "Auto-starting remote capture after Machine A metadata handshake";
+                                sendStartCaptureCommand();
+                            }
                         } else {
                             setStatus("Remote status message received");
                         }

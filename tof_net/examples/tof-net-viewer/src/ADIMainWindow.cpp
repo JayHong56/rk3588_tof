@@ -473,6 +473,19 @@ void ADIMainWindow::render() {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        if (m_autoOpenNetworkDevice) {
+            m_autoOpenNetworkDevice = false;
+            RefreshDevices();
+            if (!m_configFiles.empty() && m_selectedDevice >= 0) {
+                _isOpenDevice = false;
+                cameraWorkerDone = false;
+                initCameraWorker =
+                    std::thread(std::bind(&ADIMainWindow::InitCamera, this));
+                my_log.AddLog("Auto-opened network RAW endpoint. Waiting for Machine A reconnect; Play sends StartCapture.\n");
+            } else {
+                my_log.AddLog("Auto-open skipped: no network viewer config file found.\n");
+            }
+        }
         /***************************************************/
         //Create windows here:
         showMainMenu();

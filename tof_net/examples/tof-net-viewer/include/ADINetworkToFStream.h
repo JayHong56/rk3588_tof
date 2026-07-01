@@ -126,6 +126,7 @@ class ADINetworkToFStream {
     std::atomic<bool> m_clientConnected;
     std::atomic<bool> m_remoteCapturing;
     std::atomic<bool> m_waitingForFirstFrame;
+    std::atomic<bool> m_autoStartSent;
     std::chrono::steady_clock::time_point m_lastStartCommandTime;
     SafeQueue<std::shared_ptr<aditof::Frame>> m_queue;
     std::shared_ptr<aditof::Frame> m_lastFrame;

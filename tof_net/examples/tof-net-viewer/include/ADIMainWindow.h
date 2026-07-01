@@ -545,6 +545,7 @@ class ADIMainWindow {
     uint32_t m_networkRequestedFps = 0;
     bool m_networkIsAdsd3500 = false;
     std::string m_networkProbeStatus = "Click Refresh Devices to probe Machine A tof_net_collect";
+    bool m_autoOpenNetworkDevice = true;
     std::vector<std::pair<int, std::string>> m_configFiles;
     int configSelection = 0;
 
