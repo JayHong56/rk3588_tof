@@ -640,7 +640,9 @@ void ADINetworkToFStream::workerLoop() {
                                 statusText.find("waiting for start command") !=
                                     std::string::npos &&
                                 !m_autoStartSent.exchange(true)) {
-                                LOG(INFO) << "Auto-starting remote capture after Machine A metadata handshake";
+                                LOG(INFO) << "Auto-starting remote capture "
+                                             "without waiting for CCB/dealias "
+                                             "metadata";
                                 sendStartCaptureCommand();
                             }
                         } else {

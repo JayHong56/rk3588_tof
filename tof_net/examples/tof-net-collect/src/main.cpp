@@ -1267,63 +1267,10 @@ void session(const Args &args, CameraRawSource &cam) {
     copy_cstr(hello.sdk_version, sizeof(hello.sdk_version), aditof::getApiVersion());
     sock.send_message(MessageType::Hello, &hello, sizeof(hello));
 
-    try {
-        CameraRawSource::ModuleCcb ccb = cam.export_module_ccb();
-        CcbFilePayloadHeader ccbHeader;
-        ccbHeader.ccb_bytes = static_cast<uint32_t>(ccb.data.size());
-        copy_cstr(ccbHeader.filename, sizeof(ccbHeader.filename), ccb.path);
-
-        std::vector<uint8_t> ccbPayload(sizeof(ccbHeader) + ccb.data.size());
-        std::memcpy(ccbPayload.data(), &ccbHeader, sizeof(ccbHeader));
-        std::memcpy(ccbPayload.data() + sizeof(ccbHeader), ccb.data.data(),
-                    ccb.data.size());
-
-        sock.send_message(MessageType::CcbFile, ccbPayload.data(),
-                          ccbPayload.size());
-
-        std::ostringstream cs;
-        cs << "sent current module CCB to Machine B: " << ccb.data.size()
-           << " bytes from " << ccb.path;
-        std::cout << cs.str() << "\n";
-        send_status(sock, StatusCode::Ok, cs.str());
-    } catch (const std::exception &e) {
-        std::string text = std::string("failed to export/send current module CCB: ") + e.what();
-        std::cerr << text << "\n";
-        send_status(sock, StatusCode::Error, text);
-    }
-
-    // Send per-mode intrinsics + dealias data. ADSD3500 requires these for
-    // InitTofiConfig_isp; they cannot be extracted from the CCB file alone.
-    try {
-        auto entries = cam.export_dealias_data();
-        for (const auto &entry : entries) {
-            DealiasDataPayload ddh;
-            copy_cstr(ddh.frame_type, sizeof(ddh.frame_type), entry.frame_type);
-            ddh.data_bytes = static_cast<uint32_t>(entry.data.size());
-
-            std::vector<uint8_t> payload(sizeof(ddh) + entry.data.size());
-            std::memcpy(payload.data(), &ddh, sizeof(ddh));
-            std::memcpy(payload.data() + sizeof(ddh), entry.data.data(),
-                        entry.data.size());
-
-            sock.send_message(MessageType::DealiasData, payload.data(),
-                              payload.size());
-
-            std::ostringstream ds;
-            ds << "sent dealias data for " << entry.frame_type
-               << " (" << entry.data.size() << " bytes)";
-            std::cout << ds.str() << "\n";
-            send_status(sock, StatusCode::Ok, ds.str());
-        }
-    } catch (const std::exception &e) {
-        std::string text =
-            std::string("failed to export/send dealias data: ") + e.what();
-        std::cerr << text << "\n";
-        send_status(sock, StatusCode::Error, text);
-    }
-
+    // RAW capture does not need CCB/dealias metadata. Avoid blocking StartCapture
+    // on the slow ADSD3500 CCB read path when diagnosing whether frames arrive.
     send_status(sock, StatusCode::WaitingForCommand,
-                "Machine A connected; CCB + dealias data sent; waiting for start command");
+                "Machine A connected; CCB/dealias metadata skipped; waiting for start command");
 
     std::atomic<bool> capture_thread_run{false};
     std::thread capture_thread;
