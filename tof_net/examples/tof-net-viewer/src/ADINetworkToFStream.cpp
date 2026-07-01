@@ -641,8 +641,7 @@ void ADINetworkToFStream::workerLoop() {
                                     std::string::npos &&
                                 !m_autoStartSent.exchange(true)) {
                                 LOG(INFO) << "Auto-starting remote capture "
-                                             "without waiting for CCB/dealias "
-                                             "metadata";
+                                             "after Machine A metadata handshake";
                                 sendStartCaptureCommand();
                             }
                         } else {
