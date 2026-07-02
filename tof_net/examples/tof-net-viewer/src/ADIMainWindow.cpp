@@ -520,6 +520,11 @@ static double cpuUsage;
 void ADIMainWindow::render() {
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f); //Main Window Color
     static bool show_app_log = true;
+    const uint32_t idleWaitMs =
+        std::min<uint32_t>(5000,
+                           std::max<uint32_t>(
+                               1, envU32("TOF_NET_GUI_IDLE_WAIT_MS", 1000)));
+    const double idleWaitSeconds = static_cast<double>(idleWaitMs) / 1000.0;
     // Main imGUI loop
     while (!glfwWindowShouldClose(window)) {
         // Poll and handle events (inputs, window resize, etc.)
@@ -532,7 +537,11 @@ void ADIMainWindow::render() {
         // inputs to dear imgui, and hide them from your application based on
         // those two flags.
         glfwGetWindowSize(window, &mainWindowWidth, &mainWindowHeight);
-        glfwPollEvents();
+        if (isPlaying || isPlayRecorded) {
+            glfwPollEvents();
+        } else {
+            glfwWaitEventsTimeout(idleWaitSeconds);
+        }
 
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
