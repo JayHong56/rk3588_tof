@@ -278,6 +278,7 @@ void ensureDirectoryTree(const std::string &dir) {
 
 constexpr auto kSocketPollInterval = std::chrono::milliseconds(1000);
 constexpr auto kActiveStreamSilenceTimeout = std::chrono::seconds(5);
+constexpr auto kMinTofiFrameInterval = std::chrono::milliseconds(250);
 
 bool waitForReadableSocket(int fd, std::chrono::milliseconds timeout,
                            short *revents) {
@@ -326,6 +327,7 @@ ADINetworkToFStream::ADINetworkToFStream()
     : m_stopFlag(false), m_running(false), m_clientConnected(false),
       m_remoteCapturing(false), m_waitingForFirstFrame(false),
       m_autoStartSent(false), m_lastStartCommandTime(std::chrono::steady_clock::now()),
+      m_lastTofiFrameTime(std::chrono::steady_clock::time_point::min()),
       m_tofiConfig(nullptr),
       m_tofiContext(nullptr), m_tofiMode(0) {
     maskFloatingPointTrapsForTofi();
@@ -468,12 +470,14 @@ bool ADINetworkToFStream::sendStartCaptureCommand() {
     m_remoteCapturing = true;
     m_waitingForFirstFrame = true;
     m_lastStartCommandTime = std::chrono::steady_clock::now();
+    m_lastTofiFrameTime = std::chrono::steady_clock::time_point::min();
     std::ostringstream ss;
     ss << "Sent StartCapture to Machine A"
        << " mode=" << payload.mode;
     if (!config.frameType.empty()) {
         ss << " frame_type=" << config.frameType;
     }
+    ss << " requested_fps=" << payload.requested_fps;
     setStatus(ss.str());
     LOG(INFO) << ss.str();
     return true;
@@ -638,11 +642,8 @@ void ADINetworkToFStream::workerLoop() {
                             if (st.code == static_cast<uint16_t>(
                                                tof_net::StatusCode::WaitingForCommand) &&
                                 statusText.find("waiting for start command") !=
-                                    std::string::npos &&
-                                !m_autoStartSent.exchange(true)) {
-                                LOG(INFO) << "Auto-starting remote capture "
-                                             "after Machine A metadata handshake";
-                                sendStartCaptureCommand();
+                                    std::string::npos) {
+                                m_autoStartSent = false;
                             }
                         } else {
                             setStatus("Remote status message received");
@@ -927,6 +928,17 @@ void ADINetworkToFStream::handleDataFrame(const tof_net::Message &message) {
         throw std::runtime_error("Malformed DataFrame message: payload truncated");
     }
 
+    const auto now = std::chrono::steady_clock::now();
+    if (m_lastTofiFrameTime != std::chrono::steady_clock::time_point::min() &&
+        now - m_lastTofiFrameTime < kMinTofiFrameInterval) {
+        std::ostringstream skipped;
+        skipped << "Dropped RAW frame " << header.frame_id
+                << "; viewer TOFI backpressure";
+        setStatus(skipped.str());
+        return;
+    }
+    m_lastTofiFrameTime = now;
+
     const uint8_t *payloadData = message.payload.data() + payloadDataOffset;
     std::vector<uint8_t> rawBytes;
 
@@ -970,7 +982,7 @@ void ADINetworkToFStream::handleDataFrame(const tof_net::Message &message) {
     }
 
     if (frame) {
-        m_queue.enqueue(frame);
+        m_queue.enqueue_latest(frame);
     }
 }
 

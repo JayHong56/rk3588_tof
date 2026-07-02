@@ -34,6 +34,7 @@
 #include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <cerrno>
 #include <cctype>
 #include <csignal>
 #include <cstdio>
@@ -47,7 +48,10 @@
 #include <mutex>
 #include <stdexcept>
 #include <sstream>
+#include <set>
 #include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <thread>
 #include <vector>
 #include <unistd.h>
@@ -73,7 +77,7 @@ struct Args {
     // processed/interleaved layout on some SDK/firmware combinations.
     std::string sensor_configuration = "standard-raw";
     std::string firmware;         // data_collect: --fw <firmware>
-    uint32_t fps = 0;             // data_collect: --fps <setfps>; accepted, not applied, same as #if 0 in data_collect.
+    uint32_t fps = 0;             // data_collect: --fps <setfps>; overrides config FPS when non-zero.
     std::string ccb_out;          // data_collect: --ccb <FILE>
     uint32_t warmup_time = 0;     // data_collect: --wt <warmup>
     uint32_t ext_fsync = 0;       // data_collect: --ext_fsync <0|1>
@@ -85,6 +89,10 @@ struct Args {
     uint16_t port = 5000;
     int zstd_level = 1;
     bool reconnect = true;
+    bool metadata_cache = true;
+    bool refresh_metadata = false;
+    bool send_all_dealias = false;
+    std::string metadata_cache_dir = "/home/analog/tof_net_metadata_cache";
 };
 
 void on_signal(int) { g_run = false; }
@@ -132,6 +140,49 @@ std::string join_path(const std::string &base, const std::string &rel) {
     if (base.empty() || base == ".") return rel;
     if (base.back() == '/' || base.back() == '\\') return base + rel;
     return base + "/" + rel;
+}
+
+void ensure_directory_tree(const std::string &dir) {
+    if (dir.empty() || dir == ".") return;
+
+    std::string current;
+    size_t start = 0;
+    if (dir[0] == '/') {
+        current = "/";
+        start = 1;
+    }
+
+    while (start <= dir.size()) {
+        const size_t pos = dir.find('/', start);
+        const std::string part = dir.substr(
+            start, pos == std::string::npos ? std::string::npos : pos - start);
+        if (!part.empty()) {
+            if (!current.empty() && current.back() != '/') current += '/';
+            current += part;
+            if (::mkdir(current.c_str(), 0755) != 0 && errno != EEXIST) {
+                throw std::runtime_error("mkdir failed for " + current + ": " +
+                                         std::strerror(errno));
+            }
+        }
+        if (pos == std::string::npos) break;
+        start = pos + 1;
+    }
+}
+
+void write_whole_file(const std::string &path, const std::vector<uint8_t> &data) {
+    ensure_directory_tree(dirname_of(path));
+    const std::string tmpPath = path + ".tmp";
+    {
+        std::ofstream stream(tmpPath, std::ios::binary | std::ios::trunc);
+        if (!stream) throw std::runtime_error("Cannot create file: " + tmpPath);
+        stream.write(reinterpret_cast<const char *>(data.data()),
+                     static_cast<std::streamsize>(data.size()));
+        if (!stream) throw std::runtime_error("Failed to write file: " + tmpPath);
+    }
+    if (std::rename(tmpPath.c_str(), path.c_str()) != 0) {
+        throw std::runtime_error("rename failed for " + path + ": " +
+                                 std::strerror(errno));
+    }
 }
 
 std::string resolve_config_path(const std::string &requested, const char *argv0) {
@@ -215,7 +266,7 @@ void usage() {
         "  --ft <frame_type>             Accepted for compatibility. Forced to raw in this app.\n"
         "  --fw <firmware>               Firmware path, same as data_collect.\n"
         "  --ic <configuration>          Sensor configuration. Default: standard-raw.\n"
-        "  --fps <setfps>                Accepted for compatibility.\n"
+        "  --fps <setfps>                Override config FPS when non-zero.\n"
         "  --ccb <FILE>                  Save module CCB to FILE, same as data_collect.\n"
         "  --ext_fsync <0|1>             Sync mode, same as data_collect.\n"
         "  --wt <warmup>                 Warmup seconds, same as data_collect.\n"
@@ -227,6 +278,11 @@ void usage() {
         "  --port <PORT>                 TCP port. Default: 5000.\n"
         "  --zstd-level <N>              Zstd compression level. Default: 1.\n"
         "  --no-reconnect                Exit when the B connection drops.\n"
+        "  --metadata-cache-dir <DIR>    Cache CCB/dealias metadata here.\n"
+        "                               Default: /home/analog/tof_net_metadata_cache\n"
+        "  --refresh-metadata            Ignore cached CCB/dealias and reread module.\n"
+        "  --no-metadata-cache           Always read metadata from module.\n"
+        "  --send-all-dealias            Send dealias data for every mode at connect.\n"
         "  -h, --help                    Show this help.\n";
 }
 
@@ -256,6 +312,10 @@ Args parse_args(int argc, char **argv) {
         else if (k == "--port") a.port = static_cast<uint16_t>(std::stoi(need("--port")));
         else if (k == "--zstd-level") a.zstd_level = std::stoi(need("--zstd-level"));
         else if (k == "--no-reconnect") a.reconnect = false;
+        else if (k == "--metadata-cache-dir") a.metadata_cache_dir = need("--metadata-cache-dir");
+        else if (k == "--refresh-metadata") a.refresh_metadata = true;
+        else if (k == "--no-metadata-cache") a.metadata_cache = false;
+        else if (k == "--send-all-dealias") a.send_all_dealias = true;
         else if (!k.empty() && k[0] != '-') {
             if (!a.initialization_config.empty()) throw std::runtime_error("multiple FILE arguments provided");
             a.initialization_config = k;
@@ -422,7 +482,8 @@ class CameraRawSource {
     // Export per-mode intrinsics + dealias data directly from ADSD3500
     // hardware (cmd 0x01 + 0x02). This mirrors the SDK's initialization
     // sequence in CameraItof that populates m_xyz_dealias_data[mode].
-    std::vector<DealiasEntry> export_dealias_data() {
+    std::vector<DealiasEntry>
+    export_dealias_data(const std::vector<std::string> &requestedFrameTypes = {}) {
         std::lock_guard<std::mutex> lock(mu_);
         if (!sensor_ || (!use_direct_sensor_ && !camera_)) {
             throw std::runtime_error("camera/sensor not initialized");
@@ -432,21 +493,52 @@ class CameraRawSource {
             return {};
         }
 
-        std::vector<std::string> frameTypes;
-        if (use_direct_sensor_) {
-            frameTypes = available_frame_type_names();
-        } else {
-            auto st = camera_->getAvailableFrameTypes(frameTypes);
-            if (st != aditof::Status::OK || frameTypes.empty()) {
+        std::vector<std::string> frameTypes = requestedFrameTypes;
+        if (frameTypes.empty()) {
+            if (args_.send_all_dealias) {
+                if (use_direct_sensor_) {
+                    frameTypes = available_frame_type_names();
+                } else {
+                    auto st = camera_->getAvailableFrameTypes(frameTypes);
+                    if (st != aditof::Status::OK || frameTypes.empty()) {
+                        throw std::runtime_error("getAvailableFrameTypes failed");
+                    }
+                }
+            } else {
+                frameTypes.push_back(mode_name_);
+            }
+        } else if (!use_direct_sensor_) {
+            // Validate SDK camera mode names by querying the available list once.
+            std::vector<std::string> available;
+            auto st = camera_->getAvailableFrameTypes(available);
+            if (st != aditof::Status::OK || available.empty()) {
                 throw std::runtime_error("getAvailableFrameTypes failed");
             }
         }
 
         std::vector<DealiasEntry> entries;
+        std::set<std::string> seen;
         for (const auto &ft : frameTypes) {
+            if (ft.empty() || !seen.insert(ft).second) continue;
             uint8_t mode = ModeInfo::getInstance()
                                ->getModeInfo(ft)
                                .mode;
+
+            const std::string cachePath = dealias_cache_path(ft);
+            if (args_.metadata_cache && !args_.refresh_metadata &&
+                !cachePath.empty() && file_exists(cachePath)) {
+                std::vector<uint8_t> cached = read_whole_file(cachePath);
+                if (!cached.empty()) {
+                    DealiasEntry entry;
+                    entry.frame_type = ft;
+                    entry.data = std::move(cached);
+                    std::cout << "[collect] Using cached dealias data for "
+                              << ft << ": " << cachePath << " ("
+                              << entry.data.size() << " bytes)\n";
+                    entries.push_back(std::move(entry));
+                    continue;
+                }
+            }
 
             uint8_t intrinsics[56] = {0};
             uint8_t dealiasParams[32] = {0};
@@ -494,11 +586,21 @@ class CameraRawSource {
             entry.data.assign(reinterpret_cast<const uint8_t *>(&dealiasStruct),
                               reinterpret_cast<const uint8_t *>(&dealiasStruct) +
                                   sizeof(dealiasStruct));
+            if (args_.metadata_cache && !cachePath.empty()) {
+                try {
+                    write_whole_file(cachePath, entry.data);
+                    std::cout << "[collect] Cached dealias data for " << ft
+                              << ": " << cachePath << "\n";
+                } catch (const std::exception &e) {
+                    std::cerr << "Warning: failed to cache dealias data for "
+                              << ft << ": " << e.what() << "\n";
+                }
+            }
             entries.push_back(std::move(entry));
 
             std::cout << "Exported dealias data for " << ft
                       << " (mode=" << static_cast<int>(mode) << ", "
-                      << entry.data.size() << " bytes)\n";
+                      << entries.back().data.size() << " bytes)\n";
         }
         return entries;
     }
@@ -507,6 +609,20 @@ class CameraRawSource {
         std::lock_guard<std::mutex> lock(mu_);
         if (!sensor_ || (!use_direct_sensor_ && !camera_)) {
             throw std::runtime_error("camera/sensor not initialized");
+        }
+
+        const std::string cachePath = metadata_cache_path("module.ccb");
+        if (args_.metadata_cache && !args_.refresh_metadata &&
+            !cachePath.empty() && file_exists(cachePath)) {
+            ModuleCcb cached;
+            cached.path = cachePath;
+            cached.data = read_whole_file(cachePath);
+            if (!cached.data.empty()) {
+                std::cout << "[collect] Using cached module CCB: "
+                          << cachePath << " (" << cached.data.size()
+                          << " bytes)\n";
+                return cached;
+            }
         }
 
         std::vector<std::string> candidates;
@@ -534,6 +650,16 @@ class CameraRawSource {
                     file.write(reinterpret_cast<const char *>(out.data.data()),
                                static_cast<std::streamsize>(out.data.size()));
                     file.close();
+                    if (args_.metadata_cache && !cachePath.empty()) {
+                        try {
+                            write_whole_file(cachePath, out.data);
+                            std::cout << "[collect] Cached module CCB: "
+                                      << cachePath << "\n";
+                        } catch (const std::exception &e) {
+                            std::cerr << "Warning: failed to cache module CCB: "
+                                      << e.what() << "\n";
+                        }
+                    }
                     std::cout << "Exported current module CCB: " << path
                               << " (" << out.data.size() << " bytes)\n";
                     return out;
@@ -558,6 +684,16 @@ class CameraRawSource {
                 if (out.data.empty()) {
                     lastError = "exported module CCB is empty: " + path;
                     continue;
+                }
+                if (args_.metadata_cache && !cachePath.empty()) {
+                    try {
+                        write_whole_file(cachePath, out.data);
+                        std::cout << "[collect] Cached module CCB: "
+                                  << cachePath << "\n";
+                    } catch (const std::exception &e) {
+                        std::cerr << "Warning: failed to cache module CCB: "
+                                  << e.what() << "\n";
+                    }
                 }
 
                 std::cout << "Exported current module CCB: " << path
@@ -595,6 +731,31 @@ class CameraRawSource {
         std::cout << "[collect] Switched to mode: " << mode_name_
                   << " (modeId=" << args_.mode << ")" << std::endl;
         return true;
+    }
+
+    void setRequestedFps(uint32_t fps) {
+        if (fps == 0) return;
+
+        std::lock_guard<std::mutex> lock(mu_);
+        args_.fps = fps;
+        if (!sensor_ || (!use_direct_sensor_ && !camera_)) {
+            throw std::runtime_error("camera/sensor not initialized");
+        }
+
+        auto st = use_direct_sensor_
+                      ? sensor_->setControl("fps", std::to_string(fps))
+                      : camera_->setControl("fps", std::to_string(fps));
+        if (use_direct_sensor_) {
+            direct_config_.fps = static_cast<int>(fps);
+        }
+        std::cout << "[collect] "
+                  << (use_direct_sensor_ ? "direct sensor" : "camera")
+                  << " setControl(fps=" << fps << ") returned status="
+                  << static_cast<int>(st) << "\n";
+        if (st != aditof::Status::OK) {
+            throw std::runtime_error("setControl(fps=" + std::to_string(fps) +
+                                     ") failed");
+        }
     }
 
     void start() {
@@ -666,6 +827,20 @@ class CameraRawSource {
     uint32_t max_frames() const { return args_.n_frames; }
 
   private:
+    std::string metadata_cache_path(const std::string &filename) const {
+        if (!args_.metadata_cache || args_.metadata_cache_dir.empty()) return {};
+        return join_path(args_.metadata_cache_dir, filename);
+    }
+
+    std::string dealias_cache_path(const std::string &frameType) const {
+        std::string safe = frameType;
+        for (char &c : safe) {
+            const unsigned char uc = static_cast<unsigned char>(c);
+            if (!std::isalnum(uc) && c != '-' && c != '_') c = '_';
+        }
+        return metadata_cache_path("dealias_" + safe + ".bin");
+    }
+
     bool initialize_direct_sensor_if_available() {
 #if TOF_NET_HAS_V4L_BUFFER_ACCESS
         auto enumerator = aditof::SensorEnumeratorFactory::buildTargetSensorEnumerator();
@@ -864,6 +1039,7 @@ class CameraRawSource {
 
         const std::string fps = json_string_value(json, "FPS");
         if (!fps.empty()) direct_config_.fps = std::stoi(fps);
+        if (args_.fps != 0) direct_config_.fps = static_cast<int>(args_.fps);
 
         const std::string fsync = json_string_value(json, "FSYNC_MODE");
         if (!fsync.empty()) direct_config_.fsync_mode = std::stoi(fsync);
@@ -1267,6 +1443,33 @@ void session(const Args &args, CameraRawSource &cam) {
     copy_cstr(hello.sdk_version, sizeof(hello.sdk_version), aditof::getApiVersion());
     sock.send_message(MessageType::Hello, &hello, sizeof(hello));
 
+    std::set<std::string> sent_dealias_modes;
+    auto send_dealias_entries =
+        [&](const std::vector<CameraRawSource::DealiasEntry> &entries) {
+            for (const auto &entry : entries) {
+                if (entry.frame_type.empty() || entry.data.empty()) continue;
+
+                DealiasDataPayload ddh;
+                copy_cstr(ddh.frame_type, sizeof(ddh.frame_type), entry.frame_type);
+                ddh.data_bytes = static_cast<uint32_t>(entry.data.size());
+
+                std::vector<uint8_t> payload(sizeof(ddh) + entry.data.size());
+                std::memcpy(payload.data(), &ddh, sizeof(ddh));
+                std::memcpy(payload.data() + sizeof(ddh), entry.data.data(),
+                            entry.data.size());
+
+                sock.send_message(MessageType::DealiasData, payload.data(),
+                                  payload.size());
+
+                std::ostringstream ds;
+                ds << "sent dealias data for " << entry.frame_type
+                   << " (" << entry.data.size() << " bytes)";
+                std::cout << ds.str() << "\n";
+                send_status(sock, StatusCode::Ok, ds.str());
+                sent_dealias_modes.insert(entry.frame_type);
+            }
+        };
+
     try {
         CameraRawSource::ModuleCcb ccb = cam.export_module_ccb();
         CcbFilePayloadHeader ccbHeader;
@@ -1295,26 +1498,7 @@ void session(const Args &args, CameraRawSource &cam) {
     // Send per-mode intrinsics + dealias data. ADSD3500 requires these for
     // InitTofiConfig_isp; they cannot be extracted from the CCB file alone.
     try {
-        auto entries = cam.export_dealias_data();
-        for (const auto &entry : entries) {
-            DealiasDataPayload ddh;
-            copy_cstr(ddh.frame_type, sizeof(ddh.frame_type), entry.frame_type);
-            ddh.data_bytes = static_cast<uint32_t>(entry.data.size());
-
-            std::vector<uint8_t> payload(sizeof(ddh) + entry.data.size());
-            std::memcpy(payload.data(), &ddh, sizeof(ddh));
-            std::memcpy(payload.data() + sizeof(ddh), entry.data.data(),
-                        entry.data.size());
-
-            sock.send_message(MessageType::DealiasData, payload.data(),
-                              payload.size());
-
-            std::ostringstream ds;
-            ds << "sent dealias data for " << entry.frame_type
-               << " (" << entry.data.size() << " bytes)";
-            std::cout << ds.str() << "\n";
-            send_status(sock, StatusCode::Ok, ds.str());
-        }
+        send_dealias_entries(cam.export_dealias_data());
     } catch (const std::exception &e) {
         std::string text =
             std::string("failed to export/send dealias data: ") + e.what();
@@ -1323,7 +1507,7 @@ void session(const Args &args, CameraRawSource &cam) {
     }
 
     send_status(sock, StatusCode::WaitingForCommand,
-                "Machine A connected; CCB + dealias data sent; waiting for start command");
+                "Machine A connected; CCB + startup dealias data sent; waiting for start command");
 
     std::atomic<bool> capture_thread_run{false};
     std::thread capture_thread;
@@ -1341,14 +1525,17 @@ void session(const Args &args, CameraRawSource &cam) {
             if (msg.type == MessageType::StartCapture) {
                 // Parse the requested mode from Machine B.
                 std::string requestedFt;
+                uint32_t requestedFps = 0;
                 if (msg.payload.size() >= sizeof(StartCapturePayload)) {
                     StartCapturePayload sc;
                     std::memcpy(&sc, msg.payload.data(), sizeof(sc));
                     requestedFt = cstr_to_string(sc.frame_type, kNameLen);
+                    requestedFps = sc.requested_fps;
                 }
                 std::cout << "[collect] StartCapture received"
                           << (requestedFt.empty() ? "" : ": frame_type=")
-                          << requestedFt << std::endl;
+                          << requestedFt
+                          << " requested_fps=" << requestedFps << std::endl;
                 try {
                     {
                         std::lock_guard<std::mutex> lock(send_mu);
@@ -1356,6 +1543,28 @@ void session(const Args &args, CameraRawSource &cam) {
                                     "StartCapture received; preparing camera");
                     }
                     stop_thread();
+                    if (requestedFps != 0) {
+                        {
+                            std::lock_guard<std::mutex> lock(send_mu);
+                            send_status(sock, StatusCode::WaitingForCommand,
+                                        "setting requested FPS before start");
+                        }
+                        cam.setRequestedFps(requestedFps);
+                    }
+                    if (!requestedFt.empty() &&
+                        sent_dealias_modes.find(requestedFt) ==
+                            sent_dealias_modes.end()) {
+                        {
+                            std::lock_guard<std::mutex> lock(send_mu);
+                            send_status(sock, StatusCode::WaitingForCommand,
+                                        "sending dealias data for requested mode");
+                        }
+                        auto entries = cam.export_dealias_data({requestedFt});
+                        {
+                            std::lock_guard<std::mutex> lock(send_mu);
+                            send_dealias_entries(entries);
+                        }
+                    }
                     if (!requestedFt.empty()) {
                         {
                             std::lock_guard<std::mutex> lock(send_mu);
@@ -1392,8 +1601,10 @@ void session(const Args &args, CameraRawSource &cam) {
                 capture_thread = std::thread([&]() {
                     uint64_t frame_id = 0;
                     const uint32_t max_frames = cam.max_frames();
+                    bool frame_limit_reached = false;
                     while (g_run && capture_thread_run) {
                         if (max_frames != 0 && frame_id >= max_frames) {
+                            frame_limit_reached = true;
                             capture_thread_run = false;
                             break;
                         }
@@ -1435,8 +1646,27 @@ void session(const Args &args, CameraRawSource &cam) {
                             std::memcpy(payload.data() + sizeof(ph), compressed.data(), compressed.size());
 
                             std::lock_guard<std::mutex> lock(send_mu);
+                            const auto sendBegin = std::chrono::steady_clock::now();
+                            if (frame_id <= 10 || frame_id % 30 == 0) {
+                                std::cout << "[collect] DataFrame send begin: frame="
+                                          << frame_id
+                                          << " payload_bytes=" << payload.size()
+                                          << "\n";
+                            }
                             sock.send_message(MessageType::DataFrame, payload.data(), payload.size());
+                            if (frame_id <= 10 || frame_id % 30 == 0) {
+                                const auto sendMs =
+                                    std::chrono::duration_cast<std::chrono::milliseconds>(
+                                        std::chrono::steady_clock::now() - sendBegin)
+                                        .count();
+                                std::cout << "[collect] DataFrame send done: frame="
+                                          << frame_id
+                                          << " elapsed_ms=" << sendMs
+                                          << "\n";
+                            }
                         } catch (const std::exception &e) {
+                            std::cout << "[collect] capture/send error: " << e.what()
+                                      << " frame=" << frame_id << "\n";
                             try {
                                 std::lock_guard<std::mutex> lock(send_mu);
                                 send_status(sock, StatusCode::Error, e.what(), frame_id);
@@ -1444,9 +1674,18 @@ void session(const Args &args, CameraRawSource &cam) {
                             std::this_thread::sleep_for(std::chrono::milliseconds(10));
                         }
                     }
+                    if (frame_limit_reached) {
+                        std::cout << "[collect] frame limit reached; stopping camera at frame="
+                                  << frame_id << "\n";
+                        cam.stop();
+                    }
                     try {
                         std::lock_guard<std::mutex> lock(send_mu);
-                        send_status(sock, StatusCode::Stopped, "capture thread stopped", frame_id);
+                        send_status(sock, StatusCode::Stopped,
+                                    frame_limit_reached
+                                        ? "capture frame limit reached; camera stopped"
+                                        : "capture thread stopped",
+                                    frame_id);
                     } catch (...) {}
                 });
             } else if (msg.type == MessageType::StopCapture) {

@@ -19,6 +19,16 @@ class SafeQueue {
         m_cv.notify_one();
     }
 
+    void enqueue_latest(T element) {
+        std::unique_lock<std::mutex> lock(m_mutex);
+        while (!m_queue.empty()) {
+            m_queue.pop();
+        }
+        m_queue.push(element);
+        lock.unlock();
+        m_cv.notify_one();
+    }
+
     T dequeue() {
         std::unique_lock<std::mutex> lock(m_mutex);
         m_cv.wait(lock, [&] { return !empty(); });

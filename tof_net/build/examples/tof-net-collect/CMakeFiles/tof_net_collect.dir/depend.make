@@ -13,9 +13,15 @@ examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/i
 examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/include/aditof/frame_definitions.h
 examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/include/aditof/sdk_exports.h
 examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/include/aditof/sensor_definitions.h
+examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/include/aditof/sensor_enumerator_factory.h
+examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/include/aditof/sensor_enumerator_interface.h
 examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/include/aditof/status_definitions.h
+examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/include/aditof/storage_interface.h
 examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/include/aditof/system.h
+examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/include/aditof/temperature_sensor_interface.h
 examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/include/aditof/version.h
+examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/src/cameras/itof-camera/crc.h
 examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/src/cameras/itof-camera/mode_info.h
+examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../sdk/src/connections/target/v4l_buffer_access_interface.h
 examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o: ../examples/tof-net-collect/src/main.cpp
 

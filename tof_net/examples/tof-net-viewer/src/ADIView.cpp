@@ -45,6 +45,7 @@ void clearFloatingPointStateForDisplay() {
 
 ADIView::ADIView(std::shared_ptr<ADIController> &ctrl, const std::string &name)
     : m_ctrl(ctrl), m_viewName(name), m_depthFrameAvailable(false),
+      m_irFrameAvailable(false), m_pointCloudFrameAvailable(false),
       m_center(true), m_waitKeyBarrier(0), m_distanceVal(0),
       m_smallSignal(false), m_crtSmallSignalState(false) {
     //Create IR and Depth independent threads
@@ -527,16 +528,16 @@ void ADIView::_displayPointCloudImage() {
             continue;
         }
 
-        //Size is [XX, YY, ZZ] x Width x Height
-        size_t frameSize = static_cast<size_t>(frameHeight) *
-                           static_cast<size_t>(frameWidth) * 3;
-        if (pointcloudTableSize != frameSize) {
+        const size_t pixelCount = static_cast<size_t>(frameHeight) *
+                                  static_cast<size_t>(frameWidth);
+        const size_t xyzWordCount = pixelCount * 3;
+        const size_t vertexFloatCount = pixelCount * 6;
+        if (pointcloudTableSize != vertexFloatCount) {
             if (normalized_vertices) {
                 delete[] normalized_vertices;
             }
-            pointcloudTableSize = frameSize;
-            normalized_vertices =
-                new float[pointcloudTableSize * 3]; //Adding RGB components
+            pointcloudTableSize = vertexFloatCount;
+            normalized_vertices = new float[pointcloudTableSize];
         }
 
         float fRed = 0.f;
@@ -550,7 +551,7 @@ void ADIView::_displayPointCloudImage() {
         //2) normalize between [-1.0, 1.0]
         //3) X and Y ranges between [-32768, 32767] or [FFFF, 7FFF]. Z axis is [0, 7FFF]
 
-        for (int i = 0; i < pointcloudTableSize; i += 3) {
+        for (size_t i = 0; i < xyzWordCount; i += 3) {
             normalized_vertices[bgrSize++] =
                 (((int16_t)pointCloud_video_data[i])) / (Max_X);
             normalized_vertices[bgrSize++] =
@@ -570,8 +571,8 @@ void ADIView::_displayPointCloudImage() {
             }
         }
 
-        vertexArraySize =
-            pointcloudTableSize * sizeof(float) * 3; //Adding RGB component
+        vertexCount = bgrSize / 6;
+        vertexArraySize = bgrSize * sizeof(float);
         // Create a OpenGL texture identifier
         if (needsInit) {
             needsInit = false;

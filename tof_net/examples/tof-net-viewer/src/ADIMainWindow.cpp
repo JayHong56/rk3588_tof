@@ -12,9 +12,12 @@
 #include "aditof/version.h"
 #include "tof_net/socket.hpp"
 #include <algorithm>
+#include <cctype>
+#include <cstdlib>
 #include <cmath>
 #include <fcntl.h>
 #include <fstream>
+#include <limits>
 #include <sstream>
 #include <cerrno>
 #include <cstring>
@@ -130,6 +133,62 @@ std::vector<std::string> splitSemicolonList(const std::string &value) {
     return items;
 }
 
+bool envFlagEnabled(const char *name) {
+    const char *value = std::getenv(name);
+    if (value == nullptr || value[0] == '\0') {
+        return false;
+    }
+    return std::strcmp(value, "0") != 0 && std::strcmp(value, "false") != 0 &&
+           std::strcmp(value, "FALSE") != 0 && std::strcmp(value, "off") != 0 &&
+           std::strcmp(value, "OFF") != 0 && std::strcmp(value, "no") != 0 &&
+           std::strcmp(value, "NO") != 0;
+}
+
+std::string envString(const char *name) {
+    const char *value = std::getenv(name);
+    return value == nullptr ? std::string() : std::string(value);
+}
+
+uint32_t envU32(const char *name, uint32_t fallback) {
+    const char *value = std::getenv(name);
+    if (value == nullptr || value[0] == '\0') {
+        return fallback;
+    }
+
+    errno = 0;
+    char *end = nullptr;
+    const unsigned long parsed = std::strtoul(value, &end, 10);
+    if (errno != 0 || end == value || *end != '\0' ||
+        parsed > std::numeric_limits<uint32_t>::max()) {
+        return fallback;
+    }
+    return static_cast<uint32_t>(parsed);
+}
+
+std::string normalizeStartupMode(std::string mode) {
+    mode.erase(std::remove(mode.begin(), mode.end(), ' '), mode.end());
+    std::transform(mode.begin(), mode.end(), mode.begin(),
+                   [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+    if (mode == "0") return "sr-native";
+    if (mode == "1") return "lr-native";
+    if (mode == "2") return "sr-qnative";
+    if (mode == "3") return "lr-qnative";
+    if (mode == "4" || mode == "pcm") return "pcm-native";
+    if (mode == "5") return "lr-mixed";
+    if (mode == "6") return "sr-mixed";
+    return mode;
+}
+
+bool frameHasContent(const aditof::FrameDetails &frameDetails,
+                     const std::string &contentType) {
+    return std::find_if(frameDetails.dataDetails.begin(),
+                        frameDetails.dataDetails.end(),
+                        [&contentType](
+                            const aditof::FrameDataDetails &details) {
+                            return details.type == contentType;
+                        }) != frameDetails.dataDetails.end();
+}
+
 } // namespace
 ADIMainWindow::ADIMainWindow() : m_skipNetworkCameras(true) {
 #if defined(Debug) && defined(_WIN32)
@@ -149,6 +208,9 @@ ADIMainWindow::ADIMainWindow() : m_skipNetworkCameras(true) {
     memcpy(&lastUserCPU, &fuser, sizeof(FILETIME));
 #else
 #endif
+    m_autoPlayAfterMetadata = envFlagEnabled("TOF_NET_GUI_AUTO_PLAY");
+    m_requestedStartupMode = envString("TOF_NET_START_MODE");
+    m_requestedStartupFps = envU32("TOF_NET_START_FPS", 0);
     /********************/
     struct stat info;
     char *folderName = "log";
@@ -239,6 +301,9 @@ ADIMainWindow::ADIMainWindow() : m_skipNetworkCameras(true) {
                                           m_networkDefaultMode);
         m_networkRequestedFps = getJsonU32(config_json, "FPS",
                                            m_networkRequestedFps);
+        if (m_requestedStartupFps != 0) {
+            m_networkRequestedFps = m_requestedStartupFps;
+        }
         {
             std::string is3500 = getJsonString(config_json, "net_is_adsd3500", "");
             m_networkIsAdsd3500 = (is3500 == "true" || is3500 == "1");
@@ -484,6 +549,18 @@ void ADIMainWindow::render() {
                 my_log.AddLog("Auto-opened network RAW endpoint. Waiting for Machine A reconnect; Play sends StartCapture.\n");
             } else {
                 my_log.AddLog("Auto-open skipped: no network viewer config file found.\n");
+            }
+        }
+        if (m_autoPlayAfterMetadata && !m_autoPlaySent && !isPlaying &&
+            !isPlayRecorded && view && view->m_ctrl) {
+            const std::string netStatus = view->m_ctrl->getNetworkStatusText();
+            if (netStatus.find("waiting for start command") !=
+                std::string::npos) {
+                viewSelectionChanged = viewSelection;
+                isPlaying = true;
+                m_autoPlaySent = true;
+                my_log.AddLog("Auto Play requested by TOF_NET_GUI_AUTO_PLAY after metadata ready: %s\n",
+                              netStatus.c_str());
             }
         }
         /***************************************************/
@@ -1276,6 +1353,9 @@ void ADIMainWindow::InitCamera() {
                                              m_networkListenPort);
             m_networkRequestedFps = getJsonU32(config_json, "FPS",
                                                m_networkRequestedFps);
+            if (m_requestedStartupFps != 0) {
+                m_networkRequestedFps = m_requestedStartupFps;
+            }
             {
                 std::string is3500 = getJsonString(config_json, "net_is_adsd3500", "");
                 m_networkIsAdsd3500 = (is3500 == "true" || is3500 == "1");
@@ -1331,18 +1411,29 @@ void ADIMainWindow::InitCamera() {
         modeSelection = 0;
         m_cameraModes.emplace_back(0, "lr-qnative");
     } else {
-        auto lrMixed = std::find_if(
+        const std::string requestedMode =
+            normalizeStartupMode(m_requestedStartupMode);
+        const std::string preferredMode =
+            requestedMode.empty() ? std::string("lr-mixed") : requestedMode;
+        auto selected = std::find_if(
             m_cameraModes.begin(), m_cameraModes.end(),
-            [](const std::pair<int, std::string> &mode) {
-                return mode.second == "lr-mixed";
+            [&preferredMode](const std::pair<int, std::string> &mode) {
+                return mode.second == preferredMode;
             });
-        if (lrMixed != m_cameraModes.end()) {
+        if (selected != m_cameraModes.end()) {
             modeSelection = static_cast<int>(
-                std::distance(m_cameraModes.begin(), lrMixed));
+                std::distance(m_cameraModes.begin(), selected));
+        } else if (!requestedMode.empty()) {
+            my_log.AddLog("Requested startup mode %s is not available; using %s.\n",
+                          requestedMode.c_str(),
+                          m_cameraModes[modeSelection].second.c_str());
         }
     }
 
     configureNetworkRawInput(m_cameraModes[modeSelection].second);
+    my_log.AddLog("Initial network mode selected: %s, requested FPS=%u.\n",
+                  m_cameraModes[modeSelection].second.c_str(),
+                  m_networkRequestedFps);
 
     // Open Device establishes the TCP connection only. It does not start
     // streaming; the Play button sends StartCapture to Machine A.
@@ -1520,22 +1611,32 @@ void ADIMainWindow::PlayCCD(int modeSelect, int viewSelect) {
     case 0: //Show Depth and IR in separate windows
         displayIR = true;
         displayDepth = checkCameraSetToReceiveContent("depth");
+        displayPointCloud = checkCameraSetToReceiveContent("xyz");
         synchronizeDepthIRVideo();
         displayActiveBrightnessWindow(overlayFlags);
         if (displayDepth) {
             displayDepthWindow(overlayFlags);
         }
+        if (displayPointCloud) {
+            displayPointCloudWindow(overlayFlags);
+        }
         displayInfoWindow(overlayFlags);
         break;
     case 1: //Point Cloud Window
         displayDepth = checkCameraSetToReceiveContent("depth");
-        if (displayDepth) {
+        displayPointCloud = checkCameraSetToReceiveContent("xyz");
+        if (displayDepth || displayPointCloud) {
             displayIR = false;
             synchronizePointCloudVideo();
-            displayPointCloudWindow(overlayFlags);
-            displayDepthWindow(overlayFlags);
+            if (displayDepth) {
+                displayDepthWindow(overlayFlags);
+            }
+            if (displayPointCloud) {
+                displayPointCloudWindow(overlayFlags);
+            }
         } else {
             displayIR = true;
+            displayPointCloud = false;
             synchronizeDepthIRVideo();
             displayActiveBrightnessWindow(overlayFlags);
         }
@@ -1563,6 +1664,9 @@ void ADIMainWindow::displayInfoWindow(ImGuiWindowFlags overlayFlags) {
     if (displayIR)
         dictWinPosition["info"] = std::array<float, 4>(
             {dictWinPosition["ab"][0], offsetfromtop, 900, info_height});
+    else if (displayDepth)
+        dictWinPosition["info"] = std::array<float, 4>(
+            {dictWinPosition["depth"][0], offsetfromtop, 900, info_height});
     else
         dictWinPosition["info"] = std::array<float, 4>(
             {dictWinPosition["pc"][0], offsetfromtop, 900, info_height});
@@ -1675,18 +1779,17 @@ void ADIMainWindow::displayDepthWindow(ImGuiWindowFlags overlayFlags) {
     sourceDepthImageDimensions = {(float)(view->frameWidth),
                                   (float)(view->frameHeight)};
 
+    const float windowGap = 40.0f;
     if (displayIR)
         dictWinPosition["depth"] = std::array<float, 4>(
-            {dictWinPosition["ab"][0] + dictWinPosition["ab"][2],
+            {dictWinPosition["ab"][0] + dictWinPosition["ab"][2] + windowGap,
              dictWinPosition["info"][1] + dictWinPosition["info"][3], size.x,
              size.y});
     else
         dictWinPosition["depth"] = std::array<float, 4>(
-            {dictWinPosition["pc"][0] + dictWinPosition["pc"][2],
-             dictWinPosition["info"][1] + dictWinPosition["info"][3], size.x,
-             size.y});
-    setWindowPosition(dictWinPosition["depth"][0] + 40,
-                      dictWinPosition["depth"][1]);
+            {300, dictWinPosition["info"][1] + dictWinPosition["info"][3],
+             size.x, size.y});
+    setWindowPosition(dictWinPosition["depth"][0], dictWinPosition["depth"][1]);
     setWindowSize(dictWinPosition["depth"][2] + 40,
                   dictWinPosition["depth"][3] + 40);
 
@@ -1718,9 +1821,27 @@ void ADIMainWindow::displayPointCloudWindow(ImGuiWindowFlags overlayFlags) {
     sourcePointCloudImageDimensions = {(float)(view->frameWidth),
                                        (float)(view->frameHeight)};
 
+    const float windowGap = 40.0f;
+    const float pointCloudLayoutScale = 1.30f;
+    size.x *= pointCloudLayoutScale;
+    size.y *= pointCloudLayoutScale;
+    displayPointCloudDimensions.x *= pointCloudLayoutScale;
+    displayPointCloudDimensions.y *= pointCloudLayoutScale;
+
+    float pointCloudX = 300.0f;
+    float pointCloudY = dictWinPosition["info"][1] + dictWinPosition["info"][3];
+    if (displayDepth && dictWinPosition.find("depth") != dictWinPosition.end()) {
+        pointCloudX = dictWinPosition["depth"][0];
+        pointCloudY = dictWinPosition["depth"][1] + dictWinPosition["depth"][3] +
+                      windowGap;
+    } else if (displayIR &&
+               dictWinPosition.find("ab") != dictWinPosition.end()) {
+        pointCloudX =
+            dictWinPosition["ab"][0] + dictWinPosition["ab"][2] + windowGap;
+    }
+
     dictWinPosition["pc"] = std::array<float, 4>(
-        {300, dictWinPosition["info"][1] + dictWinPosition["info"][3], size.x,
-         size.y});
+        {pointCloudX, pointCloudY, size.x, size.y});
 
     setWindowPosition(dictWinPosition["pc"][0], dictWinPosition["pc"][1]);
     setWindowSize(dictWinPosition["pc"][2] + 40, dictWinPosition["pc"][3] + 40);
@@ -1922,24 +2043,38 @@ void ADIMainWindow::synchronizeDepthIRVideo() {
 
     aditof::FrameDetails frameDetails;
     view->m_capturedFrame->getDetails(frameDetails);
+    const bool irAvailable = displayIR && frameHasContent(frameDetails, "ir");
+    const bool depthAvailable =
+        displayDepth && frameHasContent(frameDetails, "depth");
+    const bool pointCloudAvailable =
+        displayPointCloud && frameHasContent(frameDetails, "xyz");
+    displayIR = irAvailable;
+    displayDepth = depthAvailable;
+    displayPointCloud = pointCloudAvailable;
+
     std::unique_lock<std::mutex> lock(view->m_frameCapturedMutex);
-    if (displayIR) {
+    if (irAvailable) {
         view->m_irFrameAvailable = true;
     } else {
         view->m_irFrameAvailable = false;
         view->ir_video_data_8bit = nullptr;
     }
-    if (displayDepth) {
+    if (depthAvailable) {
         view->m_depthFrameAvailable = true;
     } else {
         view->m_depthFrameAvailable = false;
         view->depth_video_data_8bit = nullptr;
     }
-    if (displayIR && displayDepth) {
-        view->numOfThreads = 2;
+    if (pointCloudAvailable) {
+        view->m_pointCloudFrameAvailable = true;
     } else {
-        view->numOfThreads = 1;
+        view->m_pointCloudFrameAvailable = false;
+        view->pointCloud_video_data = nullptr;
+        view->vertexCount = 0;
+        view->vertexArraySize = 0;
     }
+    view->numOfThreads = (irAvailable ? 1 : 0) + (depthAvailable ? 1 : 0) +
+                         (pointCloudAvailable ? 1 : 0);
 
     /************************************/
     //CMOS
@@ -1948,6 +2083,9 @@ void ADIMainWindow::synchronizeDepthIRVideo() {
     /************************************/
 
     lock.unlock();
+    if (view->numOfThreads == 0) {
+        return;
+    }
     view->m_frameCapturedCv.notify_all();
     view->m_ctrl->requestFrame();
 
@@ -1966,14 +2104,35 @@ void ADIMainWindow::synchronizePointCloudVideo() {
 
     aditof::FrameDetails frameDetails;
     view->m_capturedFrame->getDetails(frameDetails);
+    const bool depthAvailable =
+        displayDepth && frameHasContent(frameDetails, "depth");
+    const bool pointCloudAvailable =
+        displayPointCloud && frameHasContent(frameDetails, "xyz");
+    displayDepth = depthAvailable;
+    displayPointCloud = pointCloudAvailable;
+
     std::unique_lock<std::mutex> lock(view->m_frameCapturedMutex);
 
-    view->m_depthFrameAvailable = true;
-    view->m_pointCloudFrameAvailable = true;
+    view->m_irFrameAvailable = false;
+    view->m_depthFrameAvailable = depthAvailable;
+    view->m_pointCloudFrameAvailable = pointCloudAvailable;
+    if (!depthAvailable) {
+        view->depth_video_data_8bit = nullptr;
+    }
+    if (!pointCloudAvailable) {
+        view->pointCloud_video_data = nullptr;
+        view->vertexCount = 0;
+        view->vertexArraySize = 0;
+    }
+    view->numOfThreads = (depthAvailable ? 1 : 0) +
+                         (pointCloudAvailable ? 1 : 0);
     view->frameHeight = frameDetails.height;
     view->frameWidth = frameDetails.width;
 
     lock.unlock();
+    if (view->numOfThreads == 0) {
+        return;
+    }
     view->m_frameCapturedCv.notify_all();
     view->m_ctrl->requestFrame();
 
@@ -2149,7 +2308,8 @@ void ADIMainWindow::CaptureDepthVideo() {
                      view->frameHeight, 0, GL_BGR, GL_UNSIGNED_BYTE,
                      view->depth_video_data_8bit);
         glGenerateMipmap(GL_TEXTURE_2D);
-        delete view->depth_video_data_8bit;
+        delete[] view->depth_video_data_8bit;
+        view->depth_video_data_8bit = nullptr;
 
         ImVec2 _displayDepthDimensions = displayDepthDimensions;
 
@@ -2173,7 +2333,8 @@ void ADIMainWindow::CaptureIRVideo() {
                      view->frameHeight, 0, GL_BGR, GL_UNSIGNED_BYTE,
                      view->ir_video_data_8bit);
         glGenerateMipmap(GL_TEXTURE_2D);
-        delete view->ir_video_data_8bit;
+        delete[] view->ir_video_data_8bit;
+        view->ir_video_data_8bit = nullptr;
 
         ImVec2 _displayIRDimensions = displayIRDimensions;
 
@@ -2202,6 +2363,7 @@ void ADIMainWindow::CapturePointCloudVideo() {
                               view->vertexArrayObject);
 
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    glEnable(GL_DEPTH_TEST);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPointSize(pointSize);
@@ -2221,7 +2383,7 @@ void ADIMainWindow::CapturePointCloudVideo() {
 
     glBindVertexArray(
         view->vertexArrayObject); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-    glDrawArrays(GL_POINTS, 0, view->vertexArraySize);
+    glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(view->vertexCount));
     glBindVertexArray(0);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -2254,9 +2416,9 @@ void ADIMainWindow::pointCloudReset() {
     fov = 8.0f;
     yaw = -90.0f;
     pitch = 0.0f;
-    view->Max_X = 6000.0;
-    view->Max_Y = 6000.0;
-    view->Max_Z = 6000.0;
+    view->Max_X = 2500.0;
+    view->Max_Y = 2500.0;
+    view->Max_Z = 4500.0;
 
     cameraPos[0] = 0.0f;
     cameraPos[1] = 0.0f;
@@ -2267,7 +2429,7 @@ void ADIMainWindow::pointCloudReset() {
     cameraUp[0] = 0.0;
     cameraUp[1] = 1.0;
     cameraUp[2] = 0.0;
-    pointSize = 1;
+    pointSize = 2;
 }
 
 float ADIMainWindow::radians(float degrees) {

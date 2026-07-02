@@ -13,6 +13,8 @@ if [[ $BOARD == "NXP i.MX8MPlus ADI TOF carrier + ADSD3500" ]]; then
 	echo 122 > /sys/class/gpio/export
 	echo out > /sys/class/gpio/gpio122/direction
 	echo 0 > /sys/class/gpio/gpio122/value
+	chgrp video /sys/class/gpio/gpio122/value /sys/class/gpio/gpio122/direction 2>/dev/null || true
+	chmod g+w /sys/class/gpio/gpio122/value /sys/class/gpio/gpio122/direction 2>/dev/null || true
 
 	# Boot strap MAX7321
 	#OC0

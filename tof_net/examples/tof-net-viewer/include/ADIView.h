@@ -146,10 +146,11 @@ class ADIView {
     unsigned int vertexBufferObject; //Image Buffer
     adiviewer::Program pcShader;
     size_t vertexArraySize = 0;
-    float Max_Z = 6000.0;
+    size_t vertexCount = 0;
+    float Max_Z = 4500.0;
     float Min_Z = 0.0;
-    float Max_Y = 6000.0;
-    float Max_X = 6000.0;
+    float Max_Y = 2500.0;
+    float Max_X = 2500.0;
 
   private:
     /**

@@ -1,0 +1,1 @@
+TOF_PASSWORD=analog AUTO_PLAY=1 MODE=lr-mixed FPS=20 /home/linaro/rk3588_tof/camera-logs/start_tof_net_manual_play.sh

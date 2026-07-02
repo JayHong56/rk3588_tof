@@ -273,7 +273,7 @@ class ADIMainWindow {
     float lastX = 1280.0f;
     float lastY = 720.0;
     float TranslationSensitivity = 0.03f;
-    int pointSize = 1;
+    int pointSize = 2;
     unsigned int framebuffer;
     bool mouseDown = false;
     bool m_saveBinaryFormatTmp = false;
@@ -546,6 +546,10 @@ class ADIMainWindow {
     bool m_networkIsAdsd3500 = false;
     std::string m_networkProbeStatus = "Click Refresh Devices to probe Machine A tof_net_collect";
     bool m_autoOpenNetworkDevice = true;
+    bool m_autoPlayAfterMetadata = false;
+    bool m_autoPlaySent = false;
+    std::string m_requestedStartupMode;
+    uint32_t m_requestedStartupFps = 0;
     std::vector<std::pair<int, std::string>> m_configFiles;
     int configSelection = 0;
 

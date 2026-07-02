@@ -14,8 +14,14 @@ examples/tof-net-collect/CMakeFiles/tof_net_collect.dir/src/main.cpp.o
  ../sdk/include/aditof/frame_definitions.h
  ../sdk/include/aditof/sdk_exports.h
  ../sdk/include/aditof/sensor_definitions.h
+ ../sdk/include/aditof/sensor_enumerator_factory.h
+ ../sdk/include/aditof/sensor_enumerator_interface.h
  ../sdk/include/aditof/status_definitions.h
+ ../sdk/include/aditof/storage_interface.h
  ../sdk/include/aditof/system.h
+ ../sdk/include/aditof/temperature_sensor_interface.h
  ../sdk/include/aditof/version.h
+ ../sdk/src/cameras/itof-camera/crc.h
  ../sdk/src/cameras/itof-camera/mode_info.h
+ ../sdk/src/connections/target/v4l_buffer_access_interface.h
  /home/linaro/rk3588_tof/tof_net/examples/tof-net-collect/src/main.cpp

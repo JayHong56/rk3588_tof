@@ -23,6 +23,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../sdk/src/cameras/itof-camera"
+  "../sdk/src"
   "../sdk/common/adi/tofi"
   "../sdk/include"
   "../examples/tof-net-common/include"
