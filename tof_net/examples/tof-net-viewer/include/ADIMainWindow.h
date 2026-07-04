@@ -544,6 +544,11 @@ class ADIMainWindow {
     uint16_t m_networkDefaultMode = 0;
     uint32_t m_networkRequestedFps = 0;
     bool m_networkIsAdsd3500 = false;
+    bool m_networkSaveProcessed = false;
+    std::string m_networkSaveProcessedDir = "./processed_frames";
+    std::string m_networkSaveProcessedPlanes = "depth,ir";
+    uint32_t m_networkSaveProcessedStride = 1;
+    uint32_t m_networkSaveProcessedMaxFrames = 0;
     std::string m_networkProbeStatus = "Click Refresh Devices to probe Machine A tof_net_collect";
     bool m_autoOpenNetworkDevice = true;
     bool m_autoPlayAfterMetadata = false;

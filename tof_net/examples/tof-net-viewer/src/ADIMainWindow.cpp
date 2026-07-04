@@ -120,12 +120,54 @@ uint32_t getJsonU32(cJSON *json, const char *key, uint32_t fallback) {
     }
 }
 
+bool getJsonBool(cJSON *json, const char *key, bool fallback) {
+    std::string value = getJsonString(json, key, "");
+    if (value.empty()) {
+        return fallback;
+    }
+    std::transform(value.begin(), value.end(), value.begin(),
+                   [](unsigned char c) {
+                       return static_cast<char>(std::tolower(c));
+                   });
+    if (value == "true" || value == "1" || value == "on" ||
+        value == "yes") {
+        return true;
+    }
+    if (value == "false" || value == "0" || value == "off" ||
+        value == "no") {
+        return false;
+    }
+    return fallback;
+}
+
 std::vector<std::string> splitSemicolonList(const std::string &value) {
     std::vector<std::string> items;
     std::stringstream stream(value);
     std::string item;
     while (std::getline(stream, item, ';')) {
         item.erase(std::remove(item.begin(), item.end(), ' '), item.end());
+        if (!item.empty()) {
+            items.push_back(item);
+        }
+    }
+    return items;
+}
+
+std::vector<std::string> splitCommaList(const std::string &value) {
+    std::vector<std::string> items;
+    std::stringstream stream(value);
+    std::string item;
+    while (std::getline(stream, item, ',')) {
+        item.erase(item.begin(),
+                   std::find_if(item.begin(), item.end(), [](unsigned char c) {
+                       return !std::isspace(c);
+                   }));
+        item.erase(std::find_if(item.rbegin(), item.rend(),
+                                [](unsigned char c) {
+                                    return !std::isspace(c);
+                                })
+                       .base(),
+                   item.end());
         if (!item.empty()) {
             items.push_back(item);
         }
@@ -301,6 +343,20 @@ ADIMainWindow::ADIMainWindow() : m_skipNetworkCameras(true) {
                                           m_networkDefaultMode);
         m_networkRequestedFps = getJsonU32(config_json, "FPS",
                                            m_networkRequestedFps);
+        m_networkSaveProcessed = getJsonBool(config_json, "net_save_processed",
+                                             m_networkSaveProcessed);
+        m_networkSaveProcessedDir =
+            getJsonString(config_json, "net_save_processed_dir",
+                          m_networkSaveProcessedDir);
+        m_networkSaveProcessedPlanes =
+            getJsonString(config_json, "net_save_processed_planes",
+                          m_networkSaveProcessedPlanes);
+        m_networkSaveProcessedStride =
+            getJsonU32(config_json, "net_save_processed_stride",
+                       m_networkSaveProcessedStride);
+        m_networkSaveProcessedMaxFrames =
+            getJsonU32(config_json, "net_save_processed_max_frames",
+                       m_networkSaveProcessedMaxFrames);
         if (m_requestedStartupFps != 0) {
             m_networkRequestedFps = m_requestedStartupFps;
         }
@@ -1362,6 +1418,21 @@ void ADIMainWindow::InitCamera() {
                                              m_networkListenPort);
             m_networkRequestedFps = getJsonU32(config_json, "FPS",
                                                m_networkRequestedFps);
+            m_networkSaveProcessed =
+                getJsonBool(config_json, "net_save_processed",
+                            m_networkSaveProcessed);
+            m_networkSaveProcessedDir =
+                getJsonString(config_json, "net_save_processed_dir",
+                              m_networkSaveProcessedDir);
+            m_networkSaveProcessedPlanes =
+                getJsonString(config_json, "net_save_processed_planes",
+                              m_networkSaveProcessedPlanes);
+            m_networkSaveProcessedStride =
+                getJsonU32(config_json, "net_save_processed_stride",
+                           m_networkSaveProcessedStride);
+            m_networkSaveProcessedMaxFrames =
+                getJsonU32(config_json, "net_save_processed_max_frames",
+                           m_networkSaveProcessedMaxFrames);
             if (m_requestedStartupFps != 0) {
                 m_networkRequestedFps = m_requestedStartupFps;
             }
@@ -1556,6 +1627,15 @@ void ADIMainWindow::configureNetworkRawInput(const std::string &mode) {
     config.requestedFps = m_networkRequestedFps;
     config.enableXyz = true;
     config.isAdsd3500 = m_networkIsAdsd3500;
+    config.saveProcessedFrames = m_networkSaveProcessed;
+    config.saveProcessedOutputDir = m_networkSaveProcessedDir;
+    config.saveProcessedPlanes = splitCommaList(m_networkSaveProcessedPlanes);
+    if (config.saveProcessedPlanes.empty()) {
+        config.saveProcessedPlanes = {"depth", "ir"};
+    }
+    config.saveProcessedStride =
+        m_networkSaveProcessedStride == 0 ? 1 : m_networkSaveProcessedStride;
+    config.saveProcessedMaxFrames = m_networkSaveProcessedMaxFrames;
 
     view->m_ctrl->configureNetworkOnly(config);
     view->m_ctrl->m_recorder->m_frameDetails.totalCaptures = 1;
@@ -1565,6 +1645,13 @@ void ADIMainWindow::configureNetworkRawInput(const std::string &mode) {
                   config.iniFile.empty() ? "<not set>" : config.iniFile.c_str(),
                   config.ccbFile.empty() ? "<not set>" : config.ccbFile.c_str(),
                   config.cfgFile.empty() ? "<not set>" : config.cfgFile.c_str());
+    if (config.saveProcessedFrames) {
+        my_log.AddLog("Processed frame saving enabled: dir=%s, planes=%s, stride=%u, max=%u\n",
+                      config.saveProcessedOutputDir.c_str(),
+                      m_networkSaveProcessedPlanes.c_str(),
+                      config.saveProcessedStride,
+                      config.saveProcessedMaxFrames);
+    }
 }
 
 void ADIMainWindow::PlayCCD(int modeSelect, int viewSelect) {

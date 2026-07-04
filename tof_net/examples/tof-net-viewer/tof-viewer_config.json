@@ -8,5 +8,10 @@
     "DEPTH_INI": "./config/RawToDepthAdsd3500_lr-qnative.ini;./config/RawToDepthAdsd3500_lr-native.ini;./config/RawToDepthAdsd3500_sr-qnative.ini;./config/RawToDepthAdsd3500_sr-native.ini;./config/RawToDepthAdsd3500_sr-mixed.ini;./config/RawToDepthAdsd3500_lr-mixed.ini;./config/RawToDepthAdsd_pcm-native.ini",
     "net_default_mode": "0",
     "net_received_ccb": "./config/received_machine_a_module.ccb",
-    "net_received_cfg": "./config/received_machine_a_module.cfg"
+    "net_received_cfg": "./config/received_machine_a_module.cfg",
+    "net_save_processed": "false",
+    "net_save_processed_dir": "./processed_frames",
+    "net_save_processed_planes": "depth,ir",
+    "net_save_processed_stride": "1",
+    "net_save_processed_max_frames": "0"
 }

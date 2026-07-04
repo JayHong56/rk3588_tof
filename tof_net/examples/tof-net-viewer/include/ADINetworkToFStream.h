@@ -10,6 +10,7 @@
 #include <atomic>
 #include <chrono>
 #include <cstdint>
+#include <fstream>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -53,6 +54,11 @@ class ADINetworkToFStream {
         // the generic InitTofiConfig. The ISP path requires XYZ dealias data
         // extracted from the CCB and does not use a separate CFG file.
         bool isAdsd3500 = false;
+        bool saveProcessedFrames = false;
+        std::string saveProcessedOutputDir = "./processed_frames";
+        std::vector<std::string> saveProcessedPlanes = {"depth", "ir"};
+        uint32_t saveProcessedStride = 1;
+        uint32_t saveProcessedMaxFrames = 0;
     };
 
     ADINetworkToFStream();
@@ -87,6 +93,18 @@ class ADINetworkToFStream {
     void handleCcbFile(const tof_net::Message &message);
     void handleCfgFile(const tof_net::Message &message);
     void handleDealiasData(const tof_net::Message &message);
+    void saveProcessedFrameIfEnabled(
+        const tof_net::DataFramePayloadHeader &header,
+        size_t compressedBytes,
+        const std::shared_ptr<aditof::Frame> &frame,
+        bool tofiSuccess);
+    bool ensureProcessedSaveSessionLocked(
+        const Config &config, const tof_net::DataFramePayloadHeader &header,
+        const aditof::FrameDetails &frameDetails);
+    void writeProcessedCameraJsonLocked(
+        const Config &config, const tof_net::DataFramePayloadHeader &header,
+        const aditof::FrameDetails &frameDetails);
+    void closeProcessedFrameSaveSession();
     std::shared_ptr<aditof::Frame>
     computeTofiFrame(const tof_net::DataFramePayloadHeader &header,
                      const std::vector<uint8_t> &rawBytes);
@@ -131,6 +149,13 @@ class ADINetworkToFStream {
     std::chrono::steady_clock::time_point m_lastTofiFrameTime;
     SafeQueue<std::shared_ptr<aditof::Frame>> m_queue;
     std::shared_ptr<aditof::Frame> m_lastFrame;
+
+    std::mutex m_saveMutex;
+    bool m_saveSessionActive = false;
+    bool m_saveDisabledAfterError = false;
+    uint64_t m_savedFrameCount = 0;
+    std::string m_saveSessionDir;
+    std::ofstream m_saveFramesCsv;
 
     std::mutex m_tofiMutex;
     void *m_tofiConfig;

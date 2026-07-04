@@ -6,19 +6,24 @@
 /********************************************************************************/
 #include "ADINetworkToFStream.h"
 
+#include "filesystem.hpp"
 #include "tof_net/zstd_codec.hpp"
 
 #include <algorithm>
 #include <cerrno>
 #include <cfenv>
 #include <chrono>
+#include <cctype>
 #include <cstdio>
 #include <cstring>
+#include <ctime>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <poll.h>
 #include <sstream>
 #include <stdexcept>
+#include <system_error>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <utility>
@@ -54,6 +59,7 @@
 #endif
 
 using namespace adicontroller;
+namespace fs = ghc::filesystem;
 
 #if defined(__GLIBC__) && !defined(__APPLE__)
 extern "C" int fedisableexcept(int excepts) __attribute__((weak));
@@ -184,6 +190,149 @@ std::string makeFrameType(const tof_net::DataFramePayloadHeader &header,
 uint16_t makeMode(const tof_net::DataFramePayloadHeader &header,
                   const ADINetworkToFStream::Config &config) {
     return header.mode != 0 ? header.mode : config.mode;
+}
+
+std::string toLowerCopy(std::string value) {
+    std::transform(value.begin(), value.end(), value.begin(),
+                   [](unsigned char c) {
+                       return static_cast<char>(std::tolower(c));
+                   });
+    return value;
+}
+
+bool savePlaneEnabled(const ADINetworkToFStream::Config &config,
+                      const std::string &plane) {
+    const std::string wanted = toLowerCopy(plane);
+    for (const std::string &configured : config.saveProcessedPlanes) {
+        if (toLowerCopy(trimFrameType(configured)) == wanted) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::string sanitizePathToken(std::string value) {
+    if (value.empty()) {
+        return "unknown";
+    }
+    for (char &c : value) {
+        const unsigned char uc = static_cast<unsigned char>(c);
+        if (!std::isalnum(uc) && c != '-' && c != '_') {
+            c = '_';
+        }
+    }
+    return value;
+}
+
+std::string jsonEscape(const std::string &value) {
+    std::ostringstream escaped;
+    for (const char c : value) {
+        switch (c) {
+        case '\\':
+            escaped << "\\\\";
+            break;
+        case '"':
+            escaped << "\\\"";
+            break;
+        case '\n':
+            escaped << "\\n";
+            break;
+        case '\r':
+            escaped << "\\r";
+            break;
+        case '\t':
+            escaped << "\\t";
+            break;
+        default:
+            escaped << c;
+            break;
+        }
+    }
+    return escaped.str();
+}
+
+std::string csvEscape(const std::string &value) {
+    std::ostringstream escaped;
+    escaped << '"';
+    for (const char c : value) {
+        if (c == '"') {
+            escaped << "\"\"";
+        } else {
+            escaped << c;
+        }
+    }
+    escaped << '"';
+    return escaped.str();
+}
+
+std::string timestampForSessionDir() {
+    std::time_t now = std::time(nullptr);
+    std::tm localTime {};
+#if defined(_WIN32)
+    localtime_s(&localTime, &now);
+#else
+    localtime_r(&now, &localTime);
+#endif
+    std::ostringstream ss;
+    ss << std::put_time(&localTime, "%Y%m%d_%H%M%S");
+    return ss.str();
+}
+
+std::string frameFileName(uint64_t index, const std::string &extension) {
+    std::ostringstream ss;
+    ss << std::setw(8) << std::setfill('0') << index << "." << extension;
+    return ss.str();
+}
+
+uint64_t systemTimeNs() {
+    const auto now = std::chrono::system_clock::now().time_since_epoch();
+    return static_cast<uint64_t>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(now).count());
+}
+
+void writePgm16(const fs::path &path, const uint16_t *data,
+                uint32_t width, uint32_t height) {
+    std::ofstream out(path.string(), std::ios::binary | std::ios::trunc);
+    if (!out) {
+        throw std::runtime_error("Cannot open " + path.string());
+    }
+
+    out << "P5\n" << width << " " << height << "\n65535\n";
+    const size_t pixelCount = static_cast<size_t>(width) * height;
+    for (size_t i = 0; i < pixelCount; ++i) {
+        const uint16_t value = data[i];
+        out.put(static_cast<char>((value >> 8) & 0xFF));
+        out.put(static_cast<char>(value & 0xFF));
+    }
+    if (!out) {
+        throw std::runtime_error("Failed writing " + path.string());
+    }
+}
+
+void writeBinaryWords(const fs::path &path, const uint16_t *data,
+                      size_t wordCount) {
+    std::ofstream out(path.string(), std::ios::binary | std::ios::trunc);
+    if (!out) {
+        throw std::runtime_error("Cannot open " + path.string());
+    }
+    out.write(reinterpret_cast<const char *>(data),
+              static_cast<std::streamsize>(wordCount * sizeof(uint16_t)));
+    if (!out) {
+        throw std::runtime_error("Failed writing " + path.string());
+    }
+}
+
+double depthValidRatio(const uint16_t *depthData, size_t pixelCount) {
+    if (depthData == nullptr || pixelCount == 0) {
+        return 0.0;
+    }
+    size_t valid = 0;
+    for (size_t i = 0; i < pixelCount; ++i) {
+        if (depthData[i] != 0) {
+            ++valid;
+        }
+    }
+    return static_cast<double>(valid) / static_cast<double>(pixelCount);
 }
 
 bool fileReadable(const std::string &path) {
@@ -330,6 +479,7 @@ ADINetworkToFStream::ADINetworkToFStream()
       m_lastTofiFrameTime(std::chrono::steady_clock::time_point::min()),
       m_tofiConfig(nullptr),
       m_tofiContext(nullptr), m_tofiMode(0) {
+    std::memset(m_xyzDealiasData, 0, sizeof(m_xyzDealiasData));
     maskFloatingPointTrapsForTofi();
     setStatus("Network listener is idle");
 }
@@ -340,10 +490,19 @@ ADINetworkToFStream::~ADINetworkToFStream() {
 }
 
 void ADINetworkToFStream::configure(const Config &config) {
-    std::lock_guard<std::mutex> lock(m_configMutex);
-    m_config = config;
-    m_config.frameType = sanitizeFrameType(m_config.frameType);
-    m_config.mode = convertModeName(m_config.frameType);
+    {
+        std::lock_guard<std::mutex> lock(m_configMutex);
+        m_config = config;
+        m_config.frameType = sanitizeFrameType(m_config.frameType);
+        m_config.mode = convertModeName(m_config.frameType);
+        if (m_config.saveProcessedStride == 0) {
+            m_config.saveProcessedStride = 1;
+        }
+        if (m_config.saveProcessedPlanes.empty()) {
+            m_config.saveProcessedPlanes = {"depth", "ir"};
+        }
+    }
+    closeProcessedFrameSaveSession();
 }
 
 void ADINetworkToFStream::start() {
@@ -373,6 +532,7 @@ void ADINetworkToFStream::stop() {
     }
 
     m_queue.erase();
+    closeProcessedFrameSaveSession();
     m_running = false;
     m_clientConnected = false;
     m_remoteCapturing = false;
@@ -387,9 +547,12 @@ void ADINetworkToFStream::requestFrame() {
 }
 
 void ADINetworkToFStream::setFrameType(const std::string &frameType) {
-    std::lock_guard<std::mutex> lock(m_configMutex);
-    m_config.frameType = sanitizeFrameType(frameType);
-    m_config.mode = convertModeName(m_config.frameType);
+    {
+        std::lock_guard<std::mutex> lock(m_configMutex);
+        m_config.frameType = sanitizeFrameType(frameType);
+        m_config.mode = convertModeName(m_config.frameType);
+    }
+    closeProcessedFrameSaveSession();
 }
 
 std::shared_ptr<aditof::Frame> ADINetworkToFStream::getFrame() {
@@ -471,6 +634,7 @@ bool ADINetworkToFStream::sendStartCaptureCommand() {
     m_waitingForFirstFrame = true;
     m_lastStartCommandTime = std::chrono::steady_clock::now();
     m_lastTofiFrameTime = std::chrono::steady_clock::time_point::min();
+    closeProcessedFrameSaveSession();
     std::ostringstream ss;
     ss << "Sent StartCapture to Machine A"
        << " mode=" << payload.mode;
@@ -501,6 +665,7 @@ bool ADINetworkToFStream::sendStopCaptureCommand() {
 
     m_remoteCapturing = false;
     m_waitingForFirstFrame = false;
+    closeProcessedFrameSaveSession();
     setStatus("Sent StopCapture to Machine A");
     return true;
 }
@@ -975,14 +1140,311 @@ void ADINetworkToFStream::handleDataFrame(const tof_net::Message &message) {
     }
 
     std::shared_ptr<aditof::Frame> frame;
+    bool tofiSuccess = false;
     try {
         frame = computeTofiFrame(header, rawBytes);
+        tofiSuccess = true;
     } catch (const std::exception &e) {
         frame = buildFallbackFrame(header, rawBytes, e.what());
     }
 
     if (frame) {
+        saveProcessedFrameIfEnabled(header, compressedBytes, frame, tofiSuccess);
         m_queue.enqueue_latest(frame);
+    }
+}
+
+void ADINetworkToFStream::closeProcessedFrameSaveSession() {
+    std::lock_guard<std::mutex> lock(m_saveMutex);
+    if (m_saveFramesCsv.is_open()) {
+        m_saveFramesCsv.close();
+    }
+    m_saveSessionActive = false;
+    m_saveDisabledAfterError = false;
+    m_savedFrameCount = 0;
+    m_saveSessionDir.clear();
+}
+
+bool ADINetworkToFStream::ensureProcessedSaveSessionLocked(
+    const Config &config, const tof_net::DataFramePayloadHeader &header,
+    const aditof::FrameDetails &frameDetails) {
+    if (m_saveSessionActive) {
+        return true;
+    }
+
+    const std::string frameType = makeFrameType(header, config);
+    const fs::path rootDir =
+        config.saveProcessedOutputDir.empty()
+            ? fs::path("./processed_frames")
+            : fs::path(config.saveProcessedOutputDir);
+    const std::string baseName =
+        "session_" + timestampForSessionDir() + "_" +
+        sanitizePathToken(frameType) + "_f" + std::to_string(header.frame_id);
+
+    fs::path sessionDir = rootDir / baseName;
+    int suffix = 1;
+    while (fs::exists(sessionDir)) {
+        sessionDir = rootDir / (baseName + "_" + std::to_string(suffix++));
+    }
+
+    std::error_code ec;
+    fs::create_directories(sessionDir, ec);
+    if (ec) {
+        throw std::runtime_error("Cannot create " + sessionDir.string() +
+                                 ": " + ec.message());
+    }
+    if (savePlaneEnabled(config, "depth")) {
+        fs::create_directories(sessionDir / "depth", ec);
+        if (ec) {
+            throw std::runtime_error("Cannot create depth directory: " +
+                                     ec.message());
+        }
+    }
+    if (savePlaneEnabled(config, "ir")) {
+        fs::create_directories(sessionDir / "ir", ec);
+        if (ec) {
+            throw std::runtime_error("Cannot create ir directory: " +
+                                     ec.message());
+        }
+    }
+    if (savePlaneEnabled(config, "xyz")) {
+        fs::create_directories(sessionDir / "xyz", ec);
+        if (ec) {
+            throw std::runtime_error("Cannot create xyz directory: " +
+                                     ec.message());
+        }
+    }
+
+    m_saveFramesCsv.open((sessionDir / "frames.csv").string(),
+                         std::ios::out | std::ios::trunc);
+    if (!m_saveFramesCsv) {
+        throw std::runtime_error("Cannot open " +
+                                 (sessionDir / "frames.csv").string());
+    }
+    m_saveFramesCsv
+        << "save_index,source_frame_id,source_timestamp_ns,viewer_time_ns,"
+           "mode,frame_type,width,height,raw_width,raw_height,raw_bytes,"
+           "compressed_bytes,depth_file,ir_file,xyz_file,valid_depth_ratio\n";
+
+    m_saveSessionDir = sessionDir.string();
+    m_savedFrameCount = 0;
+    m_saveSessionActive = true;
+    writeProcessedCameraJsonLocked(config, header, frameDetails);
+
+    std::ostringstream ss;
+    ss << "Saving processed frames to " << m_saveSessionDir;
+    setStatus(ss.str());
+    LOG(INFO) << ss.str();
+    return true;
+}
+
+void ADINetworkToFStream::writeProcessedCameraJsonLocked(
+    const Config &config, const tof_net::DataFramePayloadHeader &header,
+    const aditof::FrameDetails &frameDetails) {
+    const uint16_t mode = makeMode(header, config);
+    std::string iniFile;
+    std::string ccbFile;
+    std::string cfgFile;
+    bool hasIntrinsics = false;
+    CameraIntrinsics intrinsics {};
+    int dealiasRows = 0;
+    int dealiasCols = 0;
+
+    {
+        std::lock_guard<std::mutex> lock(m_tofiMutex);
+        iniFile = m_tofiIniFile;
+        ccbFile = m_tofiCcbFile;
+        cfgFile = m_tofiCfgFile;
+
+        if (mode < 11 && m_xyzDealiasData[mode].n_rows > 0 &&
+            m_xyzDealiasData[mode].n_cols > 0) {
+            intrinsics = m_xyzDealiasData[mode].camera_intrinsics;
+            dealiasRows = m_xyzDealiasData[mode].n_rows;
+            dealiasCols = m_xyzDealiasData[mode].n_cols;
+            hasIntrinsics = true;
+        } else if (m_tofiConfig != nullptr) {
+            TofiConfig *tofiConfig = static_cast<TofiConfig *>(m_tofiConfig);
+            if (tofiConfig->p_camera_intrinsics != nullptr) {
+                intrinsics = *tofiConfig->p_camera_intrinsics;
+                dealiasRows = static_cast<int>(tofiConfig->n_rows);
+                dealiasCols = static_cast<int>(tofiConfig->n_cols);
+                hasIntrinsics = true;
+            }
+        }
+    }
+
+    std::ofstream out((fs::path(m_saveSessionDir) / "camera.json").string(),
+                      std::ios::out | std::ios::trunc);
+    if (!out) {
+        throw std::runtime_error("Cannot open camera.json in " +
+                                 m_saveSessionDir);
+    }
+
+    out << "{\n";
+    out << "  \"format_version\": 1,\n";
+    out << "  \"source\": \"tof-net-viewer processed TOFI frames\",\n";
+    out << "  \"frame_type\": \"" << jsonEscape(makeFrameType(header, config))
+        << "\",\n";
+    out << "  \"mode\": " << mode << ",\n";
+    out << "  \"width\": " << frameDetails.width << ",\n";
+    out << "  \"height\": " << frameDetails.height << ",\n";
+    out << "  \"depth_unit\": \"millimeter\",\n";
+    out << "  \"depth_scale_to_meters\": 0.001,\n";
+    out << "  \"ini_file\": \"" << jsonEscape(iniFile) << "\",\n";
+    out << "  \"ccb_file\": \"" << jsonEscape(ccbFile) << "\",\n";
+    out << "  \"cfg_file\": \"" << jsonEscape(cfgFile) << "\",\n";
+    out << "  \"planes\": [";
+    for (size_t i = 0; i < config.saveProcessedPlanes.size(); ++i) {
+        if (i != 0) {
+            out << ", ";
+        }
+        out << "\"" << jsonEscape(trimFrameType(config.saveProcessedPlanes[i]))
+            << "\"";
+    }
+    out << "],\n";
+    out << "  \"intrinsics\": ";
+    if (hasIntrinsics) {
+        out << std::fixed << std::setprecision(9);
+        out << "{\n";
+        out << "    \"fx\": " << intrinsics.fx << ",\n";
+        out << "    \"fy\": " << intrinsics.fy << ",\n";
+        out << "    \"cx\": " << intrinsics.cx << ",\n";
+        out << "    \"cy\": " << intrinsics.cy << ",\n";
+        out << "    \"codx\": " << intrinsics.codx << ",\n";
+        out << "    \"cody\": " << intrinsics.cody << ",\n";
+        out << "    \"k1\": " << intrinsics.k1 << ",\n";
+        out << "    \"k2\": " << intrinsics.k2 << ",\n";
+        out << "    \"k3\": " << intrinsics.k3 << ",\n";
+        out << "    \"k4\": " << intrinsics.k4 << ",\n";
+        out << "    \"k5\": " << intrinsics.k5 << ",\n";
+        out << "    \"k6\": " << intrinsics.k6 << ",\n";
+        out << "    \"p1\": " << intrinsics.p1 << ",\n";
+        out << "    \"p2\": " << intrinsics.p2 << ",\n";
+        out << "    \"source_rows\": " << dealiasRows << ",\n";
+        out << "    \"source_cols\": " << dealiasCols << "\n";
+        out << "  }\n";
+    } else {
+        out << "null\n";
+    }
+    out << "}\n";
+    if (!out) {
+        throw std::runtime_error("Failed writing camera.json in " +
+                                 m_saveSessionDir);
+    }
+}
+
+void ADINetworkToFStream::saveProcessedFrameIfEnabled(
+    const tof_net::DataFramePayloadHeader &header, size_t compressedBytes,
+    const std::shared_ptr<aditof::Frame> &frame, bool tofiSuccess) {
+    if (!tofiSuccess || !frame || !m_remoteCapturing.load()) {
+        return;
+    }
+
+    Config config;
+    {
+        std::lock_guard<std::mutex> lock(m_configMutex);
+        config = m_config;
+    }
+    if (!config.saveProcessedFrames) {
+        return;
+    }
+    if (config.saveProcessedStride == 0) {
+        config.saveProcessedStride = 1;
+    }
+    if (config.saveProcessedPlanes.empty()) {
+        config.saveProcessedPlanes = {"depth", "ir"};
+    }
+    if (header.frame_id > 0 &&
+        ((header.frame_id - 1) % config.saveProcessedStride) != 0) {
+        return;
+    }
+
+    aditof::FrameDetails frameDetails;
+    if (frame->getDetails(frameDetails) != aditof::Status::OK ||
+        frameDetails.width == 0 || frameDetails.height == 0) {
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(m_saveMutex);
+    if (m_saveDisabledAfterError) {
+        return;
+    }
+    if (config.saveProcessedMaxFrames != 0 &&
+        m_savedFrameCount >= config.saveProcessedMaxFrames) {
+        return;
+    }
+
+    try {
+        if (!ensureProcessedSaveSessionLocked(config, header, frameDetails)) {
+            return;
+        }
+
+        const uint64_t saveIndex = m_savedFrameCount;
+        const size_t pixelCount =
+            static_cast<size_t>(frameDetails.width) * frameDetails.height;
+        const fs::path sessionDir(m_saveSessionDir);
+
+        std::string depthFile;
+        std::string irFile;
+        std::string xyzFile;
+        double validRatio = 0.0;
+
+        uint16_t *depthData = nullptr;
+        if (savePlaneEnabled(config, "depth") &&
+            frame->getData("depth", &depthData) == aditof::Status::OK &&
+            depthData != nullptr) {
+            const fs::path relPath =
+                fs::path("depth") / frameFileName(saveIndex, "pgm");
+            writePgm16(sessionDir / relPath, depthData, frameDetails.width,
+                       frameDetails.height);
+            depthFile = relPath.generic_string();
+            validRatio = depthValidRatio(depthData, pixelCount);
+        }
+
+        uint16_t *irData = nullptr;
+        if (savePlaneEnabled(config, "ir") &&
+            frame->getData("ir", &irData) == aditof::Status::OK &&
+            irData != nullptr) {
+            const fs::path relPath =
+                fs::path("ir") / frameFileName(saveIndex, "pgm");
+            writePgm16(sessionDir / relPath, irData, frameDetails.width,
+                       frameDetails.height);
+            irFile = relPath.generic_string();
+        }
+
+        uint16_t *xyzData = nullptr;
+        if (savePlaneEnabled(config, "xyz") &&
+            frame->getData("xyz", &xyzData) == aditof::Status::OK &&
+            xyzData != nullptr) {
+            const fs::path relPath =
+                fs::path("xyz") / frameFileName(saveIndex, "bin");
+            writeBinaryWords(sessionDir / relPath, xyzData, pixelCount * 3);
+            xyzFile = relPath.generic_string();
+        }
+
+        m_saveFramesCsv << saveIndex << "," << header.frame_id << ","
+                        << header.timestamp_ns << "," << systemTimeNs() << ","
+                        << makeMode(header, config) << ","
+                        << csvEscape(makeFrameType(header, config)) << ","
+                        << frameDetails.width << "," << frameDetails.height
+                        << "," << header.raw_width << "," << header.raw_height
+                        << "," << header.raw_bytes << "," << compressedBytes
+                        << "," << csvEscape(depthFile) << ","
+                        << csvEscape(irFile) << "," << csvEscape(xyzFile)
+                        << "," << std::fixed << std::setprecision(6)
+                        << validRatio << "\n";
+        m_saveFramesCsv.flush();
+        ++m_savedFrameCount;
+    } catch (const std::exception &e) {
+        m_saveDisabledAfterError = true;
+        m_saveSessionActive = false;
+        if (m_saveFramesCsv.is_open()) {
+            m_saveFramesCsv.close();
+        }
+        std::string text = std::string("Processed frame saving disabled: ") +
+                           e.what();
+        setStatus(text);
+        LOG(ERROR) << text;
     }
 }
 
