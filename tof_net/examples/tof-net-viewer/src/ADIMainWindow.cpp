@@ -431,6 +431,31 @@ static void glfw_error_callback(int error, const char *description) {
 }
 
 bool ADIMainWindow::startImGUI(const ADIViewerArgs &args) {
+    if (args.SaveProcessedSet) {
+        m_networkSaveProcessed = args.SaveProcessed;
+    }
+    if (!args.SaveProcessedDir.empty()) {
+        m_networkSaveProcessedDir = args.SaveProcessedDir;
+        m_networkSaveProcessed = true;
+    }
+    if (!args.SaveProcessedPlanes.empty()) {
+        m_networkSaveProcessedPlanes = args.SaveProcessedPlanes;
+        m_networkSaveProcessed = true;
+    }
+    if (args.SaveProcessedStrideSet) {
+        m_networkSaveProcessedStride = args.SaveProcessedStride;
+    }
+    if (args.SaveProcessedMaxFramesSet) {
+        m_networkSaveProcessedMaxFrames = args.SaveProcessedMaxFrames;
+    }
+    if (m_networkSaveProcessed) {
+        LOG(INFO) << "Processed frame saving enabled from startup/config: dir="
+                  << m_networkSaveProcessedDir
+                  << " planes=" << m_networkSaveProcessedPlanes
+                  << " stride=" << m_networkSaveProcessedStride
+                  << " max_frames=" << m_networkSaveProcessedMaxFrames;
+    }
+
     // Setup window
     glfwSetErrorCallback(glfw_error_callback); //Error Management
     if (!glfwInit()) {

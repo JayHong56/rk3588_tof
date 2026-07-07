@@ -26,6 +26,11 @@ SEND_ALL_DEALIAS=${SEND_ALL_DEALIAS:-0}
 WAIT_METADATA_SECONDS=${WAIT_METADATA_SECONDS:-90}
 SSH_CONNECT_TIMEOUT=${SSH_CONNECT_TIMEOUT:-8}
 AUTO_PLAY=${AUTO_PLAY:-0}
+SAVE_PROCESSED=${SAVE_PROCESSED:-0}
+SAVE_PROCESSED_DIR=${SAVE_PROCESSED_DIR:-"$ROOT/processed_frames"}
+SAVE_PROCESSED_PLANES=${SAVE_PROCESSED_PLANES:-depth,ir}
+SAVE_PROCESSED_STRIDE=${SAVE_PROCESSED_STRIDE:-1}
+SAVE_PROCESSED_MAX_FRAMES=${SAVE_PROCESSED_MAX_FRAMES:-0}
 
 usage() {
     cat <<EOF
@@ -53,6 +58,11 @@ Environment overrides:
   DISPLAY=$DISPLAY
   LOG_DIR=$LOG_DIR
   AUTO_PLAY=$AUTO_PLAY
+  SAVE_PROCESSED=$SAVE_PROCESSED
+  SAVE_PROCESSED_DIR=$SAVE_PROCESSED_DIR
+  SAVE_PROCESSED_PLANES=$SAVE_PROCESSED_PLANES
+  SAVE_PROCESSED_STRIDE=$SAVE_PROCESSED_STRIDE
+  SAVE_PROCESSED_MAX_FRAMES=$SAVE_PROCESSED_MAX_FRAMES
 EOF
 }
 
@@ -108,6 +118,12 @@ mode_id_from_name() {
 FRAME_TYPE=$(mode_name_from_input "$MODE")
 MODE_ID=$(mode_id_from_name "$FRAME_TYPE")
 [[ "$FPS" =~ ^[0-9]+$ ]] || die "unsupported FPS '$FPS' (must be a non-negative integer; 0 uses config/default)"
+[[ "$SAVE_PROCESSED_STRIDE" =~ ^[1-9][0-9]*$ ]] || die "unsupported SAVE_PROCESSED_STRIDE '$SAVE_PROCESSED_STRIDE' (must be >= 1)"
+[[ "$SAVE_PROCESSED_MAX_FRAMES" =~ ^[0-9]+$ ]] || die "unsupported SAVE_PROCESSED_MAX_FRAMES '$SAVE_PROCESSED_MAX_FRAMES' (must be >= 0)"
+
+flag_enabled() {
+    [[ "$1" == "1" || "$1" == "true" || "$1" == "TRUE" || "$1" == "on" || "$1" == "ON" || "$1" == "yes" || "$1" == "YES" ]]
+}
 
 if [[ -z "${TOF_PASSWORD:-}" ]]; then
     read -rsp "ToF SSH/sudo password [$TOF_USER default: analog]: " TOF_PASSWORD
@@ -256,12 +272,24 @@ echo "Starting RK USB/link monitors..."
 start_rk_monitors
 
 echo "Starting viewer..."
+viewer_args=()
+if flag_enabled "$SAVE_PROCESSED"; then
+    mkdir -p "$SAVE_PROCESSED_DIR"
+    viewer_args+=(
+        --save-processed
+        --save-processed-dir "$SAVE_PROCESSED_DIR"
+        --save-processed-planes "$SAVE_PROCESSED_PLANES"
+        --save-processed-stride "$SAVE_PROCESSED_STRIDE"
+        --save-processed-max-frames "$SAVE_PROCESSED_MAX_FRAMES"
+    )
+    echo "Processed frame saving: dir=$SAVE_PROCESSED_DIR planes=$SAVE_PROCESSED_PLANES stride=$SAVE_PROCESSED_STRIDE max=$SAVE_PROCESSED_MAX_FRAMES"
+fi
 (
     cd "$VIEWER_DIR"
-    if [[ "$AUTO_PLAY" == "1" || "$AUTO_PLAY" == "true" || "$AUTO_PLAY" == "TRUE" ]]; then
-        exec env DISPLAY="$DISPLAY" TOF_NET_START_MODE="$FRAME_TYPE" TOF_NET_START_FPS="$FPS" TOF_NET_GUI_AUTO_PLAY=1 stdbuf -oL -eL "$VIEWER_BIN"
+    if flag_enabled "$AUTO_PLAY"; then
+        exec env DISPLAY="$DISPLAY" TOF_NET_START_MODE="$FRAME_TYPE" TOF_NET_START_FPS="$FPS" TOF_NET_GUI_AUTO_PLAY=1 stdbuf -oL -eL "$VIEWER_BIN" "${viewer_args[@]}"
     fi
-    exec env DISPLAY="$DISPLAY" TOF_NET_START_MODE="$FRAME_TYPE" TOF_NET_START_FPS="$FPS" stdbuf -oL -eL "$VIEWER_BIN"
+    exec env DISPLAY="$DISPLAY" TOF_NET_START_MODE="$FRAME_TYPE" TOF_NET_START_FPS="$FPS" stdbuf -oL -eL "$VIEWER_BIN" "${viewer_args[@]}"
 ) >"$viewer_log" 2>&1 &
 viewer_pid=$!
 
@@ -302,7 +330,7 @@ if ! wait_log "waiting for start command" "$viewer_log" "$WAIT_METADATA_SECONDS"
 fi
 
 echo
-if [[ "$AUTO_PLAY" == "1" || "$AUTO_PLAY" == "true" || "$AUTO_PLAY" == "TRUE" ]]; then
+if flag_enabled "$AUTO_PLAY"; then
     echo "Metadata ready. GUI auto Play is enabled; waiting for StartCapture."
     if ! wait_log "Sent StartCapture" "$viewer_log" 15; then
         die "GUI auto Play did not reach StartCapture; see $viewer_log"

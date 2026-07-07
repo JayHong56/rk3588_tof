@@ -29,6 +29,15 @@
 */
 struct ADIViewerArgs {
     bool HighDpi = false;
+    bool HelpRequested = false;
+    bool SaveProcessedSet = false;
+    bool SaveProcessed = false;
+    std::string SaveProcessedDir;
+    std::string SaveProcessedPlanes;
+    bool SaveProcessedStrideSet = false;
+    uint32_t SaveProcessedStride = 1;
+    bool SaveProcessedMaxFramesSet = false;
+    uint32_t SaveProcessedMaxFrames = 0;
 };
 
 /**
