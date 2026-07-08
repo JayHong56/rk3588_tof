@@ -105,7 +105,7 @@ void printUsage() {
         << "  --HIGHDPI | --NORMALDPI\n"
         << "  --save-processed\n"
         << "  --save-processed-dir <dir>\n"
-        << "  --save-processed-planes depth,ir[,xyz]\n"
+        << "  --save-processed-planes raw,depth,ir,xyz\n"
         << "  --save-processed-stride <N>\n"
         << "  --save-processed-max-frames <N>\n";
 }

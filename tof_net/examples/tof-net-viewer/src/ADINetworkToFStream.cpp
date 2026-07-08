@@ -211,6 +211,12 @@ bool savePlaneEnabled(const ADINetworkToFStream::Config &config,
     return false;
 }
 
+bool saveAnyTofiPlaneEnabled(const ADINetworkToFStream::Config &config) {
+    return savePlaneEnabled(config, "depth") ||
+           savePlaneEnabled(config, "ir") ||
+           savePlaneEnabled(config, "xyz");
+}
+
 std::string sanitizePathToken(std::string value) {
     if (value.empty()) {
         return "unknown";
@@ -317,6 +323,18 @@ void writeBinaryWords(const fs::path &path, const uint16_t *data,
     }
     out.write(reinterpret_cast<const char *>(data),
               static_cast<std::streamsize>(wordCount * sizeof(uint16_t)));
+    if (!out) {
+        throw std::runtime_error("Failed writing " + path.string());
+    }
+}
+
+void writeBinaryBytes(const fs::path &path, const std::vector<uint8_t> &data) {
+    std::ofstream out(path.string(), std::ios::binary | std::ios::trunc);
+    if (!out) {
+        throw std::runtime_error("Cannot open " + path.string());
+    }
+    out.write(reinterpret_cast<const char *>(data.data()),
+              static_cast<std::streamsize>(data.size()));
     if (!out) {
         throw std::runtime_error("Failed writing " + path.string());
     }
@@ -1093,16 +1111,25 @@ void ADINetworkToFStream::handleDataFrame(const tof_net::Message &message) {
         throw std::runtime_error("Malformed DataFrame message: payload truncated");
     }
 
-    const auto now = std::chrono::steady_clock::now();
-    if (m_lastTofiFrameTime != std::chrono::steady_clock::time_point::min() &&
-        now - m_lastTofiFrameTime < kMinTofiFrameInterval) {
-        std::ostringstream skipped;
-        skipped << "Dropped RAW frame " << header.frame_id
-                << "; viewer TOFI backpressure";
-        setStatus(skipped.str());
-        return;
+    Config saveConfig;
+    {
+        std::lock_guard<std::mutex> lock(m_configMutex);
+        saveConfig = m_config;
     }
-    m_lastTofiFrameTime = now;
+    const bool needsTofi = saveAnyTofiPlaneEnabled(saveConfig);
+
+    if (needsTofi) {
+        const auto now = std::chrono::steady_clock::now();
+        if (m_lastTofiFrameTime != std::chrono::steady_clock::time_point::min() &&
+            now - m_lastTofiFrameTime < kMinTofiFrameInterval) {
+            std::ostringstream skipped;
+            skipped << "Dropped RAW frame " << header.frame_id
+                    << "; viewer TOFI backpressure";
+            setStatus(skipped.str());
+            return;
+        }
+        m_lastTofiFrameTime = now;
+    }
 
     const uint8_t *payloadData = message.payload.data() + payloadDataOffset;
     std::vector<uint8_t> rawBytes;
@@ -1141,15 +1168,44 @@ void ADINetworkToFStream::handleDataFrame(const tof_net::Message &message) {
 
     std::shared_ptr<aditof::Frame> frame;
     bool tofiSuccess = false;
-    try {
-        frame = computeTofiFrame(header, rawBytes);
-        tofiSuccess = true;
-    } catch (const std::exception &e) {
-        frame = buildFallbackFrame(header, rawBytes, e.what());
+    if (needsTofi) {
+        try {
+            frame = computeTofiFrame(header, compressedBytes, rawBytes);
+            tofiSuccess = true;
+        } catch (const std::exception &e) {
+            frame = buildFallbackFrame(header, rawBytes, e.what());
+            aditof::FrameDetails rawFrameDetails;
+            rawFrameDetails.type = makeFrameType(header, saveConfig);
+            rawFrameDetails.cameraMode = rawFrameDetails.type;
+            rawFrameDetails.width = header.raw_width;
+            rawFrameDetails.height = header.raw_height;
+            rawFrameDetails.totalCaptures = 1;
+            rawFrameDetails.passiveIRCaptured = false;
+            saveProcessedFrameSnapshotIfEnabled(
+                header, compressedBytes, &rawBytes, rawFrameDetails,
+                nullptr, nullptr, nullptr);
+        }
+    } else {
+        aditof::FrameDetails rawFrameDetails;
+        rawFrameDetails.type = makeFrameType(header, saveConfig);
+        rawFrameDetails.cameraMode = rawFrameDetails.type;
+        rawFrameDetails.width = header.raw_width;
+        rawFrameDetails.height = header.raw_height;
+        rawFrameDetails.totalCaptures = 1;
+        rawFrameDetails.passiveIRCaptured = false;
+        saveProcessedFrameSnapshotIfEnabled(
+            header, compressedBytes, &rawBytes, rawFrameDetails,
+            nullptr, nullptr, nullptr);
+        frame = buildFallbackFrame(header, rawBytes, "raw-only capture");
     }
 
     if (frame) {
-        saveProcessedFrameIfEnabled(header, compressedBytes, frame, tofiSuccess);
+        // Successful TOFI frames are saved from an internal snapshot inside
+        // computeTofiFrame(), before the GUI Frame/XYZ path can interfere.
+        if (!tofiSuccess) {
+            saveProcessedFrameIfEnabled(header, compressedBytes, &rawBytes, frame,
+                                        tofiSuccess);
+        }
         m_queue.enqueue_latest(frame);
     }
 }
@@ -1214,6 +1270,13 @@ bool ADINetworkToFStream::ensureProcessedSaveSessionLocked(
                                      ec.message());
         }
     }
+    if (savePlaneEnabled(config, "raw")) {
+        fs::create_directories(sessionDir / "raw", ec);
+        if (ec) {
+            throw std::runtime_error("Cannot create raw directory: " +
+                                     ec.message());
+        }
+    }
 
     m_saveFramesCsv.open((sessionDir / "frames.csv").string(),
                          std::ios::out | std::ios::trunc);
@@ -1224,7 +1287,8 @@ bool ADINetworkToFStream::ensureProcessedSaveSessionLocked(
     m_saveFramesCsv
         << "save_index,source_frame_id,source_timestamp_ns,viewer_time_ns,"
            "mode,frame_type,width,height,raw_width,raw_height,raw_bytes,"
-           "compressed_bytes,depth_file,ir_file,xyz_file,valid_depth_ratio\n";
+           "compressed_bytes,raw_file,depth_file,ir_file,xyz_file,"
+           "valid_depth_ratio\n";
 
     m_saveSessionDir = sessionDir.string();
     m_savedFrameCount = 0;
@@ -1282,12 +1346,13 @@ void ADINetworkToFStream::writeProcessedCameraJsonLocked(
 
     out << "{\n";
     out << "  \"format_version\": 1,\n";
-    out << "  \"source\": \"tof-net-viewer processed TOFI frames\",\n";
+    out << "  \"source\": \"tof-net-viewer saved capture frames\",\n";
     out << "  \"frame_type\": \"" << jsonEscape(makeFrameType(header, config))
         << "\",\n";
     out << "  \"mode\": " << mode << ",\n";
     out << "  \"width\": " << frameDetails.width << ",\n";
     out << "  \"height\": " << frameDetails.height << ",\n";
+    out << "  \"raw_file_encoding\": \"decoded_raw_bytes\",\n";
     out << "  \"depth_unit\": \"millimeter\",\n";
     out << "  \"depth_scale_to_meters\": 0.001,\n";
     out << "  \"ini_file\": \"" << jsonEscape(iniFile) << "\",\n";
@@ -1335,8 +1400,9 @@ void ADINetworkToFStream::writeProcessedCameraJsonLocked(
 
 void ADINetworkToFStream::saveProcessedFrameIfEnabled(
     const tof_net::DataFramePayloadHeader &header, size_t compressedBytes,
+    const std::vector<uint8_t> *rawBytes,
     const std::shared_ptr<aditof::Frame> &frame, bool tofiSuccess) {
-    if (!tofiSuccess || !frame || !m_remoteCapturing.load()) {
+    if (!tofiSuccess || !frame) {
         return;
     }
 
@@ -1365,16 +1431,68 @@ void ADINetworkToFStream::saveProcessedFrameIfEnabled(
         return;
     }
 
-    std::lock_guard<std::mutex> lock(m_saveMutex);
-    if (m_saveDisabledAfterError) {
+    uint16_t *depthData = nullptr;
+    uint16_t *irData = nullptr;
+    uint16_t *xyzData = nullptr;
+    if (savePlaneEnabled(config, "depth")) {
+        frame->getData("depth", &depthData);
+    }
+    if (savePlaneEnabled(config, "ir")) {
+        frame->getData("ir", &irData);
+    }
+    if (savePlaneEnabled(config, "xyz")) {
+        frame->getData("xyz", &xyzData);
+    }
+
+    saveProcessedFrameSnapshotIfEnabled(header, compressedBytes, rawBytes,
+                                        frameDetails, depthData, irData,
+                                        xyzData);
+}
+
+void ADINetworkToFStream::saveProcessedFrameSnapshotIfEnabled(
+    const tof_net::DataFramePayloadHeader &header, size_t compressedBytes,
+    const std::vector<uint8_t> *rawBytes,
+    const aditof::FrameDetails &frameDetails, const uint16_t *depthData,
+    const uint16_t *irData, const uint16_t *xyzData) {
+    Config config;
+    {
+        std::lock_guard<std::mutex> lock(m_configMutex);
+        config = m_config;
+    }
+    if (!config.saveProcessedFrames) {
         return;
     }
-    if (config.saveProcessedMaxFrames != 0 &&
-        m_savedFrameCount >= config.saveProcessedMaxFrames) {
+    if (config.saveProcessedStride == 0) {
+        config.saveProcessedStride = 1;
+    }
+    if (config.saveProcessedPlanes.empty()) {
+        config.saveProcessedPlanes = {"depth", "ir"};
+    }
+    if (header.frame_id > 0 &&
+        ((header.frame_id - 1) % config.saveProcessedStride) != 0) {
+        return;
+    }
+    if (frameDetails.width == 0 || frameDetails.height == 0) {
+        return;
+    }
+    const bool hasWritablePlane =
+        (savePlaneEnabled(config, "raw") && rawBytes != nullptr) ||
+        (savePlaneEnabled(config, "depth") && depthData != nullptr) ||
+        (savePlaneEnabled(config, "ir") && irData != nullptr) ||
+        (savePlaneEnabled(config, "xyz") && xyzData != nullptr);
+    if (!hasWritablePlane) {
         return;
     }
 
     try {
+        std::lock_guard<std::mutex> lock(m_saveMutex);
+        if (m_saveDisabledAfterError) {
+            return;
+        }
+        if (config.saveProcessedMaxFrames != 0 &&
+            m_savedFrameCount >= config.saveProcessedMaxFrames) {
+            return;
+        }
         if (!ensureProcessedSaveSessionLocked(config, header, frameDetails)) {
             return;
         }
@@ -1384,14 +1502,20 @@ void ADINetworkToFStream::saveProcessedFrameIfEnabled(
             static_cast<size_t>(frameDetails.width) * frameDetails.height;
         const fs::path sessionDir(m_saveSessionDir);
 
+        std::string rawFile;
         std::string depthFile;
         std::string irFile;
         std::string xyzFile;
         double validRatio = 0.0;
 
-        uint16_t *depthData = nullptr;
+        if (savePlaneEnabled(config, "raw") && rawBytes != nullptr) {
+            const fs::path relPath =
+                fs::path("raw") / frameFileName(saveIndex, "raw");
+            writeBinaryBytes(sessionDir / relPath, *rawBytes);
+            rawFile = relPath.generic_string();
+        }
+
         if (savePlaneEnabled(config, "depth") &&
-            frame->getData("depth", &depthData) == aditof::Status::OK &&
             depthData != nullptr) {
             const fs::path relPath =
                 fs::path("depth") / frameFileName(saveIndex, "pgm");
@@ -1401,9 +1525,7 @@ void ADINetworkToFStream::saveProcessedFrameIfEnabled(
             validRatio = depthValidRatio(depthData, pixelCount);
         }
 
-        uint16_t *irData = nullptr;
         if (savePlaneEnabled(config, "ir") &&
-            frame->getData("ir", &irData) == aditof::Status::OK &&
             irData != nullptr) {
             const fs::path relPath =
                 fs::path("ir") / frameFileName(saveIndex, "pgm");
@@ -1412,9 +1534,7 @@ void ADINetworkToFStream::saveProcessedFrameIfEnabled(
             irFile = relPath.generic_string();
         }
 
-        uint16_t *xyzData = nullptr;
         if (savePlaneEnabled(config, "xyz") &&
-            frame->getData("xyz", &xyzData) == aditof::Status::OK &&
             xyzData != nullptr) {
             const fs::path relPath =
                 fs::path("xyz") / frameFileName(saveIndex, "bin");
@@ -1429,19 +1549,33 @@ void ADINetworkToFStream::saveProcessedFrameIfEnabled(
                         << frameDetails.width << "," << frameDetails.height
                         << "," << header.raw_width << "," << header.raw_height
                         << "," << header.raw_bytes << "," << compressedBytes
+                        << "," << csvEscape(rawFile)
                         << "," << csvEscape(depthFile) << ","
                         << csvEscape(irFile) << "," << csvEscape(xyzFile)
                         << "," << std::fixed << std::setprecision(6)
                         << validRatio << "\n";
         m_saveFramesCsv.flush();
         ++m_savedFrameCount;
+        if (m_savedFrameCount == 1 ||
+            (config.saveProcessedMaxFrames != 0 &&
+             m_savedFrameCount == config.saveProcessedMaxFrames)) {
+            std::ostringstream saved;
+            saved << "Saved capture frame " << m_savedFrameCount;
+            if (config.saveProcessedMaxFrames != 0) {
+                saved << "/" << config.saveProcessedMaxFrames;
+            }
+            saved << " to " << m_saveSessionDir;
+            setStatus(saved.str());
+            LOG(INFO) << saved.str();
+            std::cout << "[tof-net-viewer] " << saved.str() << std::endl;
+        }
     } catch (const std::exception &e) {
         m_saveDisabledAfterError = true;
         m_saveSessionActive = false;
         if (m_saveFramesCsv.is_open()) {
             m_saveFramesCsv.close();
         }
-        std::string text = std::string("Processed frame saving disabled: ") +
+        std::string text = std::string("Capture saving disabled: ") +
                            e.what();
         setStatus(text);
         LOG(ERROR) << text;
@@ -1450,6 +1584,7 @@ void ADINetworkToFStream::saveProcessedFrameIfEnabled(
 
 std::shared_ptr<aditof::Frame> ADINetworkToFStream::computeTofiFrame(
     const tof_net::DataFramePayloadHeader &header,
+    size_t compressedBytes,
     const std::vector<uint8_t> &rawBytes) {
     if ((rawBytes.size() % sizeof(uint16_t)) != 0) {
         throw std::runtime_error("Decoded RAW frame is not 16-bit aligned");
@@ -1483,30 +1618,74 @@ std::shared_ptr<aditof::Frame> ADINetworkToFStream::computeTofiFrame(
     std::cerr << "[viewer] TofiCompute input: " << rawWords.size()
               << " uint16 words, ctx=" << m_tofiContext << std::endl;
 
-    std::lock_guard<std::mutex> lock(m_tofiMutex);
-    TofiComputeContext *tofiContext =
-        static_cast<TofiComputeContext *>(m_tofiContext);
-    std::cerr << "[viewer] tofiContext->n_rows=" << tofiContext->n_rows
-              << " n_cols=" << tofiContext->n_cols
-              << " p_depth=" << (void*)tofiContext->p_depth_frame
-              << " p_ab=" << (void*)tofiContext->p_ab_frame
-              << " p_xyz=" << (void*)tofiContext->p_xyz_frame << std::endl;
+    uint32_t width = 0;
+    uint32_t height = 0;
+    std::vector<uint16_t> depthSnapshot;
+    std::vector<uint16_t> irSnapshot;
+    std::vector<uint16_t> xyzSnapshot;
+    std::pair<uint16_t, uint16_t> depthRange{0, 0};
+    std::pair<uint16_t, uint16_t> abRange{0, 0};
 
-    maskFloatingPointTrapsForTofi();
-    std::cerr << "[viewer] calling TofiCompute..." << std::endl;
-    const int computeStatus = TofiCompute(rawWords.data(), tofiContext, nullptr);
-    std::cerr << "[viewer] TofiCompute returned " << computeStatus << std::endl;
-    maskFloatingPointTrapsForTofi();
-    if (computeStatus != 0) {
-        std::ostringstream ss;
-        ss << "TofiCompute failed with status " << computeStatus;
-        throw std::runtime_error(ss.str());
-    }
+    {
+        std::lock_guard<std::mutex> lock(m_tofiMutex);
+        TofiComputeContext *tofiContext =
+            static_cast<TofiComputeContext *>(m_tofiContext);
+        std::cerr << "[viewer] tofiContext->n_rows=" << tofiContext->n_rows
+                  << " n_cols=" << tofiContext->n_cols
+                  << " p_depth=" << (void*)tofiContext->p_depth_frame
+                  << " p_ab=" << (void*)tofiContext->p_ab_frame
+                  << " p_xyz=" << (void*)tofiContext->p_xyz_frame << std::endl;
 
-    const uint32_t width = tofiContext->n_cols;
-    const uint32_t height = tofiContext->n_rows;
-    if (width == 0 || height == 0) {
-        throw std::runtime_error("TOFI returned an empty frame geometry");
+        maskFloatingPointTrapsForTofi();
+        std::cerr << "[viewer] calling TofiCompute..." << std::endl;
+        const int computeStatus = TofiCompute(rawWords.data(), tofiContext, nullptr);
+        std::cerr << "[viewer] TofiCompute returned " << computeStatus << std::endl;
+        maskFloatingPointTrapsForTofi();
+        if (computeStatus != 0) {
+            std::ostringstream ss;
+            ss << "TofiCompute failed with status " << computeStatus;
+            throw std::runtime_error(ss.str());
+        }
+
+        width = tofiContext->n_cols;
+        height = tofiContext->n_rows;
+        if (width == 0 || height == 0) {
+            throw std::runtime_error("TOFI returned an empty frame geometry");
+        }
+
+        const size_t pixelCount = static_cast<size_t>(width) * height;
+        if (tofiContext->p_depth_frame != nullptr) {
+            depthSnapshot.assign(tofiContext->p_depth_frame,
+                                 tofiContext->p_depth_frame + pixelCount);
+        }
+        if (tofiContext->p_ab_frame != nullptr) {
+            irSnapshot.assign(tofiContext->p_ab_frame,
+                              tofiContext->p_ab_frame + pixelCount);
+        }
+        if (tofiContext->p_xyz_frame != nullptr) {
+            const uint16_t *xyzWords =
+                reinterpret_cast<const uint16_t *>(tofiContext->p_xyz_frame);
+            xyzSnapshot.assign(xyzWords, xyzWords + pixelCount * 3);
+        }
+
+        if (header.frame_id == 1 && pixelCount > 0) {
+            auto range16 = [pixelCount](const uint16_t *p) {
+                uint16_t mn = 0xFFFF;
+                uint16_t mx = 0;
+                if (p == nullptr) {
+                    return std::pair<uint16_t, uint16_t>{0, 0};
+                }
+                for (size_t i = 0; i < pixelCount; ++i) {
+                    mn = std::min<uint16_t>(mn, p[i]);
+                    mx = std::max<uint16_t>(mx, p[i]);
+                }
+                return std::make_pair(mn, mx);
+            };
+            depthRange = range16(depthSnapshot.empty() ? nullptr
+                                                       : depthSnapshot.data());
+            abRange = range16(irSnapshot.empty() ? nullptr
+                                                 : irSnapshot.data());
+        }
     }
 
     if (header.frame_id == 1) {
@@ -1529,10 +1708,8 @@ std::shared_ptr<aditof::Frame> ADINetworkToFStream::computeTofiFrame(
              sizeof(uint16_t), 1);
     addPlane(frameDetails.dataDetails, "ir", width, height, sizeof(uint16_t),
              1);
-    if (config.enableXyz && tofiContext->p_xyz_frame != nullptr) {
-        addPlane(frameDetails.dataDetails, "xyz", width, height,
-                 sizeof(uint16_t), 3);
-    }
+    // Keep XYZ out of the GUI Frame for now. Saving uses xyzSnapshot directly;
+    // the previous Frame::getData("xyz") path exited after the first TOFI frame.
 
     auto frame = std::make_shared<aditof::Frame>();
     frame->setDetails(frameDetails);
@@ -1543,36 +1720,21 @@ std::shared_ptr<aditof::Frame> ADINetworkToFStream::computeTofiFrame(
     uint16_t *depthData = nullptr;
     aditof::Status ds = frame->getData("depth", &depthData);
     std::cerr << "[viewer] getData(depth) status=" << static_cast<int>(ds)
-              << " ptr=" << (void*)depthData
-              << " tofi_p_depth=" << (void*)tofiContext->p_depth_frame << std::endl;
-    if (ds == aditof::Status::OK &&
-        depthData != nullptr && tofiContext->p_depth_frame != nullptr) {
-        std::memcpy(depthData, tofiContext->p_depth_frame,
+              << " ptr=" << (void*)depthData << std::endl;
+    if (ds == aditof::Status::OK && depthData != nullptr &&
+        depthSnapshot.size() == pixelCount) {
+        std::memcpy(depthData, depthSnapshot.data(),
                     pixelCount * sizeof(uint16_t));
     }
 
     uint16_t *irData = nullptr;
     if (frame->getData("ir", &irData) == aditof::Status::OK &&
-        irData != nullptr && tofiContext->p_ab_frame != nullptr) {
-        std::memcpy(irData, tofiContext->p_ab_frame,
+        irData != nullptr && irSnapshot.size() == pixelCount) {
+        std::memcpy(irData, irSnapshot.data(),
                     pixelCount * sizeof(uint16_t));
     }
 
     if (header.frame_id == 1 && pixelCount > 0) {
-        auto range16 = [pixelCount](const uint16_t *p) {
-            uint16_t mn = 0xFFFF;
-            uint16_t mx = 0;
-            if (p == nullptr) {
-                return std::pair<uint16_t, uint16_t>{0, 0};
-            }
-            for (size_t i = 0; i < pixelCount; ++i) {
-                mn = std::min<uint16_t>(mn, p[i]);
-                mx = std::max<uint16_t>(mx, p[i]);
-            }
-            return std::make_pair(mn, mx);
-        };
-        const auto depthRange = range16(tofiContext->p_depth_frame);
-        const auto abRange = range16(tofiContext->p_ab_frame);
         std::ostringstream first;
         first << "First TOFI output: " << width << "x" << height
               << ", depth_range=[" << depthRange.first << "," << depthRange.second
@@ -1581,13 +1743,11 @@ std::shared_ptr<aditof::Frame> ADINetworkToFStream::computeTofiFrame(
         LOG(INFO) << first.str();
     }
 
-    uint16_t *xyzData = nullptr;
-    if (config.enableXyz &&
-        frame->getData("xyz", &xyzData) == aditof::Status::OK &&
-        xyzData != nullptr && tofiContext->p_xyz_frame != nullptr) {
-        std::memcpy(xyzData, tofiContext->p_xyz_frame,
-                    static_cast<size_t>(width) * height * 3 * sizeof(int16_t));
-    }
+    saveProcessedFrameSnapshotIfEnabled(
+        header, compressedBytes, &rawBytes, frameDetails,
+        depthSnapshot.empty() ? nullptr : depthSnapshot.data(),
+        irSnapshot.empty() ? nullptr : irSnapshot.data(),
+        xyzSnapshot.empty() ? nullptr : xyzSnapshot.data());
 
     std::ostringstream ss;
     ss << "Received RAW frame " << header.frame_id << ", TOFI " << width

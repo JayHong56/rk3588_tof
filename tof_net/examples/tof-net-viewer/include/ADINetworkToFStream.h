@@ -96,8 +96,17 @@ class ADINetworkToFStream {
     void saveProcessedFrameIfEnabled(
         const tof_net::DataFramePayloadHeader &header,
         size_t compressedBytes,
+        const std::vector<uint8_t> *rawBytes,
         const std::shared_ptr<aditof::Frame> &frame,
         bool tofiSuccess);
+    void saveProcessedFrameSnapshotIfEnabled(
+        const tof_net::DataFramePayloadHeader &header,
+        size_t compressedBytes,
+        const std::vector<uint8_t> *rawBytes,
+        const aditof::FrameDetails &frameDetails,
+        const uint16_t *depthData,
+        const uint16_t *irData,
+        const uint16_t *xyzData);
     bool ensureProcessedSaveSessionLocked(
         const Config &config, const tof_net::DataFramePayloadHeader &header,
         const aditof::FrameDetails &frameDetails);
@@ -107,6 +116,7 @@ class ADINetworkToFStream {
     void closeProcessedFrameSaveSession();
     std::shared_ptr<aditof::Frame>
     computeTofiFrame(const tof_net::DataFramePayloadHeader &header,
+                     size_t compressedBytes,
                      const std::vector<uint8_t> &rawBytes);
     std::shared_ptr<aditof::Frame>
     buildFallbackFrame(const tof_net::DataFramePayloadHeader &header,

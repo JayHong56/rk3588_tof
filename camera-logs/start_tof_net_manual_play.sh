@@ -28,7 +28,8 @@ SSH_CONNECT_TIMEOUT=${SSH_CONNECT_TIMEOUT:-8}
 AUTO_PLAY=${AUTO_PLAY:-0}
 SAVE_PROCESSED=${SAVE_PROCESSED:-0}
 SAVE_PROCESSED_DIR=${SAVE_PROCESSED_DIR:-"$ROOT/processed_frames"}
-SAVE_PROCESSED_PLANES=${SAVE_PROCESSED_PLANES:-depth,ir}
+SAVE_PLANES=${SAVE_PLANES:-${SAVE_PROCESSED_PLANES:-depth,ir}}
+SAVE_PROCESSED_PLANES=${SAVE_PROCESSED_PLANES:-$SAVE_PLANES}
 SAVE_PROCESSED_STRIDE=${SAVE_PROCESSED_STRIDE:-1}
 SAVE_PROCESSED_MAX_FRAMES=${SAVE_PROCESSED_MAX_FRAMES:-0}
 
@@ -60,6 +61,7 @@ Environment overrides:
   AUTO_PLAY=$AUTO_PLAY
   SAVE_PROCESSED=$SAVE_PROCESSED
   SAVE_PROCESSED_DIR=$SAVE_PROCESSED_DIR
+  SAVE_PLANES=$SAVE_PLANES        # raw,depth,ir,xyz; legacy SAVE_PROCESSED_PLANES also works
   SAVE_PROCESSED_PLANES=$SAVE_PROCESSED_PLANES
   SAVE_PROCESSED_STRIDE=$SAVE_PROCESSED_STRIDE
   SAVE_PROCESSED_MAX_FRAMES=$SAVE_PROCESSED_MAX_FRAMES
@@ -282,7 +284,7 @@ if flag_enabled "$SAVE_PROCESSED"; then
         --save-processed-stride "$SAVE_PROCESSED_STRIDE"
         --save-processed-max-frames "$SAVE_PROCESSED_MAX_FRAMES"
     )
-    echo "Processed frame saving: dir=$SAVE_PROCESSED_DIR planes=$SAVE_PROCESSED_PLANES stride=$SAVE_PROCESSED_STRIDE max=$SAVE_PROCESSED_MAX_FRAMES"
+    echo "Capture saving: dir=$SAVE_PROCESSED_DIR planes=$SAVE_PROCESSED_PLANES stride=$SAVE_PROCESSED_STRIDE max=$SAVE_PROCESSED_MAX_FRAMES"
 fi
 (
     cd "$VIEWER_DIR"
@@ -356,3 +358,9 @@ while kill -0 "$viewer_pid" 2>/dev/null; do
     fi
     sleep 2
 done
+
+viewer_status=0
+if ! wait "$viewer_pid"; then
+    viewer_status=$?
+fi
+echo "$(date -Is) viewer exited with status $viewer_status; see $viewer_log"
